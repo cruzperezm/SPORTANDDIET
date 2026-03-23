@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  angular-frontend:
+    container_name: mi_proyecto_angular
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "4200:4200"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
