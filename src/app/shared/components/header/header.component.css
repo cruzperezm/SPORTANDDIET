@@ -1,72 +1,80 @@
-/* Reset local para el header */
-.header *, .header *::before, .header *::after {
-  box-sizing: border-box;
-  -webkit-font-smoothing: antialiased;
-}
-
-.header {
+.header-minimal {
   background-color: #ffffff;
-  border-bottom: 1px solid #f3f4f6;
-  padding: 0 2rem;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  color: #333;
-  width: 100%; /* Asegúrate de que ocupe todo el ancho */
+  border-bottom: 1px solid #eee;
+  width: 100%;
+  font-family: 'Inter', sans-serif;
 }
 
-.navigation {
+.nav-container {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  height: 80px;
-  gap: 1rem;
-  max-width: 1200px; /* Opcional: para que no se estire infinito en pantallas gigantes */
+  height: 85px;
+  max-width: 1200px;
   margin: 0 auto;
+  padding: 0 2rem;
 }
 
-.navigation a {
-  width: 100px;
-  height: 40px;
+.links-group {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.nav-pill {
   text-decoration: none;
-  color: #000000;
-  background-color: #d9d9d9;
-  padding: 0.5rem 1.25rem;
-  border-radius: 6px;
+  color: #555;
+  font-size: 0.95rem;
   font-weight: 500;
+  padding: 6px 20px;
+  border-radius: 12px;
+  background-color: #f5f7f9;
   transition: all 0.2s ease;
   display: flex;
-  justify-content: center;
   align-items: center;
-  cursor: pointer;
+  justify-content: center;
+  height: 32px;
+  border: 1px solid transparent;
 }
 
-.navigation a:hover {
-  background-color: #888888;
-  color: #ffffff;
+.nav-pill:hover {
+  background-color: #e8f0f5;
+  color: #2ECC71;
 }
 
-/* LA MAGIA DE ANGULAR: Clase para el botón activo */
-.navigation a.active-link {
-  background-color: #888888;
-  color: #ffffff;
-}
-
-#nav-home {
-  margin-right: auto; /* Empuja el resto a la derecha */
-  width: 50px;
-  height: 50px;
-  padding: 0;
-  border-radius: 50%;
-  overflow: hidden;
-  background-color: transparent; /* El logo no suele llevar fondo gris */
-}
-
-#nav-home img {
-  max-width: 80%;
-  height: auto;
-}
-
-#nav-login {
-  margin-left: auto; /* Empuja el login al final a la derecha */
-  padding: 0.6rem 2.5rem;
-  border-radius: 9999px;
+.nav-pill.active-link {
+  background-color: #2ECC71;
+  color: white !important;
   font-weight: 600;
+  box-shadow: 0 4px 10px rgba(46, 204, 113, 0.2);
+}
+
+.logo-link {
+  display: flex;
+  align-items: center;
+}
+
+.logo-image {
+  height: 45px;
+  width: auto;
+  max-width: 150px;
+  object-fit: contain;
+}
+
+.login-button {
+  text-decoration: none;
+  color: #333;
+  font-weight: 600;
+  padding: 6px 24px;
+  border-radius: 12px;
+  border: 2px solid #eee;
+  transition: all 0.2s ease;
+  height: 32px;
+  display: flex;
+  align-items: center;
+}
+
+.login-button:hover {
+  border-color: #2ECC71;
+  color: #2ECC71;
 }
