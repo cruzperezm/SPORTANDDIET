@@ -10,4 +10,5 @@ import { Component } from "@angular/core";
 export class Login {
     google_logo = "images/google-logo.png";
     fb_logo = "images/facebook-logo.png";
+    icloud_logo = "images/icloud-logo.png";
 }
