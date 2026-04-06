@@ -49,6 +49,12 @@
   box-shadow: 0 4px 10px rgba(46, 204, 113, 0.2);
 }
 
+.login-group {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
 .logo-link {
   display: flex;
   align-items: center;
