@@ -1,6 +1,6 @@
-CREATE DATABASE users (
+CREATE TABLE app.public.users (
   id SERIAL PRIMARY KEY,
   nombre VARCHAR(100) NOT NULL,
   email VARCHAR(255) UNIQUE NOT NULL,
-  pasaword VARCHAR(255) NOT NULL,
+  pasaword VARCHAR(255) NOT NULL
 );
