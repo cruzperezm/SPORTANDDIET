@@ -8,7 +8,7 @@ import { Component } from "@angular/core";
     styleUrl: './login.css',
 })
 export class Login {
-    google_logo = "images/google-logo.png";
-    fb_logo = "images/facebook-logo.png";
-    icloud_logo = "images/icloud-logo.png";
+    google_logo = "/shared/images/google-logo.png";
+    fb_logo = "/shared/images/facebook-logo.png";
+    icloud_logo = "/shared/images/icloud-logo.png";
 }

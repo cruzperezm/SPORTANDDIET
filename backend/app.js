@@ -4,20 +4,22 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+// Rutas
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
+// Server
 var app = express();
+const PORT = 3000;
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
-
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.listen(PORT, (error) =>{
+    if(!error)
+        console.log("Server is Successfully Running, "
+            + "and App is listening on port "+ PORT)
+    else 
+        console.log("Error occurred, server can't start", error);
+    }
+);
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
