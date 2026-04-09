@@ -28,19 +28,19 @@ export class Bio {
   }
 
   saveData() {
-    sessionStorage.setItem('genre', this.genre.valueOf());
+    localStorage.setItem('genre', this.genre.valueOf());
     // @ts-ignore
-    sessionStorage.setItem('age', this.age.valueOf());
+    localStorage.setItem('age', this.age.valueOf());
     // @ts-ignore
-    sessionStorage.setItem('height', this.height.valueOf());
-    sessionStorage.setItem('goal', this.goal.valueOf());
-    sessionStorage.setItem('act', this.act.valueOf());
+    localStorage.setItem('height', this.height.valueOf());
+    localStorage.setItem('goal', this.goal.valueOf());
+    localStorage.setItem('act', this.act.valueOf());
     // @ts-ignore
-    sessionStorage.setItem('cKg', this.cKg.valueOf());
+    localStorage.setItem('cKg', this.cKg.valueOf());
     // @ts-ignore
-    sessionStorage.setItem('dKg', this.dKg.valueOf());
+    localStorage.setItem('dKg', this.dKg.valueOf());
     // @ts-ignore
-    sessionStorage.setItem('nWeeks', this.nWeeks.valueOf());
+    localStorage.setItem('nWeeks', this.nWeeks.valueOf());
     this.router.navigate(['/']);
   }
 
