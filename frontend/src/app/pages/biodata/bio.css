@@ -13,6 +13,9 @@ form {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
+  align-content: center;
 }
 
 input {
@@ -24,11 +27,22 @@ input {
   border-radius: 12px;
 }
 
+label {
+  padding: 15px;
+  margin-bottom: 40px;
+  width: 100%;
+  border: none;
+  display: block;
+  border-radius: 12px;
+  white-spac;
+}
+
+
 input:focus {
   outline: 2px solid #2ECC71;
 }
 
-input[type="submit"] {
+input[type="button"] {
   width: 40%;
   background-color: #2ECC71;
   margin-bottom: 5%;
@@ -75,6 +89,25 @@ input[type="submit"] {
   border-radius: 100%;
   object-fit: contain;
   width: 40px;
+}
+
+.radiowrapper input {
+  position: absolute;
+  visibility:hidden;
+  width:0;
+}
+
+.radiowrapper:hover label{
+  background-color: #37ba8f;
+  color: #ffffff;
+  border-color: #37ba8f;
+  box-shadow: 0 4px 12px rgb(38, 122, 95);
+}
+
+.radiowrapper input:checked ~ label {
+  border-color: #37ba8f;
+  background-color: #ffffff;;
+  color: #000000;
 }
 
 

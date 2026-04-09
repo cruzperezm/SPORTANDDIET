@@ -1,19 +1,62 @@
 <div id="login-container">
-  <h2>Signup</h2>
+  <h2>Datos biométricos</h2>
   <section id="form-section">
     <form #f="ngForm" (ngSubmit)="saveData()" id="login-form">
-
-      @if (mail.invalid && (mail.dirty || mail.touched)){
-        @if (mail.hasError('required')) {
-          <div>Name is required.</div>
+      @if (bioData==0){
+        @if (gen.invalid && (gen.dirty || gen.touched)){
+          @if (gen.hasError('required')) {
+            <div>Genre is required.</div>
+          }
         }
+        <input [(ngModel)]="genre" name="genre" type="text" placeholder="Genre" required autofocus #gen="ngModel">
+
+        @if (edad.invalid && (edad.dirty || edad.touched)){
+            <div>Age is required.</div>
+        }
+        <input [(ngModel)]="age" name="age" type="number" placeholder="Age" required #edad="ngModel">
+
+        @if (altura.invalid && (altura.dirty || altura.touched)){
+          <div>Height is required.</div>
+        }
+        <input [(ngModel)]="height" name="height" type="number" placeholder="Height (cm)" required #altura="ngModel">
+
+        <div id="button-row">
+          <input type="button" value="Log In" [disabled]="!(gen.valid && edad.valid)" (click)="changeBio()">
+        </div>
       }
-        <input [(ngModel)]="email" type="email" name="emailf" pattern="^[A-Za-z0-9]+@[A-Za-z]+(\.[A-Za-z]+)+$" placeholder="Email" required autofocus #mail="ngModel">
+
+      @if (bioData==1){
+
         <input type="password" name="password" placeholder="Password" required>
         <div id="button-row">
-          <input type="submit" value="Log In" [disabled]="!f.valid">
+          <input type="button" value="Log In" [disabled]="!f.valid" (click)="changeBio()">
         </div>
-    </form>
+      }
+
+      @if (bioData==2){
+        <div class="radiowrapper">
+          <input id="dec" type="radio" name="radio" value="dec">
+          <label id="decT" for="dec">Decrease</label>
+        </div>
+
+        <div class="radiowrapper">
+          <input id="inc" type="radio" name="radio" value="inc">
+          <label id="incT" for="inc">Increase</label>
+        </div>
+
+        <div class="radiowrapper">
+          <input id="mnt" type="radio" name="radio" value="mnt">
+          <label id="mntT" for="mnt">Maintain</label>
+        </div>
+
+        <div class="radiowrapper">
+          <input id="muscle" type="radio" name="radio" value="muscle">
+          <label id="muscleT" for="muscle">Grow muscle</label>
+        </div>
+      }
+
+      </form>
+
   </section>
 
 </div>

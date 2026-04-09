@@ -9,12 +9,20 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './bio.css',
 })
 export class bio {
-  google_logo = 'images/google-logo.png';
-  fb_logo = 'images/facebook-logo.png';
-  icloud_logo = 'images/icloud-logo.png';
-  email: string =``;
-  saveData(){
-    sessionStorage.setItem('name', this.email.valueOf());
-    sessionStorage.setItem('location', 'Pakistan');
+  age: number | undefined;
+  height: number | undefined;
+  genre: string = ``;
+  protected bioData: number = 0;
+
+  changeBio() {
+    this.bioData += 1;
+  }
+
+  saveData() {
+    sessionStorage.setItem('genre', this.genre.valueOf());
+    // @ts-ignore
+    sessionStorage.setItem('age', this.age.valueOf());
+    // @ts-ignore
+    sessionStorage.setItem('height', this.height.valueOf());
   }
 }
