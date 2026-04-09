@@ -131,6 +131,7 @@
 }
 
 .profile-icon {
+  cursor: pointer;
   height: auto;
   width: auto;  
   max-height: 30px;
