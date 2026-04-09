@@ -2,21 +2,27 @@
   <nav class="nav-container" role="navigation">
 
     <div class="logo-group">
-      <a routerLink="/home" routerLinkActive="active-link" class="logo-link">
-        <img src="images/home.svg" alt="Home" class="logo-image"></a>
+      <a routerLink="" class="logo-link">
+        <img src="/shared/images/home.svg" alt="Home" class="logo-image">
+      </a>
     </div>
 
     <div class="links-group">
-      <a class="nav-pill" routerLink="/dietas" routerLinkActive="active-link">Dietas</a>
-      <a class="nav-pill" routerLink="/deporte" routerLinkActive="active-link">Deporte</a>
-      <a class="nav-pill" routerLink="/explorador" routerLinkActive="active-link">Explorador</a>
-      <a class="nav-pill" routerLink="/about-us" routerLinkActive="active-link">About Us</a>
+      <a class="nav-pill" routerLink="/dietas" >Dietas</a>
+      <a class="nav-pill" routerLink="/deporte">Deporte</a>
+      <a class="nav-pill" routerLink="/explorador">Explorador</a>
+      <a class="nav-pill" routerLink="/about-us">About Us</a>
     </div>
 
     <div class="login-group">
-      <a routerLink="/login" routerLinkActive="active-link" class="login-button">Log In</a>
-      <a routerLink="/signup" routerLinkActive="active-link" class="signup-button">Sign Up</a>
-    </div>
+      @if (isLoggedIn$ | async) {
+        <img src="/shared/images/profile-icon.svg" class="profile-icon" (click)="onLogout()" alt="Profile Icon">
+      } @else {
+        <a routerLink="/login" class="login-button">Log In</a>
+        <a routerLink="/signup" class="signup-button">Sign Up</a>
+      }
+      
+    </div>  
 
   </nav>
 </header>

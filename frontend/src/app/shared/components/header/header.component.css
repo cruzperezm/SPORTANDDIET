@@ -10,9 +10,9 @@
   justify-content: space-between;
   align-items: center;
   height: 85px;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 2rem;
+  width: auto;
+  margin: 0;
+  padding: 0 20px 0  20px;
 }
 
 .links-group {
@@ -77,16 +77,21 @@
   box-shadow: 0 4px 10px rgba(46, 204, 113, 0.2);
 }
 
+.logo-group {
+  margin-right: auto;
+}
+
 .login-group {
   display: flex;
   gap: 12px;
   align-items: center;
+  margin-left: auto;
 }
 
 .logo-image {
   height: auto;
-  width: auto;
-  max-width: 150px;
+  width: auto;  
+  max-height: 30px;
   object-fit: contain;
 }
 
@@ -123,4 +128,12 @@
 .signup-button:hover {
   border-color: #2ECC71;
   color: #2ECC71;
+}
+
+.profile-icon {
+  cursor: pointer;
+  height: auto;
+  width: auto;  
+  max-height: 30px;
+  object-fit: contain;
 }
