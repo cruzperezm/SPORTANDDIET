@@ -18,10 +18,10 @@ const jwt = require('jsonwebtoken');
 const login = async (email, password) => {
   const user = await prisma.user.findUnique({ where: { email } });
   
-  if (!user) throw new Error('Invalid credentials');
+  if (!user) throw new Error('A user with this email does not exist');
 
   const isMatch = await bcrypt.compare(password, user.password);
-  if (!isMatch) throw new Error('Invalid credentials');
+  if (!isMatch) throw new Error('The password is incorrect');
 
   const token = jwt.sign(
     { userId: user.id }, 

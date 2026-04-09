@@ -53,6 +53,10 @@ input[type="submit"] {
   justify-content: space-between;
 }
 
+#cancel-button, #signup-button {
+  cursor: pointer;
+}
+
 #cancel-button {
   margin-left: 0;
   margin-bottom: 5%;
