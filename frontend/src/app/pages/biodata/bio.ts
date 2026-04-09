@@ -9,7 +9,8 @@ import { Router } from '@angular/router';
   templateUrl: './bio.html',
   styleUrl: './bio.css',
 })
-export class bio {
+
+export class Bio {
   age: number | undefined;
   height: number | undefined;
   genre: string = ``;
@@ -40,7 +41,7 @@ export class bio {
     sessionStorage.setItem('dKg', this.dKg.valueOf());
     // @ts-ignore
     sessionStorage.setItem('nWeeks', this.nWeeks.valueOf());
-    this.router.navigate(['/login']);
+    this.router.navigate(['/']);
   }
 
   onChange(e: any) {
