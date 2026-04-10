@@ -41,7 +41,7 @@ export class Bio {
     localStorage.setItem('dKg', this.dKg.valueOf());
     // @ts-ignore
     localStorage.setItem('nWeeks', this.nWeeks.valueOf());
-    this.router.navigate(['/']);
+    this.router.navigate(['/login']);
   }
 
   onChange(e: any) {

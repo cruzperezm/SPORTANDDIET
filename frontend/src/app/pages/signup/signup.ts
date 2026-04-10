@@ -21,7 +21,7 @@ export class Signup {
 
   signUpForm: FormGroup = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      username: ['', [Validators.required]], 
+      username: ['', [Validators.required]],
       password: ['', [Validators.required]]
   });
 
@@ -38,7 +38,7 @@ export class Signup {
             next: (response) => {
                 console.log("Backend says:", response);
                 this.isLoading = false;
-                this.router.navigate(['/login']);
+                this.router.navigate(['/bio']);
             },
 
             error: (err) => {
