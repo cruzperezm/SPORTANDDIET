@@ -4,7 +4,7 @@ import { Signup } from './pages/signup/signup';
 import { HomeComponent } from './pages/Home/home.component'
 
 export const routes: Routes = [
-    {path: '', component: HomeComponent},
-    {path: 'login', component: Login},
-    {path: 'signup', component: Signup}
+    {path: '', component: HomeComponent, title: 'SPORTS&DIET · Home'},
+    {path: 'login', component: Login, title: 'SPORTS&DIET · Log In'},
+    {path: 'signup', component: Signup, title: 'SPORTS&DIET · Sign Up'}
 ];
