@@ -6,6 +6,7 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "@prisma/adapter-pg": "^7.7.0",
     "@prisma/client": "^7.7.0",
     "bcrypt": "^6.0.0",
     "cookie-parser": "~1.4.4",
@@ -17,7 +18,13 @@
     "jade": "~1.11.0",
     "jsonwebtoken": "^9.0.3",
     "morgan": "~1.9.1",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0",
+    "pg": "^8.20.0",
     "pg-promise": "^12.6.2",
     "prisma": "^7.7.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.2"
   }
 }

@@ -23,7 +23,9 @@
               {
                 "glob": "**/*",
                 "input": "public"
-              }
+              },
+              "public/logo.png",
+              "src/assets"
             ],
             "styles": ["src/styles.css"]
           },

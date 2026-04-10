@@ -1,10 +1,13 @@
+require('dotenv').config(); // <-- Añadir esto al principio
+require('./config/passport'); // <-- Inicializar nuestra estrategia de Google
+
 var createError = require('http-errors');
 var express = require('express');
 var cors = require("cors")
 var authRoutes = require("./routes/auth.routes")
 
 var app = express();
-const PORT = 3000;
+/*const PORT = 3000;
 
 app.listen(PORT, (error) =>{
     if(!error)
@@ -14,7 +17,7 @@ app.listen(PORT, (error) =>{
         console.log("Error occurred, server can't start", error);
     }
 );
-
+*/
 app.use(cors())
 app.use(express.json())
 app.use('/api/auth', authRoutes);
@@ -26,13 +29,13 @@ app.use(function(req, res, next) {
 
 // error handler
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  console.error(err); // Imprimimos el error real en la consola de WebStorm
 
-  // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.json({
+    message: err.message,
+    error: err // Devuelve el error a Angular/Navegador en formato JSON
+  });
 });
 
 module.exports = app;
