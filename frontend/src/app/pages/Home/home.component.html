@@ -1,7 +1,6 @@
 <main class="home">
   <section class="title">
-    <video class="title-img" src="/shared/videos/video-title-1.mp4" autoplay loop muted playsinline aria-hidden="true"></video>
-    <h1 class="title-text">Tu cambio está aquí</h1>
+    <video #miVideo class="title-img" src="/shared/videos/video-title-1.mp4" autoplay loop [muted]="true" playsinline aria-hidden="true"></video><h1 class="title-text">Tu cambio está aquí</h1>
   </section>
 
   <section class="features-section" aria-labelledby="features-heading">
@@ -104,7 +103,7 @@
 
     <div class="sign-up-image-container">
       <img id="sign-up-img" class="sign-up-image" src="/shared/images/Home/icono-registrate.avif" alt="Registrate" aria-hidden="true" />
-      <a id="sign-up-link" routerLink="/sign-up">Regístrate</a>
+      <a id="sign-up-link" routerLink="/signup">Regístrate</a>
     </div>
   </section>
 </main>

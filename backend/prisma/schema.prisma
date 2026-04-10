@@ -4,8 +4,8 @@
 // Get a free hosted Postgres database in seconds: `npx create-db`
 
 generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -16,7 +16,8 @@ model User {
   id         Int         @id @default(autoincrement())
   email      String      @unique
   username   String?
-  password   String
+  password   String?     // <-- 1. Añade '?' para hacerlo opcional
+  googleId   String?     @unique // <-- 2. Nuevo campo para el ID de Google
   biometrics Biometrics?
   createdAt  DateTime    @default(now())
 }

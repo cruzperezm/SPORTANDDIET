@@ -1,10 +1,13 @@
+require('dotenv').config(); // <-- Añadir esto al principio
+require('./config/passport'); // <-- Inicializar nuestra estrategia de Google
+
 var createError = require('http-errors');
 var express = require('express');
 var cors = require("cors")
 var authRoutes = require("./routes/auth.routes")
 
 var app = express();
-const PORT = 3000;
+/*const PORT = 3000;
 
 app.listen(PORT, (error) =>{
     if(!error)
@@ -14,7 +17,7 @@ app.listen(PORT, (error) =>{
         console.log("Error occurred, server can't start", error);
     }
 );
-
+*/
 app.use(cors())
 app.use(express.json())
 app.use('/api/auth', authRoutes);
