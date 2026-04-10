@@ -1,4 +1,5 @@
 import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { AuthService } from "../../services/auth.service";
 
@@ -16,6 +17,7 @@ export class Signup {
 
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
+  private router = inject(Router)
 
   signUpForm: FormGroup = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -33,16 +35,18 @@ export class Signup {
       this.errorMessage = '';
 
       this.authService.register(this.signUpForm.value).subscribe({
-          next: (response) => {
-              console.log("Backend says:", response);
-              this.isLoading = false;
-          },
+            next: (response) => {
+                console.log("Backend says:", response);
+                this.isLoading = false;
+                this.router.navigate(['/login']);
+            },
 
-          error: (err) => {
-              console.error('Registration failed:', err);
-              this.isLoading = false;
-              this.errorMessage = err.error?.error || 'An unexpected error occurred.';
-          }
-      })
+            error: (err) => {
+                alert("Registration failed: email already exists");
+                console.error('Registration failed:', err);
+                this.isLoading = false;
+                this.errorMessage = err.error?.error || 'An unexpected error occurred.';
+            }
+        })
     }
 }

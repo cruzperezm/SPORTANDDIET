@@ -43,8 +43,10 @@ export class Login {
             error: (err) => {
                 this.isLoading = false;
                 if (err.status === 401) {
+                    alert("Incorrect email or password");
                     this.errorMessage = 'Incorrect email or password.'; 
                 } else {
+                    alert("Server error. Please try again later.");
                     this.errorMessage = "Server error. Please try again later."
                 }
             }
