@@ -129,3 +129,11 @@
   border-color: #2ECC71;
   color: #2ECC71;
 }
+
+.profile-icon {
+  cursor: pointer;
+  height: auto;
+  width: auto;  
+  max-height: 30px;
+  object-fit: contain;
+}
