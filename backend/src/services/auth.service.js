@@ -21,6 +21,23 @@ const register = async (email, password, username) => {
   });
 };
 
+const addBio = async (genre, age, height, goal, activity, c_weight, d_weight, weeks, owner) => {
+
+  return await prisma.biometrics.create({
+    data: {
+      genre,
+      age,
+      height,
+      goal,
+      activity,
+      c_weight,
+      d_weight,
+      weeks,
+      owner,
+    },
+  });
+};
+
 const jwt = require('jsonwebtoken');
 
 const login = async (email, password) => {
@@ -40,4 +57,4 @@ const login = async (email, password) => {
   return { user, token };
 };
 
-module.exports = { register, login }
+module.exports = { register, login, addBio }
