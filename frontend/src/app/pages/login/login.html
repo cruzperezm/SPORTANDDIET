@@ -10,12 +10,16 @@
             </div>
         </form>
     </section>
-    <section id="external-providers-section">
-        <div id="other-login">
-            <img [src]="google_logo" alt="Google Logo">
-            <img [src]="fb_logo" alt="Facebook Logo">
-            <img [src]="icloud_logo" alt="iCloud Logo">
-        </div>
-    </section>
+  <section id="external-providers-section">
+    <div id="other-login">
+      <div class="custom-google-wrapper">
+        <img [src]="google_logo" alt="Google Logo" class="my-custom-icon">
+        <div id="google-login-btn" class="invisible-google-btn"></div>
+      </div>
+
+      <img [src]="fb_logo" alt="Facebook Logo">
+      <img [src]="icloud_logo" alt="iCloud Logo">
+    </div>
+  </section>
 
 </div>

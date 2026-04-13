@@ -80,3 +80,33 @@ input[type="submit"] {
   object-fit: contain;
   width: 40px;
 }
+
+/* Contenedor que abraza exactamente el tamaño de tu imagen */
+.custom-google-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* Tu imagen original (elimina las restricciones rígidas) */
+.custom-google-wrapper .my-custom-icon {
+  /* Si antes las imágenes medían 40px, ponlo aquí, o usa contain */
+  width: 50px; /* Ajusta este valor para que quede igual a Facebook e iCloud */
+  height: auto;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+/* El botón invisible */
+.invisible-google-btn {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  z-index: 10;
+  overflow: hidden;
+}

@@ -4,5 +4,7 @@ const authController = require('../controllers/auth.controller');
 
 router.post('/register', authController.registerUser);
 router.post('/login', authController.login);
+// NUEVA RUTA:
+router.post('/google', authController.googleLogin);
 
 module.exports = router;
