@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import { AuthService } from "../../services/auth.service";
 
 @Component({
@@ -22,7 +22,8 @@ export class Signup {
   signUpForm: FormGroup = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       username: ['', [Validators.required]],
-      password: ['', [Validators.required]]
+      password: ['', [Validators.required]],
+      confirmPassword: ['', [Validators.required]]
   });
 
   isLoading = false;
@@ -33,6 +34,14 @@ export class Signup {
 
       this.isLoading = true;
       this.errorMessage = '';
+
+      const password = this.signUpForm.value.password;
+      const confirmPassword = this.signUpForm.value.confirmPassword;
+
+      if (password !== confirmPassword) {
+        alert('Registration failed: passwords must match');
+        this.isLoading = false;
+      }
 
       this.authService.register(this.signUpForm.value).subscribe({
             next: (response) => {
