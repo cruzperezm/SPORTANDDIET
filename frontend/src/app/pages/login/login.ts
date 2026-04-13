@@ -35,7 +35,7 @@ export class Login {
 
         this.authService.login(this.loginForm.value).subscribe({
             next: (response) => {
-                console.log("Logged in!");
+                console.log("Sesión iniciada!");
                 this.isLoading = false;
                 this.router.navigate(['/']);
             },
@@ -43,11 +43,11 @@ export class Login {
             error: (err) => {
                 this.isLoading = false;
                 if (err.status === 401) {
-                    alert("Incorrect email or password");
-                    this.errorMessage = 'Incorrect email or password.'; 
+                    alert("Las credenciales no coinciden.");
+                    this.errorMessage = 'Las credenciales no coinciden.';
                 } else {
-                    alert("Server error. Please try again later.");
-                    this.errorMessage = "Server error. Please try again later."
+                    alert("Error de servidor, inténtelo más tarde.");
+                    this.errorMessage = 'Error de servidor, inténtelo más tarde.';
                 }
             }
         })

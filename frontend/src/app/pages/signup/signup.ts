@@ -39,22 +39,22 @@ export class Signup {
       const confirmPassword = this.signUpForm.value.confirmPassword;
 
       if (password !== confirmPassword) {
-        alert('Registration failed: passwords must match');
+        alert('Error de registro: las contraseñas no coinciden');
         this.isLoading = false;
       }
 
       this.authService.register(this.signUpForm.value).subscribe({
             next: (response) => {
-                console.log("Backend says:", response);
+                console.log("Backend:", response);
                 this.isLoading = false;
                 this.router.navigate(['/bio']);
             },
 
             error: (err) => {
-                alert("Registration failed: email already exists");
-                console.error('Registration failed:', err);
+                alert("Error de registro: el correo ya tiene una cuenta");
+                console.error('Error de registro:', err);
                 this.isLoading = false;
-                this.errorMessage = err.error?.error || 'An unexpected error occurred.';
+                this.errorMessage = err.error?.error || 'Error.';
             }
         })
     }
