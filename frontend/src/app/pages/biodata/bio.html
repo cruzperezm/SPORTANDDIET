@@ -1,39 +1,43 @@
 <div id="container">
   <h2>Datos biométricos</h2>
   <section id="form-section">
-    <form #f="ngForm" (ngSubmit)="saveData()" id="login-form">
+    <form (ngSubmit)="saveData()" id="login-form">
 
       @if (bioData==0){
         @if (gen.invalid && (gen.dirty || gen.touched)){
           @if (gen.hasError('required')) {
-            <div id="error">Genre is required.</div>
+            <div id="error">Campo genero obligatorio.</div>
           }
         }
-        <input [(ngModel)]="genre" name="genre" type="text" placeholder="Genre" required autofocus #gen="ngModel">
+        <input [(ngModel)]="genre" name="genre" type="text" placeholder="Genero" required autofocus #gen="ngModel">
 
         @if (edad.invalid && (edad.dirty || edad.touched)){
           @if (edad.hasError('required')) {
-            <div id="error">Age is required.</div>
+            <div id="error">La edad es obligatoria.</div>
           }
           @if (edad.hasError('min')) {
-            <div id="error">Age can't be less than 14.</div>
+            <div id="error">Tienes que ser mayor de 14.</div>
           }
           @if (edad.hasError('max')) {
-            <div id="error">Age can't be more than 120.</div>
+            <div id="error">La edad no puede ser mayor a 99.</div>
           }
         }
-        <input [(ngModel)]="age" name="age" min="14" max="120" type="number" placeholder="Age" required #edad="ngModel">
+        <input [(ngModel)]="age" name="age" min="14" max="99" type="number" placeholder="Edad" required #edad="ngModel">
 
         @if (altura.invalid && (altura.dirty || altura.touched)){
           @if (altura.hasError('required')) {
-            <div id="error">Height is required.</div>
+            <div id="error">La altura es obligatoria.</div>
+          }
+          @if (altura.hasError('min')) {
+            <div id="error">Tienes que medir mas que 120cm.</div>
+          }
+          @if (altura.hasError('max')) {
+            <div id="error">Tienes que medir menos que 220cm.</div>
           }
         }
-        <input [(ngModel)]="height" name="height" type="number" placeholder="Height (cm)" required #altura="ngModel">
+        <input [(ngModel)]="height" name="height" min="120" max="220" type="number" placeholder="Altura (cm)" required #altura="ngModel">
 
-        <div id="button-row">
-          <input type="button" value="Next" [disabled]="!(gen.valid && edad.valid)" (click)="changeBio()">
-        </div>
+        <input type="button" value="Siguiente" [disabled]="!(gen.valid && edad.valid)" (click)="next()">
       }
 
       @if (bioData==1){
@@ -60,7 +64,8 @@
         </div>
 
         <div id="button-row">
-          <input type="button" value="Next" [disabled]="!goal" (click)="changeBio()">
+          <input type="button" value="Atrás" (click)="back()">
+          <input type="button" value="Siguiente" [disabled]="!goal" (click)="next()">
         </div>
       }
 
@@ -88,37 +93,39 @@
         </div>
 
         <div id="button-row">
-          <input type="button" value="Next" [disabled]="!act" (click)="changeBio()">
+          <input type="button" value="Atrás" (click)="back()">
+          <input type="button" value="Siguiente" [disabled]="!act" (click)="next()">
         </div>
       }
 
       @if (bioData==3){
         @if (cur.invalid && (cur.dirty || cur.touched)){
           @if (cur.hasError('required')) {
-            <div id="error">Current weight is required.</div>
+            <div id="error">El peso actual es obligatorio.</div>
           }
         }
-        <input name="cKg" type="number" placeholder="Current Kg" required autofocus [(ngModel)]="cKg" #cur="ngModel">
+        <input name="cKg" type="number" placeholder="Peso actual Kg" required autofocus [(ngModel)]="cKg" #cur="ngModel">
 
         @if (des.invalid && (des.dirty || des.touched)){
           @if (des.hasError('required')) {
-            <div id="error">Desired weight is required.</div>
+            <div id="error">El peso deseado es obligatorio.</div>
           }
         }
-        <input name="dKg" type="number" placeholder="Desired Kg" required [(ngModel)]="dKg" #des="ngModel">
+        <input name="dKg" type="number" placeholder="Peso deseado Kg" required [(ngModel)]="dKg" #des="ngModel">
 
         @if (weeks.invalid && (weeks.dirty || weeks.touched)){
           @if (weeks.hasError('required')) {
-            <div id="error">Weeks are required.</div>
+            <div id="error">Las semanas son obligatorias.</div>
           }
           @if (weeks.hasError('min')) {
-            <div id="error">Weeks can't be 0!</div>
+            <div id="error">No pueden ser 0 semanas!</div>
           }
         }
-        <input name="nWeeks" type="number" min="1" placeholder="Number of weeks" required [(ngModel)]="nWeeks" #weeks="ngModel">
+        <input name="nWeeks" type="number" min="1" placeholder="Nº semanas" required [(ngModel)]="nWeeks" #weeks="ngModel">
 
         <div id="button-row">
-          <input type="submit" value="Finish!" [disabled]="!(cur.valid && des.valid && weeks.valid)">
+          <input type="button" value="Atrás" (click)="back()">
+          <input type="submit" value="Terminado!" [disabled]="!(cur.valid && des.valid && weeks.valid)">
         </div>
       }
 

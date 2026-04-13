@@ -23,8 +23,11 @@ export class Bio {
 
   constructor(private router: Router) {}
 
-  changeBio() {
+  next() {
     this.bioData += 1;
+  }
+  back(){
+    this.bioData -= 1;
   }
 
   saveData() {
