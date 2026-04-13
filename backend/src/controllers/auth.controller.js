@@ -2,9 +2,14 @@ const authService = require('../services/auth.service')
 
 const registerUser = async(req, res) => {
     try {
-        // TODO: Check how to pass username and password as arguments
-        // Extract from the body
-        const registeredUser = await authService.register(req.body)
+        
+        const { email, password } = req.body;
+
+        if (!email || !password) {
+            return res.status(400).json({ error: 'Email and password are required' })
+        } 
+
+        const registeredUser = await authService.register(email, password, "Testing (hardcoded)")
         res.status(201).json(registeredUser)
     } catch (error) {
         res.status(400).json({ error: 'Email already exists' })

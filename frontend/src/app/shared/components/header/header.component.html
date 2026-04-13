@@ -15,8 +15,13 @@
     </div>
 
     <div class="login-group">
-      <a routerLink="/login" class="login-button">Log In</a>
-      <a routerLink="/signup" class="signup-button">Sign Up</a>
+      @if (isLoggedIn$ | async) {
+        <img src="/shared/images/profile-icon.svg" alt="Profile Icon">
+      } @else {
+        <a routerLink="/login" class="login-button">Log In</a>
+        <a routerLink="/signup" class="signup-button">Sign Up</a>
+      }
+      
     </div>  
 
   </nav>
