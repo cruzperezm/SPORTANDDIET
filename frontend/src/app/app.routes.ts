@@ -1,12 +1,20 @@
 import { Routes } from '@angular/router';
-import {Login} from './pages/login/login'
+import { Login } from './pages/login/login';
 import { Signup } from './pages/signup/signup';
-import { HomeComponent } from './pages/Home/home.component'
-import { Bio } from './pages/biodata/bio'
+import { HomeComponent } from './pages/Home/home.component';
+import { Bio } from './pages/biodata/bio';
+import { DietasInicioComponent } from './pages/dietas/dietas-inicio/dietas-inicio';
+import { DietaPlanComponent } from './pages/dietas/dietas-plan/dietas-plan';
 
 export const routes: Routes = [
-    {path: '', component: HomeComponent, title: 'SPORTS&DIET · Home'},
-    {path: 'login', component: Login, title: 'SPORTS&DIET · Log In'},
-    {path: 'signup', component: Signup, title: 'SPORTS&DIET · Sign Up'},
-    {path: 'bio', component: Bio, title: 'SPORTS&DIET · Bio Data'}
+  { path: 'login', component: Login, title: 'SPORTS&DIET · Log In' },
+  { path: 'signup', component: Signup, title: 'SPORTS&DIET · Sign Up' },
+  { path: 'bio', component: Bio, title: 'SPORTS&DIET · Bio Data' },
+  { path: 'dietas', component: DietasInicioComponent, title: 'SPORTS&DIET · Dietas' },
+  { path: 'dietas/plan/:id', component: DietaPlanComponent, title: 'SPORTS&DIET · Plan' },
+
+  { path: 'home', component: HomeComponent, title: 'SPORTS&DIET · Home' },
+
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: '**', redirectTo: 'home' }
 ];
