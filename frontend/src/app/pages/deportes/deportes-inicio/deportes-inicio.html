@@ -1,1 +1,16 @@
-<p>deportes-inicio works!</p>
+<section class="seccion-articulos">
+  <div class="contenedor-texto">
+    <h1 class="titulo-principal">Disciplinas</h1>
+    <p class="descripcion-principal">Encuentra el entrenamiento perfecto para ti</p>
+  </div>
+
+  <div class="contenedor-grid">
+    <div class="tarjeta-item" *ngFor="let disciplina of disciplinas" (click)="irAlPlan()">
+      <div class="placeholder-imagen"
+           [style.backgroundImage]="'url(' + disciplina.imagen + ')'"
+           style="background-size: cover; background-position: center;">
+      </div>
+      <h3>{{ disciplina.nombre }}</h3>
+    </div>
+  </div>
+</section>
