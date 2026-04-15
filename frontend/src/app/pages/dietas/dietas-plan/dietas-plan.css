@@ -1,0 +1,142 @@
+/* EL HERO */
+.hero-section {
+  background: linear-gradient(135deg, var(--color-acento, #10B981), var(--color-acento-hover, #059669));
+  border-radius: 30px;
+  padding: 60px 20px;
+  margin-bottom: 40px;
+  color: white;
+  text-align: center;
+}
+
+.text-96 {
+  font-size: clamp(40px, 6vw, 72px);
+  font-weight: 800;
+  margin: 0;
+  letter-spacing: -1px;
+}
+
+/* BOTÓN VOLVER */
+.btn-volver {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-texto, #4B5563);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+  padding: 8px 16px;
+  border-radius: 20px;
+  background: transparent;
+  transition: all 0.3s ease;
+}
+
+.btn-volver span {
+  font-size: 1.3rem;
+}
+
+.btn-volver:hover {
+  color: var(--color-acento, #10B981);
+  transform: translateX(-5px);
+  background: rgba(16, 185, 129, 0.1);
+}
+
+/* FILTROS */
+.filtros-botones {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-filtro {
+  padding: 10px 20px;
+  border: 2px solid var(--color-acento, #10B981);
+  background: transparent;
+  color: var(--color-acento, #10B981);
+  border-radius: 30px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-filtro:hover, .btn-filtro.active {
+  background: var(--color-acento, #10B981);
+  color: white;
+}
+
+/* TÍTULO SECCIÓN */
+.text-48 {
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 700;
+  color: var(--color-texto, #1F2937);
+  border-left: 5px solid var(--color-acento, #10B981);
+  padding-left: 15px;
+  margin-bottom: 20px;
+}
+
+/* CARRUSEL Y TARJETAS */
+.grid-3-cuadros {
+  display: flex;
+  gap: 2vw;
+  width: 100%;
+}
+
+.contenedor-item {
+  flex: 0 0 calc(33.333% - 1.34vw);
+  animation: fadeIn 0.4s ease-out;
+}
+
+.cuadro-gris {
+  width: 100%;
+  aspect-ratio: 1/1;
+  background-color: #E5E7EB;
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.cuadro-gris:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
+}
+
+/* DEGRADADO PARA QUE SE LEA EL TEXTO BLANCO */
+.texto-interior {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 40px 20px 20px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: white;
+  background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0) 100%);
+  pointer-events: none;
+}
+
+/* BOTONES DE DIRECCIÓN */
+.btn-nav {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: none;
+  background: var(--color-acento, #10B981);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.btn-nav:hover {
+  background: var(--color-acento-hover, #059669);
+  transform: scale(1.1);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0.8; transform: scale(0.98); }
+  to { opacity: 1; transform: scale(1); }
+}

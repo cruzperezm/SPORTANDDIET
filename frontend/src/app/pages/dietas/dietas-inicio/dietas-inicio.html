@@ -1,0 +1,13 @@
+<section class="seccion-articulos">
+  <div class="contenedor-texto">
+    <h1 class="titulo-principal">Dietas</h1>
+    <p class="descripcion-principal">Elige el plan que mejor se adapte a tu objetivo</p>
+  </div>
+
+  <div class="contenedor-grid">
+    <div class="tarjeta-item" *ngFor="let dieta of dietas" (click)="irAlPlan(dieta.id)">
+      <img class="placeholder-imagen" [src]="dieta.imagen" [alt]="dieta.nombre">
+      <h3>{{ dieta.nombre }}</h3>
+    </div>
+  </div>
+</section>

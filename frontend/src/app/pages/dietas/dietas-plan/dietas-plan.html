@@ -1,0 +1,53 @@
+<section class="plan-dietas container py-5">
+
+  <div class="navegacion-superior mb-4">
+    <a routerLink="/dietas" class="btn-volver">
+      <span class="material-symbols-outlined">arrow_back</span>
+      Volver a todas las dietas
+    </a>
+  </div>
+
+  <div class="hero-section shadow-lg">
+    <h1 class="text-96">Plan {{ dietaId == '1' ? 'Keto' : 'Personalizado' }}</h1>
+    <p class="text-24-hero">Descubre tus menús diarios adaptados</p>
+  </div>
+
+  <div class="filtros-container mb-5">
+    <div class="filtros-botones">
+      <button class="btn-filtro active">Todos</button>
+      <button class="btn-filtro">Sin Gluten</button>
+      <button class="btn-filtro">Vegano</button>
+    </div>
+  </div>
+
+  <div class="seccion-comida mb-5" *ngFor="let categoria of categoriasComida">
+    <h2 class="text-48">{{ categoria.titulo }}</h2>
+
+    <div class="wrapper-carrusel position-relative mt-4">
+
+      <div class="grid-3-cuadros">
+
+        <div class="contenedor-item" *ngFor="let plato of getPlatosVisibles(categoria); let i = index">
+          <div class="cuadro-gris shadow-sm"
+               [style.backgroundImage]="'url(' + plato.img + ')'"
+               [routerLink]="['/dietas/receta', i + 1]"
+               style="cursor: pointer;">
+            <div class="texto-interior">{{ plato.nombre }}</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="controles-carrusel d-flex justify-content-end mt-4 gap-3">
+        <button class="btn-nav shadow" (click)="mover(-1, categoria)">
+          <span class="material-symbols-outlined">arrow_back</span>
+        </button>
+        <button class="btn-nav shadow" (click)="mover(1, categoria)">
+          <span class="material-symbols-outlined">arrow_forward</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</section>
