@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule, Location } from '@angular/common'; // Importamos Location para volver
+import { CommonModule, Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser'; // ¡La llave mágica para el vídeo!
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { DeporteService } from '../../../services/deportes';
 
 @Component({

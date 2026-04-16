@@ -20,22 +20,19 @@
     </div>
   </div>
 
-  <div class="seccion-comida mb-5" *ngFor="let categoria of categoriasComida">
+  <div class="seccion-comida mb-5" *ngFor="let categoria of categoriasDieta">
     <h2 class="text-48">{{ categoria.titulo }}</h2>
 
     <div class="wrapper-carrusel position-relative mt-4">
-
       <div class="grid-3-cuadros">
-
-        <div class="contenedor-item" *ngFor="let plato of getPlatosVisibles(categoria); let i = index">
+        <div class="contenedor-item" *ngFor="let plato of getPlatosVisibles(categoria)">
           <div class="cuadro-gris shadow-sm"
                [style.backgroundImage]="'url(' + plato.img + ')'"
-               [routerLink]="['/dietas/receta', i + 1]"
+               [routerLink]="['/dietas/receta', plato.id]"
                style="cursor: pointer;">
             <div class="texto-interior">{{ plato.nombre }}</div>
           </div>
         </div>
-
       </div>
 
       <div class="controles-carrusel d-flex justify-content-end mt-4 gap-3">
@@ -46,7 +43,6 @@
           <span class="material-symbols-outlined">arrow_forward</span>
         </button>
       </div>
-
     </div>
   </div>
 

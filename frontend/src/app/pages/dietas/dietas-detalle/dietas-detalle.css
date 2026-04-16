@@ -1,6 +1,6 @@
 :host {
-  --color-acento: #10B981; /* Verde esmeralda */
-  --color-acento-hover: #059669; /* Verde oscuro para el hover */
+  --color-acento: #10B981;
+  --color-acento-hover: #059669;
 }
 
 .guia-dieta {
@@ -58,7 +58,7 @@
   background: rgba(255, 255, 255, 0.3);
 }
 
-/* El globo de texto negro */
+/* El pop up de texto negro */
 .icono-alergeno::after {
   content: attr(data-tooltip);
   position: absolute;

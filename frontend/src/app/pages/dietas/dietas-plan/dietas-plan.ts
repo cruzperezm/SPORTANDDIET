@@ -1,45 +1,53 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { DietasService } from '../../../services/dietas';
+import { DietaService } from '../../../services/dietas';
 
 @Component({
   selector: 'app-dieta-plan',
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './dietas-plan.html',
-  styleUrl: './dietas-plan.css'
+  styleUrl: './dietas-plan.css',
 })
 export class DietaPlanComponent implements OnInit {
-  dietaId: string | null = '';
-
-  categoriasComida: any[] = [];
+  dietaId: string | null = null;
+  categoriasDieta: any[] = []; // Nombre unificado
 
   constructor(
     private route: ActivatedRoute,
-    private dietasService: DietasService
+    private dietasService: DietaService,
   ) {}
 
   ngOnInit() {
     this.dietaId = this.route.snapshot.paramMap.get('id');
 
-    // 4. Pedimos los datos al servicio al cargar la página
-    this.dietasService.obtenerPlanPorDieta(this.dietaId).subscribe((datos) => {
-      this.categoriasComida = datos;
+    this.dietasService.obtenerPlanPorDieta(this.dietaId).subscribe((datos: any) => {
+      this.categoriasDieta = datos;
     });
   }
 
   getPlatosVisibles(categoria: any) {
+    if (!categoria.platos || categoria.platos.length === 0) return [];
+
     const total = categoria.platos.length;
+    const i = categoria.indiceActual || 0;
+
+    // Si hay menos de 3 platos, mostramos solo los que hay
+    if (total < 3) return categoria.platos;
+
     return [
-      categoria.platos[categoria.indiceActual % total],
-      categoria.platos[(categoria.indiceActual + 1) % total],
-      categoria.platos[(categoria.indiceActual + 2) % total]
+      categoria.platos[i % total],
+      categoria.platos[(i + 1) % total],
+      categoria.platos[(i + 2) % total],
     ];
   }
 
   mover(direccion: number, categoria: any) {
+    if (!categoria.platos) return;
     const total = categoria.platos.length;
+    if (total === 0) return;
+
     if (direccion === 1) {
       categoria.indiceActual = (categoria.indiceActual + 1) % total;
     } else {

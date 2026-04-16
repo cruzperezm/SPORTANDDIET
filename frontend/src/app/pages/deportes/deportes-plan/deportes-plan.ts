@@ -22,17 +22,27 @@ export class DeportePlanComponent implements OnInit {
   }
 
   getEjerciciosVisibles(categoria: any) {
-    const total = categoria.ejercicios.length;
-    if (total === 0) return [];
+    if (!categoria || !categoria.ejercicios || categoria.ejercicios.length === 0) {
+      return [];
+    }
+    const lista = categoria.ejercicios;
+    const total = lista.length;
+    const i = categoria.indiceActual || 0;
+    if (total < 3) {
+      return lista;
+    }
     return [
-      categoria.ejercicios[categoria.indiceActual % total],
-      categoria.ejercicios[(categoria.indiceActual + 1) % total],
-      categoria.ejercicios[(categoria.indiceActual + 2) % total],
+      lista[i % total],
+      lista[(i + 1) % total],
+      lista[(i + 2) % total],
     ];
   }
 
   mover(direccion: number, categoria: any) {
+    if (!categoria.ejercicios) return;
     const total = categoria.ejercicios.length;
+    if (total === 0) return;
+
     if (direccion === 1) {
       categoria.indiceActual = (categoria.indiceActual + 1) % total;
     } else {

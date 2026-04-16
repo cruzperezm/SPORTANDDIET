@@ -1,6 +1,6 @@
 :host {
-  --color-acento: #10B981; /* Verde esmeralda */
-  --color-acento-hover: #059669; /* Verde oscuro para el hover */
+  --color-acento: #10B981;
+  --color-acento-hover: #059669;
 }
 
 .seccion-articulos {
@@ -43,13 +43,13 @@
   width: 100%;
   background-color: var(--color-tarjeta, #FFFFFF);
   border-radius: 20px;
-  padding: 0; /* Sin padding interno para que la foto ocupe todo */
+  padding: 0;
   box-shadow: var(--sombra-suave);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  aspect-ratio: 4/3; /* Esto obliga a que el hueco sea SIEMPRE igual */
+  aspect-ratio: 4/3;
 }
 
 .tarjeta-item:hover {
@@ -57,11 +57,10 @@
   box-shadow: var(--sombra-hover);
 }
 
-/* EL CONTENEDOR DE LA IMAGEN (Adiós al icono roto) */
 .placeholder-imagen {
   width: 100%;
   height: 100%;
-  background-color: #E5E7EB; /* Gris elegante si no hay foto */
+  background-color: #E5E7EB;
   background-size: cover;
   background-position: center;
   transition: transform 0.5s ease;

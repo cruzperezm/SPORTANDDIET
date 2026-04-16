@@ -1,6 +1,6 @@
 :host {
-  --color-acento: #F97316; /* Naranja vibrante */
-  --color-acento-hover: #EA580C; /* Naranja oscuro para el hover */
+  --color-acento: #F97316;
+  --color-acento-hover: #EA580C;
 }
 
 .guia-dieta {
@@ -180,9 +180,6 @@
   padding: 0 20px;
 }
 
-/* =========================================
-   NUEVA TARJETA DE CALORÍAS (Reemplaza a .text-24-largo)
-   ========================================= */
 .tarjeta-calorias {
   background: linear-gradient(135deg, #FFF7ED 0%, #FFEDD5 100%);
   border: 2px solid var(--color-acento, #F97316);

@@ -24,13 +24,14 @@
 
       <div class="grid-3-cuadros">
 
-        <div class="contenedor-item" *ngFor="let ejercicio of getEjerciciosVisibles(categoria)">
+        <div class="contenedor-item"
+             *ngFor="let ejercicio of getEjerciciosVisibles(categoria)"
+             [style.flex]="categoria.ejercicios.length < 3 ? '0 0 auto' : '0 0 calc(33.333% - 1.34vw)'">
+
           <div class="cuadro-gris"
                [style.backgroundImage]="'url(' + ejercicio.img + ')'"
                [routerLink]="['/deporte/ejercicio', ejercicio.id]">
-
             <div class="texto-interior">{{ ejercicio.nombre }}</div>
-
           </div>
         </div>
 

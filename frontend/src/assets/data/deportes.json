@@ -1,0 +1,41 @@
+{
+  "categorias": [
+    {
+      "titulo": "Fuerza y Tonificación",
+      "ejercicios": [
+        {
+          "id": "1",
+          "nombre": "Flexiones Diamante",
+          "img": "assets/img/ejercicio1.jpg",
+          "etiquetas": ["fuerza", "equipo"],
+          "videoUrl": "https://www.youtube.com/embed/S_B7sM9A_G4",
+          "musculos": ["Tríceps braquial", "Pectoral mayor", "Core"],
+          "calorias": "320 - 450 kcal"
+        },
+        {
+          "id": "2",
+          "nombre": "Sentadillas con Peso",
+          "img": "assets/img/ejercicio2.jpg",
+          "etiquetas": ["fuerza", "pierna"],
+          "videoUrl": "https://www.youtube.com/embed/otro-video",
+          "musculos": ["Cuádriceps", "Glúteos"],
+          "calorias": "400 - 500 kcal"
+        }
+      ]
+    },
+    {
+      "titulo": "Cardio y Resistencia",
+      "ejercicios": [
+        {
+          "id": "3",
+          "nombre": "HIIT 15 Minutos",
+          "img": "assets/img/cardio1.jpg",
+          "etiquetas": ["cardio", "tiempo"],
+          "videoUrl": "https://www.youtube.com/embed/video-cardio",
+          "musculos": ["Cuerpo completo"],
+          "calorias": "200 - 300 kcal"
+        }
+      ]
+    }
+  ]
+}

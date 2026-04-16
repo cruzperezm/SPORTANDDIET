@@ -1,6 +1,6 @@
 :host {
-  --color-acento: #F97316; /* Naranja vibrante */
-  --color-acento-hover: #EA580C; /* Naranja oscuro para el hover */
+  --color-acento: #F97316;
+  --color-acento-hover: #EA580C;
 }
 
 .seccion-articulos {

@@ -1,56 +1,38 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DeporteService {
 
-  constructor() {}
+  private jsonUrl = 'assets/data/deportes.json';
+
+  constructor(private http: HttpClient) {}
 
   obtenerPlanDeportivo(): Observable<any[]> {
-    const datasetTemporal = [
-      {
-        titulo: 'Fuerza y Tonificación',
-        indiceActual: 0,
-        ejercicios: [
-          { id: '1', nombre: 'Flexiones Diamante', img: 'assets/img/ejercicio1.jpg', etiquetas: ['fuerza'] },
-          { id: '2', nombre: 'Sentadillas con Peso', img: 'assets/img/ejercicio2.jpg', etiquetas: ['fuerza', 'equipo'] },
-          { id: '3', nombre: 'Dominadas', img: 'assets/img/ejercicio3.jpg', etiquetas: ['fuerza'] }
-        ]
-      },
-      {
-        titulo: 'Cardio y Resistencia',
-        indiceActual: 0,
-        ejercicios: [
-          { id: '4', nombre: 'HIIT 15 Minutos', img: 'assets/img/cardio1.jpg', etiquetas: ['cardio', 'tiempo'] },
-          { id: '5', nombre: 'Saltos de Comba', img: 'assets/img/cardio2.jpg', etiquetas: ['cardio', 'equipo'] },
-          { id: '6', nombre: 'Burpees', img: 'assets/img/cardio3.jpg', etiquetas: ['cardio'] }
-        ]
-      }
-    ];
-    return of(datasetTemporal);
+    return this.http.get<any>(this.jsonUrl).pipe(
+      map(data => {
+        return data.categorias.map((cat: any) => ({
+          ...cat,
+          indiceActual: 0
+        }));
+      })
+    );
   }
 
   obtenerEjercicioPorId(id: string | null): Observable<any> {
-    const ejercicioMock = {
-      id: id,
-      nombre: 'Flexiones Diamante',
-      imagen: 'assets/img/ejercicio1.jpg',
-      duracion: '4 series de 12 reps',
-      dificultad: 'Intermedio',
-      etiquetas: ['fuerza', 'equipo'],
-      videoUrl: 'https://www.youtube.com/embed/tu-video-id', //mirar si ahora funciona los videos
-      musculos: [
-        'Tríceps braquial',
-        'Pectoral mayor',
-        'Deltoides anterior',
-        'Core'
-      ],
-      met: 8.0, //por si se va a implementar una forma de calcular calorias
-      calorias: '320-450 kcal'
-    };
-    return of(ejercicioMock);
+    return this.http.get<any>(this.jsonUrl).pipe(
+      map((data) => {
+        if (!data || !data.categorias) return null;
+        for (let categoria of data.categorias) {
+          const encontrado = categoria.ejercicios.find((ej: any) => ej.id == id);
+          if (encontrado) return encontrado;
+        }
+        return null;
+      }),
+    );
   }
   calcularCaloriasReales(met: number, minutos: number, pesoKg: number = 70): number {
     //Calorías = MET x Peso(kg) x (Tiempo en horas)
