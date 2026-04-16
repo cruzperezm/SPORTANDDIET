@@ -38,7 +38,6 @@
 }
 
 .icono-deporte {
-  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -49,14 +48,14 @@
   font-size: 24px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.2);
   border: 2px solid rgba(255,255,255,0.3);
-  transition: transform 0.3s ease;
+  transition: transform 0.2s ease, background 0.2s ease;
   cursor: help;
   background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(5px);
 }
 
 .icono-deporte:hover {
-  transform: scale(1.15) rotate(10deg);
+  transform: scale(1.1);
   background: rgba(255, 255, 255, 0.3);
 }
 
@@ -146,7 +145,7 @@
 }
 
 .lista-columna li::before {
-  content: "💪";
+  content: "🔸";
   margin-right: 12px;
   font-size: 1.1rem;
 }
@@ -176,16 +175,65 @@
   padding: 0 20px;
 }
 
-.text-24-largo {
-  font-size: 1.15rem;
-  line-height: 1.8;
-  color: var(--color-texto-suave);
-  background: #f9fafb;
-  padding: 30px;
-  border-radius: 20px;
-  border-left: 5px solid var(--color-acento);
-  white-space: pre-wrap;
+/* =========================================
+   NUEVA TARJETA DE CALORÍAS (Reemplaza a .text-24-largo)
+   ========================================= */
+.tarjeta-calorias {
+  background: linear-gradient(135deg, #FFF7ED 0%, #FFEDD5 100%);
+  border: 2px solid var(--color-acento, #F97316);
+  border-radius: 24px;
+  padding: 30px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 25px;
+  margin-bottom: 30px;
+  transition: transform 0.3s ease;
 }
+
+.tarjeta-calorias:hover {
+  transform: translateY(-5px);
+}
+
+.icono-fuego {
+  font-size: 3.5rem;
+  color: var(--color-acento, #F97316);
+  background: white;
+  padding: 15px;
+  border-radius: 50%;
+  box-shadow: 0 8px 16px rgba(249, 115, 22, 0.2);
+  animation: palpitar 2s infinite ease-in-out;
+}
+
+.info-calorias {
+  display: flex;
+  flex-direction: column;
+}
+
+.etiqueta-quema {
+  font-size: 1.1rem;
+  color: var(--color-acento-hover, #EA580C);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 5px;
+}
+
+.cifra-calorias {
+  font-size: clamp(32px, 4vw, 48px);
+  font-weight: 800;
+  color: var(--color-texto, #1F2937);
+  line-height: 1;
+  letter-spacing: -1px;
+}
+
+@keyframes palpitar {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+/* ========================================= */
 
 .btn-primario {
   background: var(--color-acento);
@@ -211,4 +259,11 @@
 @media (max-width: 768px) {
   .contenedor-columnas { grid-template-columns: 1fr; padding: 0 20px; }
   .hero-guia { padding: 60px 20px 40px; border-radius: 0 0 20px 20px; }
+
+  /* Ajuste responsivo para la tarjeta de calorías */
+  .tarjeta-calorias {
+    flex-direction: column;
+    text-align: center;
+    padding: 30px 20px;
+  }
 }

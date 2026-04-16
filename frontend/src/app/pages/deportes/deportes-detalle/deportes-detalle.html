@@ -12,9 +12,15 @@
     <p class="text-24-hero">⏱ {{ ejercicio.duracion }} | 🔥 {{ ejercicio.dificultad }}</p>
 
     <div class="etiquetas-wrapper mt-3">
-      <span *ngIf="ejercicio.etiquetas.includes('fuerza')" class="icono-deporte icon-fuerza material-symbols-outlined" title="Fuerza">fitness_center</span>
-      <span *ngIf="ejercicio.etiquetas.includes('cardio')" class="icono-deporte icon-cardio material-symbols-outlined" title="Cardio">directions_run</span>
-      <span *ngIf="ejercicio.etiquetas.includes('equipo')" class="icono-deporte icon-equipo material-symbols-outlined" title="Requiere Equipo">sports_gymnastics</span>
+      <span *ngIf="ejercicio.etiquetas.includes('fuerza')"
+            class="icono-deporte icon-fuerza material-symbols-outlined"
+            title="Fuerza">fitness_center</span>
+      <span *ngIf="ejercicio.etiquetas.includes('cardio')"
+            class="icono-deporte icon-cardio material-symbols-outlined"
+            title="Cardio">directions_run</span>
+      <span *ngIf="ejercicio.etiquetas.includes('equipo')"
+            class="icono-deporte icon-equipo material-symbols-outlined"
+            title="Requiere Equipo">sports_gymnastics</span>
     </div>
   </div>
 
@@ -36,12 +42,18 @@
   </div>
 
   <div class="bloque-inferior">
-    <h2 class="text-40 text-center mb-4" style="color: var(--color-texto);">Instrucciones</h2>
-    <div class="text-24-largo">{{ ejercicio.instrucciones }}</div>
+
+    <div class="tarjeta-calorias shadow-lg">
+      <span class="material-symbols-outlined icono-fuego">local_fire_department</span>
+      <div class="info-calorias">
+        <span class="etiqueta-quema">Quema calórica estimada</span>
+        <span class="cifra-calorias">{{ ejercicio.calorias }}</span>
+      </div>
+    </div>
 
     <div class="text-center mt-5">
       <button class="btn-primario shadow-lg">Añadir a mi Rutina</button>
     </div>
-  </div>
 
+  </div>
 </div>

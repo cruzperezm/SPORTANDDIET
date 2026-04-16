@@ -45,10 +45,18 @@ export class DeporteService {
         'Tríceps braquial',
         'Pectoral mayor',
         'Deltoides anterior',
-        'Core (estabilización)'
+        'Core'
       ],
-      instrucciones: '1. Coloca las manos juntas formando un diamante con índices y pulgares.\n2. Mantén la espalda recta y el abdomen contraído.\n3. Baja controladamente hasta que el pecho roce las manos.\n4. Empuja con fuerza hacia arriba.'
+      met: 8.0, //por si se va a implementar una forma de calcular calorias
+      calorias: '320-450 kcal'
     };
     return of(ejercicioMock);
+  }
+  calcularCaloriasReales(met: number, minutos: number, pesoKg: number = 70): number {
+    //Calorías = MET x Peso(kg) x (Tiempo en horas)
+    const horas = minutos / 60;
+    const caloriasQuemadas = met * pesoKg * horas;
+
+    return Math.round(caloriasQuemadas);
   }
 }

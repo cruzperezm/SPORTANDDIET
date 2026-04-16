@@ -6,12 +6,12 @@
 
     <div class="etiquetas-wrapper mt-3">
       <span *ngIf="receta.alergenos.includes('huevos')"
-        class="icono-alergeno material-symbols-outlined"
-        data-tooltip="Contiene Huevos">egg</span>
+            class="icono-alergeno material-symbols-outlined"
+            data-tooltip="Contiene Huevos">egg</span>
 
       <span *ngIf="receta.alergenos.includes('lacteos')"
             class="icono-alergeno material-symbols-outlined"
-            data-tooltip="Contiene Lácteos">local_drink</span>
+            data-tooltip="Contiene Lacteos">local_drink</span>
 
       <span *ngIf="receta.alergenos.includes('gluten')"
             class="icono-alergeno material-symbols-outlined"
@@ -50,5 +50,6 @@
       <br><br>
       <a href="#" (click)="volverAtras($event)" class="text-muted text-decoration-none">← Volver al plan</a>
     </div>
-
+  </div>
 </div>
+
