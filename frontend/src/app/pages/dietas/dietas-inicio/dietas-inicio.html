@@ -5,9 +5,13 @@
   </div>
 
   <div class="contenedor-grid">
+
     <div class="tarjeta-item" *ngFor="let dieta of dietas" (click)="irAlPlan(dieta.id)">
-      <img class="placeholder-imagen" [src]="dieta.imagen" [alt]="dieta.nombre">
+
+      <div class="placeholder-imagen" [style.backgroundImage]="'url(' + dieta.imagen + ')'"></div>
       <h3>{{ dieta.nombre }}</h3>
+
     </div>
+
   </div>
 </section>

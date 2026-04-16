@@ -1,3 +1,8 @@
+:host {
+  --color-acento: #F97316; /* Naranja vibrante */
+  --color-acento-hover: #EA580C; /* Naranja oscuro para el hover */
+}
+
 .seccion-articulos {
   width: 95%;
   max-width: 1440px;

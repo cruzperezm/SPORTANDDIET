@@ -1,4 +1,38 @@
-/* EL HERO */
+/* =========================================
+   1. ESTRUCTURA BASE Y HERO
+   ========================================= */
+:host {
+  --color-acento: #10B981; /* Verde esmeralda */
+  --color-acento-hover: #059669; /* Verde oscuro para el hover */
+}
+.plan-dietas {
+  width: 95%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 40px 0;
+}
+
+.btn-volver {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-texto-suave, #4B5563);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+  padding: 8px 16px;
+  border-radius: 20px;
+  background: transparent;
+  transition: all 0.3s ease;
+  margin-bottom: 20px;
+}
+
+.btn-volver:hover {
+  color: var(--color-acento, #10B981);
+  transform: translateX(-5px);
+  background: rgba(16, 185, 129, 0.1);
+}
+
 .hero-section {
   background: linear-gradient(135deg, var(--color-acento, #10B981), var(--color-acento-hover, #059669));
   border-radius: 30px;
@@ -15,55 +49,53 @@
   letter-spacing: -1px;
 }
 
-/* BOTÓN VOLVER */
-.btn-volver {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--color-texto, #4B5563);
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 1.1rem;
-  padding: 8px 16px;
-  border-radius: 20px;
-  background: transparent;
-  transition: all 0.3s ease;
+.text-24-hero {
+  font-size: clamp(18px, 2vw, 24px);
+  margin-top: 10px;
+  opacity: 0.9;
 }
 
-.btn-volver span {
-  font-size: 1.3rem;
-}
-
-.btn-volver:hover {
-  color: var(--color-acento, #10B981);
-  transform: translateX(-5px);
-  background: rgba(16, 185, 129, 0.1);
-}
-
-/* FILTROS */
-.filtros-botones {
+/* =========================================
+   2. FILTROS Y TÍTULOS
+   ========================================= */
+.filtros-contenedor {
   display: flex;
-  gap: 10px;
-  justify-content: center;
   flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin: 20px auto 50px auto;
+  padding: 0 15px;
+  max-width: 800px;
 }
 
 .btn-filtro {
-  padding: 10px 20px;
+  padding: 10px 24px;
   border: 2px solid var(--color-acento, #10B981);
-  background: transparent;
+  background-color: #FFFFFF;
   color: var(--color-acento, #10B981);
-  border-radius: 30px;
+  border-radius: 50px;
+  font-size: 15px;
   font-weight: 600;
+  cursor: pointer;
   transition: all 0.3s ease;
 }
 
-.btn-filtro:hover, .btn-filtro.active {
-  background: var(--color-acento, #10B981);
-  color: white;
+.btn-filtro:hover {
+  background-color: #F0FDF4; /* Verde muy clarito */
+  transform: translateY(-2px);
 }
 
-/* TÍTULO SECCIÓN */
+.btn-filtro.active {
+  background-color: var(--color-acento, #10B981);
+  color: #FFFFFF;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(16, 185, 129, 0.3);
+}
+
+.seccion-comida {
+  margin-bottom: 80px;
+}
+
 .text-48 {
   font-size: clamp(28px, 4vw, 40px);
   font-weight: 700;
@@ -73,16 +105,25 @@
   margin-bottom: 20px;
 }
 
-/* CARRUSEL Y TARJETAS */
+/* =========================================
+   3. CARRUSEL DE RECETAS
+   ========================================= */
+.wrapper-carrusel {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
 .grid-3-cuadros {
   display: flex;
   gap: 2vw;
   width: 100%;
+  padding-bottom: 15px;
 }
 
 .contenedor-item {
-  flex: 0 0 calc(33.333% - 1.34vw);
-  animation: fadeIn 0.4s ease-out;
+  flex: 0 0 calc(33.333% - 1.34vw); /* Por defecto, 3 columnas */
+  animation: scaleIn 0.4s ease-out;
 }
 
 .cuadro-gris {
@@ -103,21 +144,26 @@
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
 }
 
-/* DEGRADADO PARA QUE SE LEA EL TEXTO BLANCO */
 .texto-interior {
   position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
   padding: 40px 20px 20px;
-  font-size: 1.2rem;
+  font-size: clamp(18px, 1.5vw, 22px);
   font-weight: 600;
   color: white;
   background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0) 100%);
   pointer-events: none;
 }
 
-/* BOTONES DE DIRECCIÓN */
+.controles-carrusel {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+  gap: 15px;
+}
+
 .btn-nav {
   width: 50px;
   height: 50px;
@@ -129,6 +175,7 @@
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
+  cursor: pointer;
 }
 
 .btn-nav:hover {
@@ -136,7 +183,36 @@
   transform: scale(1.1);
 }
 
-@keyframes fadeIn {
+@keyframes scaleIn {
   from { opacity: 0.8; transform: scale(0.98); }
   to { opacity: 1; transform: scale(1); }
+}
+
+/* =========================================
+   4. RESPONSIVE (MÓVILES Y TABLETS)
+   ========================================= */
+@media (max-width: 1024px) {
+  /* En tablets, mostramos 2 tarjetas en el carrusel en lugar de 3 */
+  .contenedor-item {
+    flex: 0 0 calc(50% - 1vw);
+  }
+}
+
+@media (max-width: 768px) {
+  /* En móviles, 1 sola tarjeta gigante que se desliza */
+  .contenedor-item {
+    flex: 0 0 calc(100% - 2vw);
+  }
+
+  /* Centramos los botones de flechas para que sea más fácil tocarlos */
+  .controles-carrusel {
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  /* Hacemos el Hero un poquito más pequeño para no comer tanta pantalla */
+  .hero-section {
+    padding: 40px 15px;
+    border-radius: 20px;
+  }
 }
