@@ -6,6 +6,7 @@ import { Bio } from './pages/biodata/bio';
 import { DietasInicioComponent } from './pages/dietas/dietas-inicio/dietas-inicio';
 import { DietaPlanComponent } from './pages/dietas/dietas-plan/dietas-plan';
 import { DietaDetalleComponent } from './pages/dietas/dietas-detalle/dietas-detalle';
+import { DeportesInicioComponent } from './pages/deportes/deportes-inicio/deportes-inicio';
 import { DeportePlanComponent } from './pages/deportes/deportes-plan/deportes-plan';
 import { DeportesDetalleComponent } from './pages/deportes/deportes-detalle/deportes-detalle';
 
@@ -17,8 +18,10 @@ export const routes: Routes = [
   { path: 'dietas/plan/:id', component: DietaPlanComponent, title: 'SPORTS&DIET · Plan' },
   { path: 'dietas/receta/:id', component: DietaDetalleComponent, title: 'SPORTS&DIET · Receta' },
   { path: 'home', component: HomeComponent, title: 'SPORTS&DIET · Home' },
-  { path: 'deportes/plan', component: DeportePlanComponent, title: 'SPORTS&DIET · Entrenamientos' },
-  { path: 'deportes/ejercicio/:id', component: DeportesDetalleComponent, title: 'SPORTS&DIET · Ejercicio' },
+  { path: 'deporte', component: DeportesInicioComponent, title: 'SPORTS&DIET · Deportes' },
+  { path: 'deporte/plan', component: DeportePlanComponent, title: 'SPORTS&DIET · Entrenamientos' },
+  { path: 'deporte/ejercicio/:id', component: DeportesDetalleComponent, title: 'SPORTS&DIET · Ejercicio' },
+
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: '**', redirectTo: 'home' },
 ];
