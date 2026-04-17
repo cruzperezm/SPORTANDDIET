@@ -37,4 +37,30 @@ const login = async(req, res) => {
     }
 }
 
-module.exports = { registerUser, login }
+// NUEVO CONTROLADOR:
+const googleLogin = async(req, res) => {
+    try {
+        // El frontend nos enviará el ID Token de Google en el body
+        const { idToken } = req.body;
+        console.log("Request received (Google Auth)");
+
+        if (!idToken) {
+            return res.status(400).json({ error: 'El token de Google es obligatorio' });
+        }
+
+        const loggedUser = await authService.googleAuth(idToken);
+        // Devolvemos 200 OK con el usuario y nuestro JWT
+        res.status(200).json(loggedUser);
+
+    } catch (error) {
+        console.error("GOOGLE AUTH ERROR:", error);
+        if (error.name === 'AuthError') {
+            res.status(error.statusCode).json({ error: error.message })
+        } else {
+            res.status(400).json({ error: error.message })
+        }
+    }
+}
+
+// Actualizar las exportaciones
+module.exports = { registerUser, login, googleLogin }

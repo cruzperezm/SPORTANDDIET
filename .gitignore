@@ -7,8 +7,9 @@
 /bazel-out
 
 # Node
-backend/node_modules
-frontend/node_modules
+node_modules/
+backend/node_modules/
+frontend/node_modules/
 npm-debug.log
 yarn-error.log
 
@@ -31,7 +32,7 @@ yarn-error.log
 .history/*
 
 # Miscellaneous
-frontend/.angular/cache
+frontend/.angular
 .sass-cache/
 /connect.lock
 /coverage
@@ -46,3 +47,7 @@ Thumbs.db
 
 # Backend
 backend/.env
+backend/src/generated/
+backend/generated/
+.angular/
+frontend/.angular/
