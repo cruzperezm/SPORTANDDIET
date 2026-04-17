@@ -32,7 +32,7 @@ export class DeportesInicioComponent implements OnInit {
   ngOnInit() {}
 
   irAlPlan(id: number) {
-    this.router.navigate(['/deporte/plan', id]);
+    this.router.navigate(['/deportes/plan', id]);
   }
 
   //metodos del buscador
@@ -57,6 +57,6 @@ export class DeportesInicioComponent implements OnInit {
   }
 
   irAEjercicio(id: string) {
-    this.router.navigate(['/deporte/ejercicio', id]);
+    this.router.navigate(['/deportes/ejercicio', id]);
   }
 }

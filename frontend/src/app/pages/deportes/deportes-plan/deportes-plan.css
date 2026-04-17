@@ -1,186 +1,179 @@
 :host {
-  --color-acento: #F97316;
-  --color-acento-hover: #EA580C;
+  --naranja: #F97316;
+  --naranja-dark: #EA580C;
+  --naranja-soft: #FFF7ED;
+  --sombra: 0 10px 25px -5px rgba(249, 115, 22, 0.2), 0 8px 10px -6px rgba(249, 115, 22, 0.1);
 }
 
-.plan-dietas {
-  width: 95%;
-  max-width: 1440px;
+.plan-wrapper {
+  max-width: 1300px;
   margin: 0 auto;
-  padding: 40px 0;
+  padding: 30px 20px;
 }
 
-.btn-volver {
-  display: inline-flex;
+/* BOTÓN REGRESAR */
+.btn-regresar {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
   align-items: center;
   gap: 8px;
-  color: var(--color-texto-suave);
-  text-decoration: none;
+  color: #64748b;
   font-weight: 600;
-  font-size: 1.1rem;
-  padding: 8px 16px;
-  border-radius: 20px;
-  background: transparent;
-  transition: all 0.3s ease;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
+  transition: 0.3s;
 }
 
-.btn-volver:hover {
-  color: var(--color-acento);
+.btn-regresar:hover {
+  color: var(--naranja);
   transform: translateX(-5px);
-  background: rgba(249, 115, 22, 0.1);
 }
 
-.hero-section {
-  background: linear-gradient(135deg, var(--color-acento), var(--color-acento-hover));
-  border-radius: 30px;
-  padding: 60px 20px;
-  margin-bottom: 40px;
+/* LA PÍLDORA NARANJA (HERO) */
+.pill-header {
+  background: linear-gradient(135deg, var(--naranja), var(--naranja-dark));
   color: white;
+  padding: 60px 40px;
+  border-radius: 100px; /* Forma de píldora */
   text-align: center;
+  margin-bottom: 50px;
+  box-shadow: var(--sombra);
 }
 
-.text-96 {
-  font-size: clamp(40px, 6vw, 72px);
-  font-weight: 800;
+.titulo-pill {
+  font-size: clamp(32px, 5vw, 64px);
   margin: 0;
-  letter-spacing: -1px;
+  font-weight: 800;
+  letter-spacing: -2px;
 }
 
-.text-24-hero {
-  font-size: clamp(18px, 2vw, 24px);
+.subtitulo-pill {
+  font-size: 1.25rem;
+  opacity: 0.95;
   margin-top: 10px;
-  opacity: 0.9;
+  font-weight: 400;
 }
 
-.filtros-contenedor {
+/* NAVEGACIÓN DE FILTROS */
+.filtros-nav {
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
   gap: 12px;
-  margin: 20px auto 50px auto;
-  padding: 0 15px;
-  max-width: 800px;
+  margin-bottom: 60px;
+  flex-wrap: wrap;
 }
 
-.btn-filtro-deporte {
-  padding: 10px 24px;
-  border: 2px solid var(--color-acento);
-  background-color: #FFFFFF;
-  color: var(--color-acento);
+.filtros-nav button {
+  padding: 12px 28px;
   border-radius: 50px;
-  font-size: 15px;
-  font-weight: 600;
+  border: 2px solid var(--naranja);
+  background: white;
+  color: var(--naranja);
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.btn-filtro-deporte:hover {
-  background-color: #FFF7ED;
+.filtros-nav button:hover {
+  background: var(--naranja-soft);
   transform: translateY(-2px);
 }
 
-.btn-filtro-deporte.active {
-  background-color: var(--color-acento);
-  color: #FFFFFF;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(249, 115, 22, 0.3);
+.filtros-nav button.active {
+  background: var(--naranja);
+  color: white;
+  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
 }
 
-.seccion-comida {
+/* SECCIONES Y CARRUSEL */
+.fase-seccion {
   margin-bottom: 80px;
 }
 
-.text-48 {
-  font-size: clamp(28px, 4vw, 40px);
-  font-weight: 700;
-  color: var(--color-texto);
-  border-left: 5px solid var(--color-acento);
-  padding-left: 15px;
-  margin-bottom: 20px;
+.momento-label {
+  border-left: 6px solid var(--naranja);
+  padding-left: 20px;
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #1e293b;
+  margin-bottom: 35px;
 }
 
-.wrapper-carrusel {
-  overflow: hidden;
-  position: relative;
-  width: 100%;
-}
-
-.grid-3-cuadros {
+.carrusel-container {
   display: flex;
-  gap: 2vw;
-  width: 100%;
-  padding-bottom: 15px;
+  align-items: center;
+  gap: 20px;
 }
 
-.contenedor-item {
-  flex: 0 0 calc(33.333% - 1.34vw);
-  animation: scaleIn 0.4s ease-out;
+.grid-comidas { /* Mantenemos el nombre para reusar lógica */
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  flex: 1;
 }
 
-.cuadro-gris {
-  width: 100%;
-  aspect-ratio: 1/1;
-  background-color: #E5E7EB;
-  border-radius: 20px;
-  position: relative;
-  overflow: hidden;
+/* CARDS DE EJERCICIOS */
+.card-comida {
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.card-comida:hover {
+  transform: translateY(-12px);
+}
+
+.card-img {
+  aspect-ratio: 1;
   background-size: cover;
   background-position: center;
-  cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 30px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
 }
 
-.cuadro-gris:hover {
-  transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
-}
-
-.texto-interior {
+.card-info {
   position: absolute;
   bottom: 0;
-  left: 0;
   width: 100%;
-  padding: 40px 20px 20px;
-  font-size: clamp(18px, 1.5vw, 22px);
-  font-weight: 600;
+  padding: 30px 20px 20px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.9));
   color: white;
-  background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0) 100%);
-  pointer-events: none;
 }
 
-.controles-carrusel {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 10px;
-  gap: 15px;
+.card-info h3 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
 }
 
-.btn-nav {
-  width: 50px;
-  height: 50px;
+/* BOTONES DE NAVEGACIÓN */
+.flecha-nav {
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   border: none;
-  background: var(--color-acento);
-  color: white;
+  background: white;
+  color: var(--naranja);
+  font-size: 32px;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s ease;
-  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  border: 1px solid #f1f5f9;
 }
 
-.btn-nav:hover {
-  background: var(--color-acento-hover);
+.flecha-nav:hover {
+  background: var(--naranja);
+  color: white;
   transform: scale(1.1);
 }
 
-@keyframes scaleIn {
-  from { opacity: 0.8; transform: scale(0.98); }
-  to { opacity: 1; transform: scale(1); }
-}
-
 @media (max-width: 768px) {
-  .contenedor-item { flex: 0 0 calc(100% - 2vw); }
-  .controles-carrusel { justify-content: center; }
+  .grid-comidas { grid-template-columns: 1fr; }
+  .pill-header { border-radius: 40px; padding: 40px 20px; }
+  .flecha-nav { display: none; } /* En móvil mejor usar scroll natural o quitar flechas */
 }

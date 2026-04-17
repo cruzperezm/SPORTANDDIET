@@ -1,67 +1,85 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { CommonModule, Location } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { DeporteService } from '../../../services/deportes';
 
 @Component({
-  selector: 'app-deporte-plan',
+  selector: 'app-deportes-plan',
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './deportes-plan.html',
-  styleUrl: './deportes-plan.css'
+  styleUrl: './deportes-plan.css',
 })
-export class DeportePlanComponent implements OnInit {
-  categoriasDeporte: any[] = [];
-  planId: string | null = null;
+export class DeportesPlanComponent implements OnInit {
+  deporte: any = null;
+  filtrosActivos: string[] = [];
+  indices: { [key: string]: number } = {};
 
   constructor(
     private route: ActivatedRoute,
-    private deporteService: DeporteService
+    private deporteService: DeporteService,
+    private location: Location,
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit() {
-    this.planId = this.route.snapshot.paramMap.get('id');
-
-    this.deporteService.obtenerPlanDeportivo(this.planId).subscribe({
-      next: (datos: any) => {
-        //inicializamos el indiceActual para cada categoría si no viene en el JSON
-        this.categoriasDeporte = datos.map((cat: any) => ({
-          ...cat,
-          indiceActual: 0
-        }));
-      },
-      error: (err) => console.error("Error en deportes:", err)
+    this.route.paramMap.subscribe((params) => {
+      const id = params.get('id');
+      if (id) {
+        this.deporteService.obtenerPlanPorId(id).subscribe({
+          next: (data: any) => {
+            this.deporte = data;
+            if (this.deporte && this.deporte.plan) {
+              this.indices = {};
+              this.deporte.plan.forEach((fase: any) => {
+                this.indices[fase.nivel] = 0;
+              });
+              this.cdr.detectChanges();
+            }
+          },
+        });
+      }
     });
   }
 
-  //LA FUNCIÓN QUE EL HTML ESTÁ BUSCANDO00
-  getEjerciciosVisibles(categoria: any) {
-    const ejercicios = categoria.ejercicios || [];
-    const total = ejercicios.length;
-
-    if (total === 0) return [];
-
-    const i = categoria.indiceActual || 0;
-
-    //si hay 3 o menos, los mostramos todos sin rotar
-    if (total <= 3) return ejercicios;
-
-    //lógica circular para el carrusel
-    return [
-      ejercicios[i % total],
-      ejercicios[(i + 1) % total],
-      ejercicios[(i + 2) % total]
-    ];
+  volver() {
+    this.location.back();
   }
 
-  //función para mover las flechas
-  mover(direccion: number, categoria: any) {
-    const ejercicios = categoria.ejercicios || [];
-    const total = ejercicios.length;
+  toggleFiltro(tipo: string) {
+    if (tipo === 'todos') this.filtrosActivos = [];
+    else {
+      this.filtrosActivos.includes(tipo)
+        ? (this.filtrosActivos = this.filtrosActivos.filter((f) => f !== tipo))
+        : this.filtrosActivos.push(tipo);
+    }
+    Object.keys(this.indices).forEach((k) => (this.indices[k] = 0));
+    this.cdr.detectChanges();
+  }
 
-    if (total === 0) return;
+  getEjerciciosFiltrados(fase: any): any[] {
+    if (!fase?.ejercicios) return [];
+    if (this.filtrosActivos.length === 0) return fase.ejercicios;
+    // Filtramos por material o categoría (mancuernas, cardio, etc)
+    return fase.ejercicios.filter((e: any) =>
+      this.filtrosActivos.every((f) => e.filtros.includes(f)),
+    );
+  }
 
-    //sumamos el total para evitar números negativos al ir hacia atrás
-    categoria.indiceActual = (categoria.indiceActual + direccion + total) % total;
+  getEjerciciosVisibles(fase: any): any[] {
+    const filtrados = this.getEjerciciosFiltrados(fase);
+    const total = filtrados.length;
+    if (total === 0) return [];
+    if (total <= 3) return filtrados;
+    const i = this.indices[fase.momento] || 0;
+    return [filtrados[i % total], filtrados[(i + 1) % total], filtrados[(i + 2) % total]];
+  }
+
+  mover(paso: number, nivel: string) {
+    const fase = this.deporte.plan.find((f: any) => f.nivel === nivel);
+    const total = this.getEjerciciosFiltrados(fase).length;
+    if (total <= 3) return;
+    this.indices[nivel] = (this.indices[nivel] + paso + total) % total;
+    this.cdr.detectChanges();
   }
 }

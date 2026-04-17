@@ -1,45 +1,94 @@
 {
-  "planes": [
+  "deportes": [
     {
-      "id": "p1",
-      "nombre": "Fuerza Estructural",
-      "descripcion": "Rutina basada en levantamientos compuestos.",
-      "imagen": "assets/img/fuerza.jpg",
-      "nivel": "Intermedio"
-    },
-    {
-      "id": "p2",
-      "nombre": "Cardio HIIT",
-      "descripcion": "Entrenamientos por intervalos de alta intensidad.",
-      "imagen": "assets/img/hiit.jpg",
-      "nivel": "Avanzado"
-    }
-  ],
-
-  "categoriasPlan": [
-    { "id": "cp1", "nombre": "Día 1: Empuje (Pecho, Hombro, Tríceps)" },
-    { "id": "cp2", "nombre": "Día 2: Tirón (Espalda, Bíceps)" },
-    { "id": "cp3", "nombre": "Calentamiento General" }
-  ],
-
-  "ejercicios": [
-    {
-      "id": "e1",
-      "planId": "p1",
-      "categoriaId": "cp1",
-      "nombre": "Press de Banca Plano",
-      "imagen": "assets/img/press-banca.jpg",
-      "videoUrl": "assets/videos/press-banca.mp4",
-      "musculosPrincipales": ["Pecho", "Pectoral Mayor"],
-      "musculosSecundarios": ["Tríceps", "Hombro Anterior"],
-      "equipamiento": ["Barra", "Banco", "Discos"],
-      "series": 4,
-      "repeticiones": "8-10",
-      "descansoSegundos": 120,
-      "instrucciones": [
-        "Acuéstate en el banco con los pies apoyados.",
-        "Agarra la barra a la anchura de los hombros.",
-        "Baja controlando hasta el pecho y empuja con fuerza."
+      "id": "1",
+      "titulo": "Entrenamiento de Core",
+      "subtitulo": "Fortalece tu zona abdominal con rutinas adaptadas a tu nivel.",
+      "plan": [
+        {
+          "nivel": "Principiante",
+          "ejercicios": [
+            {
+              "id": "e1",
+              "nombre": "Plancha Abdominal",
+              "imagen": "assets/img/deporte/plancha.jpg",
+              "tiempo": "10 min",
+              "dificultad": "Media",
+              "filtros": ["sin-material"],
+              "musculos": ["Abdominales", "Core", "Hombros"],
+              "estadisticas": {
+                "series": "4",
+                "repeticiones": "45 seg",
+                "descanso": "30 seg"
+              },
+              "instrucciones": "1. Apoya los antebrazos en el suelo.\n2. Mantén el cuerpo en línea recta.\n3. Aprieta el abdomen y aguanta la posición."
+            },
+            {
+              "id": "e2",
+              "nombre": "Crunch Abdominal",
+              "img": "assets/img/p2.jpg",
+              "filtros": ["sin-material"]
+            },
+            {
+              "id": "e3",
+              "nombre": "Elevación de Piernas",
+              "img": "assets/img/p3.jpg",
+              "filtros": ["sin-material"]
+            },
+            {
+              "id": "e4",
+              "nombre": "Bird Dog",
+              "img": "assets/img/p4.jpg",
+              "filtros": ["sin-material"]
+            }
+          ]
+        },
+        {
+          "nivel": "Intermedio",
+          "ejercicios": [
+            {
+              "id": "e5",
+              "nombre": "Plancha Lateral",
+              "img": "assets/img/i1.jpg",
+              "filtros": ["sin-material"]
+            },
+            {
+              "id": "e6",
+              "nombre": "Rueda Abdominal",
+              "img": "assets/img/i2.jpg",
+              "filtros": ["mancuernas"]
+            },
+            {
+              "id": "e7",
+              "nombre": "V-Ups",
+              "img": "assets/img/i3.jpg",
+              "filtros": ["sin-material"]
+            }
+          ]
+        },
+        {
+          "nivel": "Avanzado",
+          "ejercicios": [
+            {
+              "id": "e8",
+              "nombre": "Dragon Flag",
+              "img": "assets/img/a1.jpg",
+              "filtros": ["sin-material"]
+            },
+            {
+              "id": "e9",
+              "nombre": "L-Sit",
+              "img": "assets/img/a2.jpg",
+              "filtros": ["mancuernas"]
+            },
+            {
+              "id": "e10",
+              "nombre": "Toes to Bar",
+              "img": "assets/img/a3.jpg",
+              "filtros": ["barra"]
+            }
+          ]
+        }
       ]
     }
   ]

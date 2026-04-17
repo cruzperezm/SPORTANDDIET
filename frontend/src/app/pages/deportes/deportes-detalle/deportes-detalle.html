@@ -1,59 +1,30 @@
-<div class="guia-dieta" *ngIf="ejercicio">
-
-  <div class="mb-4 pt-4" style="padding-left: 5vw;">
-    <a href="#" (click)="volverAtras($event)" style="display: inline-flex; align-items: center; gap: 8px; color: var(--color-texto-suave); text-decoration: none; font-weight: 600;">
-      <span class="material-symbols-outlined">arrow_back</span>
-      Volver al plan
-    </a>
-  </div>
-
-  <div class="hero-guia shadow-lg" [style.backgroundImage]="'linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.8)), url(' + ejercicio.imagen + ')'" style="background-size: cover; background-position: center; border-radius: 30px; margin: 0 5vw;">
-    <h1>{{ ejercicio.nombre }}</h1>
-    <p class="text-24-hero">⏱ {{ ejercicio.duracion }} | 🔥 {{ ejercicio.dificultad }}</p>
-
-    <div class="etiquetas-wrapper mt-3">
-      <span *ngIf="ejercicio.etiquetas.includes('fuerza')"
-            class="icono-deporte icon-fuerza material-symbols-outlined"
-            title="Fuerza">fitness_center</span>
-      <span *ngIf="ejercicio.etiquetas.includes('cardio')"
-            class="icono-deporte icon-cardio material-symbols-outlined"
-            title="Cardio">directions_run</span>
-      <span *ngIf="ejercicio.etiquetas.includes('equipo')"
-            class="icono-deporte icon-equipo material-symbols-outlined"
-            title="Requiere Equipo">sports_gymnastics</span>
-    </div>
+<div class="guia-ejercicio" *ngIf="ejercicio">
+  <div class="hero-guia" [style.backgroundImage]="'linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.7)), url(' + ejercicio.imagen + ')'">
+    <h1 class="text-white">{{ ejercicio.nombre }}</h1>
+    <p class="text-white">⏱ {{ ejercicio.tiempo }} | 🔥 {{ ejercicio.dificultad }}</p>
   </div>
 
   <div class="contenedor-columnas">
-
     <div class="columna">
-      <h2 class="text-40">Músculos</h2>
+      <h2 class="text-40">Músculos Clave</h2>
       <ul class="lista-columna">
-        <li *ngFor="let musculo of ejercicio.musculos">{{ musculo }}</li>
+        <li *ngFor="let m of ejercicio.musculos">{{ m }}</li>
       </ul>
     </div>
-
-    <div class="columna" style="padding: 0; background: transparent; box-shadow: none; border: none;">
-      <div class="video-container" *ngIf="videoSeguro">
-        <iframe [src]="videoSeguro" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-      </div>
+    <div class="columna">
+      <h2 class="text-40">Objetivo</h2>
+      <ul class="lista-columna">
+        <li><strong>Series:</strong> {{ ejercicio.estadisticas.series }}</li>
+        <li><strong>Reps:</strong> {{ ejercicio.estadisticas.repeticiones }}</li>
+      </ul>
     </div>
-
   </div>
 
   <div class="bloque-inferior">
-
-    <div class="tarjeta-calorias shadow-lg">
-      <span class="material-symbols-outlined icono-fuego">local_fire_department</span>
-      <div class="info-calorias">
-        <span class="etiqueta-quema">Quema calórica estimada</span>
-        <span class="cifra-calorias">{{ ejercicio.calorias }}</span>
-      </div>
+    <h2 class="text-40">Ejecución</h2>
+    <div class="text-24-largo">{{ ejercicio.instrucciones }}</div>
+    <div class="text-center mt-4">
+      <button class="btn-primario">Registrar Entrenamiento</button>
     </div>
-
-    <div class="text-center mt-5">
-      <button class="btn-primario shadow-lg">Añadir a mi Rutina</button>
-    </div>
-
   </div>
 </div>
