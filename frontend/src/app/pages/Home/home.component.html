@@ -1,6 +1,13 @@
 <main class="home">
   <section class="title">
-    <video class="title-img" src="/shared/videos/video-title-1.mp4" autoplay loop muted playsinline aria-hidden="true"></video>
+    <video #heroVideo
+           class="title-img"
+           [src]="videos[currentVideoIndex]"
+           muted
+           playsinline
+           aria-hidden="true"
+           (ended)="onVideoEnded()">
+    </video>
     <h1 class="title-text">Tu cambio está aquí</h1>
   </section>
 
@@ -17,7 +24,7 @@
 
     <article class="feature-about-us">
       <img src="/shared/images/Home/info-logo.svg" alt="About Us Logo">
-      <p class="text-wrapper-5">Si necesitas conocernos mejor accede a nuestra página de información. Si quieres combinar una buena alimentación con unos ejercicios adecuados regístrate. Lo mejor de ambos mundos para tu bienestar, nuestra prioridad.</p>
+      <p cng lass="text-wrapper-5">Si necesitas conocernos mejor accede a nuestra página de información. Si quieres combinar una buena alimentación con unos ejercicios adecuados regístrate. Lo mejor de ambos mundos para tu bienestar, nuestra prioridad.</p>
     </article>
   </section>
 
