@@ -62,17 +62,10 @@ input[type="submit"] {
   width: 40%;
 }
 
-#other-signup{
+#other-signup {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-}
-
-/* Contenedor que abraza exactamente el tamaño de tu imagen */
-.custom-google-wrapper {
-  position: relative;
-  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  cursor: pointer;
+  margin-top: 20px;
 }

@@ -13,10 +13,6 @@ declare var google: any;
   styleUrl: './login.css',
 })
 export class Login implements AfterViewInit {
-  google_logo = "/shared/images/google-logo.png";
-  fb_logo = "/shared/images/facebook-logo.png";
-  icloud_logo = "/shared/images/icloud-logo.png";
-
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private router = inject(Router);
@@ -32,7 +28,7 @@ export class Login implements AfterViewInit {
   errorMessage = '';
 
   ngAfterViewInit(): void {
-    // Retardo de seguridad para asegurar que el script de Google cargó
+    // Retardo de seguridad
     setTimeout(() => {
       if (typeof google !== 'undefined' && google.accounts) {
         google.accounts.id.initialize({
@@ -40,9 +36,15 @@ export class Login implements AfterViewInit {
           callback: this.handleGoogleResponse.bind(this)
         });
 
+        // Asegúrate de que el ID coincida con el HTML ("google-btn")
         google.accounts.id.renderButton(
-          document.getElementById("google-login-btn"),
-          { type: "icon", shape: "circle" }
+          document.getElementById("google-btn"),
+          {
+            type: "icon",       // Modo icono de Google (solo la G)
+            shape: "circle",    // Forma circular
+            theme: "outline",   // Fondo blanco con borde sutil, ideal para tu fondo gris
+            size: "large"       // Tamaño óptimo para hacer clic
+          }
         );
       } else {
         console.error("El script de Google no se ha cargado correctamente en index.html");

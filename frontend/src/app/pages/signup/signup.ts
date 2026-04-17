@@ -13,10 +13,6 @@ declare var google: any;
   styleUrl: './signup.css',
 })
 export class Signup implements AfterViewInit {
-  google_logo = 'shared/images/google-logo.png';
-  fb_logo = 'shared/images/facebook-logo.png';
-  icloud_logo = 'shared/images/icloud-logo.png';
-
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private router = inject(Router);
@@ -26,7 +22,8 @@ export class Signup implements AfterViewInit {
   signUpForm: FormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
     username: ['', [Validators.required]],
-    password: ['', [Validators.required]]
+    password: ['', [Validators.required]],
+    confirmPassword: ['', [Validators.required]]
   });
 
   isLoading = false;
@@ -41,9 +38,15 @@ export class Signup implements AfterViewInit {
           callback: this.handleGoogleResponse.bind(this)
         });
 
+        // Asegúrate de que el ID coincida con el HTML ("google-btn")
         google.accounts.id.renderButton(
-          document.getElementById("google-signup-btn"),
-          { type: "icon", shape: "circle" }
+          document.getElementById("google-btn"),
+          {
+            type: "icon",       // Modo icono de Google (solo la G)
+            shape: "circle",    // Forma circular
+            theme: "outline",   // Fondo blanco con borde sutil, ideal para tu fondo gris
+            size: "large"       // Tamaño óptimo para hacer clic
+          }
         );
       } else {
         console.error("El script de Google no se ha cargado correctamente en index.html");
