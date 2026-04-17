@@ -8,7 +8,21 @@
         {
           "momento": "Desayuno",
           "comidas": [
-            { "id": "r1", "nombre": "Huevos con Bacon", "img": "assets/img/keto1.jpg", "alergenos": ["huevos"] },
+            {
+              "id": "r1",
+              "nombre": "Huevos con Aguacate",
+              "imagen": "assets/img/keto1.jpg",
+              "tiempo": "15 min",
+              "calorias": "350 kcal",
+              "alergenos": ["huevos"],
+              "ingredientes": ["2 huevos", "Media palta", "Aceite de oliva"],
+              "macros": {
+                "proteinas": "15g",
+                "grasas": "28g",
+                "carbos": "4g"
+              },
+              "instrucciones": "1. Cocina los huevos al gusto.\n2. Corta el aguacate en láminas.\n3. Sirve y disfruta."
+            },
             { "id": "r2", "nombre": "Aguacate con Salmón", "img": "assets/img/keto2.jpg", "alergenos": ["pescado"] },
             { "id": "r3", "nombre": "Tortilla de Queso", "img": "assets/img/keto3.jpg", "alergenos": ["huevos", "lacteos"] },
             { "id": "r4", "nombre": "Café Bulletproof", "img": "assets/img/keto4.jpg", "alergenos": ["lacteos"] }

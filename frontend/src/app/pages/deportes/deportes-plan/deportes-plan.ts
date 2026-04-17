@@ -24,7 +24,7 @@ export class DeportePlanComponent implements OnInit {
 
     this.deporteService.obtenerPlanDeportivo(this.planId).subscribe({
       next: (datos: any) => {
-        // Inicializamos el indiceActual para cada categoría si no viene en el JSON
+        //inicializamos el indiceActual para cada categoría si no viene en el JSON
         this.categoriasDeporte = datos.map((cat: any) => ({
           ...cat,
           indiceActual: 0
@@ -34,7 +34,7 @@ export class DeportePlanComponent implements OnInit {
     });
   }
 
-  // ESTA ES LA FUNCIÓN QUE EL HTML ESTÁ BUSCANDO
+  //LA FUNCIÓN QUE EL HTML ESTÁ BUSCANDO00
   getEjerciciosVisibles(categoria: any) {
     const ejercicios = categoria.ejercicios || [];
     const total = ejercicios.length;
@@ -43,10 +43,10 @@ export class DeportePlanComponent implements OnInit {
 
     const i = categoria.indiceActual || 0;
 
-    // Si hay 3 o menos, los mostramos todos sin rotar
+    //si hay 3 o menos, los mostramos todos sin rotar
     if (total <= 3) return ejercicios;
 
-    // Lógica circular para el carrusel
+    //lógica circular para el carrusel
     return [
       ejercicios[i % total],
       ejercicios[(i + 1) % total],
@@ -54,14 +54,14 @@ export class DeportePlanComponent implements OnInit {
     ];
   }
 
-  // Función para mover las flechas
+  //función para mover las flechas
   mover(direccion: number, categoria: any) {
     const ejercicios = categoria.ejercicios || [];
     const total = ejercicios.length;
 
     if (total === 0) return;
 
-    // Sumamos el total para evitar números negativos al ir hacia atrás
+    //sumamos el total para evitar números negativos al ir hacia atrás
     categoria.indiceActual = (categoria.indiceActual + direccion + total) % total;
   }
 }

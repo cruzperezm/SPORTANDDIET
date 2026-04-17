@@ -104,7 +104,7 @@ export class DietasPlanComponent implements OnInit {
 
     if (total <= 3) return;
 
-    // Lógica circular para el carrusel
+    //lógica circular para el carrusel
     this.indices[momento] = (this.indices[momento] + paso + total) % total;
     this.cdr.detectChanges();
   }

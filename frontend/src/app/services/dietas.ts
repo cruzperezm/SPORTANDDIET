@@ -35,14 +35,23 @@ export class DietaService {
   obtenerRecetaPorId(id: string | null): Observable<any> {
     return this.http.get<any>(this.jsonUrl).pipe(
       map(data => {
-        let recetaEncontrada = null;
-        data.dietas.forEach((dieta: any) => {
-          dieta.plan.forEach((fase: any) => {
-            const receta = fase.comidas.find((c: any) => c.id === id);
-            if (receta) recetaEncontrada = receta;
-          });
-        });
-        return recetaEncontrada;
+        let encontrada = null;
+        if (!data || !data.dietas) return null;
+
+        // Buscamos en todas las dietas
+        for (const dieta of data.dietas) {
+          // En cada fase (Desayuno, Almuerzo...)
+          for (const fase of dieta.plan) {
+            // Buscamos la comida por ID
+            const receta = fase.comidas.find((c: any) => String(c.id) === String(id));
+            if (receta) {
+              encontrada = receta;
+              break;
+            }
+          }
+          if (encontrada) break;
+        }
+        return encontrada;
       })
     );
   }

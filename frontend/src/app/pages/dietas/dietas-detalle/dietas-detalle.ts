@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { DietaService } from '../../../services/dietas';
@@ -10,21 +10,36 @@ import { DietaService } from '../../../services/dietas';
   templateUrl: './dietas-detalle.html',
   styleUrl: './dietas-detalle.css'
 })
-export class DietaDetalleComponent implements OnInit {
-  recetaId: string | null = '';
+export class DietasDetalleComponent implements OnInit {
+  recetaId: string | null = null;
   receta: any = null;
 
   constructor(
     private route: ActivatedRoute,
     private dietasService: DietaService,
-    private location: Location
+    private location: Location,
+    private cdr: ChangeDetectorRef // Importante para refrescar la vista
   ) {}
 
   ngOnInit() {
-    this.recetaId = this.route.snapshot.paramMap.get('id');
-    this.dietasService.obtenerRecetaPorId(this.recetaId).subscribe((data: any) => {
-      this.receta = data;
-      console.log('Receta cargada:', this.receta);
+    // Usamos paramMap para que funcione siempre, incluso al recargar
+    this.route.paramMap.subscribe(params => {
+      this.recetaId = params.get('id');
+      if (this.recetaId) {
+        this.cargarReceta(this.recetaId);
+      }
+    });
+  }
+
+  cargarReceta(id: string) {
+    this.dietasService.obtenerRecetaPorId(id).subscribe({
+      next: (data) => {
+        console.log('Receta encontrada:', data);
+        this.receta = data;
+        // Forzamos a Angular a pintar los datos
+        this.cdr.detectChanges();
+      },
+      error: (err) => console.error('Error al cargar detalle:', err)
     });
   }
 
