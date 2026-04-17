@@ -33,7 +33,7 @@ const addBio = async (genre, age, height, goal, activity, c_weight, d_weight, we
       c_weight,
       d_weight,
       weeks,
-      owner,
+      ownerId: owner,
     },
   });
 };

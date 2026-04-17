@@ -30,32 +30,27 @@ export class Signup {
   errorMessage = '';
 
   signup() {
-      if(this.signUpForm.invalid) return;
+    if (this.signUpForm.invalid) return;
 
-      this.isLoading = true;
-      this.errorMessage = '';
+    this.isLoading = true;
+    this.errorMessage = '';
 
-      const password = this.signUpForm.value.password;
-      const confirmPassword = this.signUpForm.value.confirmPassword;
-
-      if (password !== confirmPassword) {
-        alert('Error de registro: las contraseñas no coinciden');
+    this.authService.register(this.signUpForm.value).subscribe({
+      next: (response) => {
+        console.log('Backend says:', response);
         this.isLoading = false;
-      }
 
-      this.authService.register(this.signUpForm.value).subscribe({
-            next: (response) => {
-                console.log("Backend:", response);
-                this.isLoading = false;
-                this.router.navigate(['/bio']);
-            },
-
-            error: (err) => {
-                alert("Error de registro: el correo ya tiene una cuenta");
-                console.error('Error de registro:', err);
-                this.isLoading = false;
-                this.errorMessage = err.error?.error || 'Error.';
-            }
-        })
-    }
+        const userId = response.id;
+        this.router.navigate(['/bio'], {
+          queryParams: { userId: userId },
+        });
+      },
+      error: (err) => {
+        alert('Registration failed: email already exists');
+        console.error('Registration failed:', err);
+        this.isLoading = false;
+        this.errorMessage = err.error?.error || 'An unexpected error occurred.';
+      },
+    });
+  }
 }

@@ -45,6 +45,10 @@ input:focus {
   outline: 2px solid #2ECC71;
 }
 
+input.ng-touched.ng-invalid {
+  outline: 2px solid red;
+}
+
 input[type="button"] {
   width: 40%;
   background-color: #2ECC71;
@@ -78,6 +82,7 @@ input[type="submit"] {
 #error {
   color: red;
   font-size: small;
+  margin-bottom: 10px;
 }
 
 .radiowrapper input {
