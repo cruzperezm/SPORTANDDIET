@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from '../../services/auth.service';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import { AuthService } from "../../services/auth.service";
 
 @Component({
   selector: 'app-signup',
@@ -17,45 +17,45 @@ export class Signup {
 
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
-  private router = inject(Router);
+  private router = inject(Router)
 
   signUpForm: FormGroup = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
-    username: ['', [Validators.required]],
-    password: ['', [Validators.required]],
-    confirmPassword: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
+      username: ['', [Validators.required]],
+      password: ['', [Validators.required]],
+      confirmPassword: ['', [Validators.required]]
   });
 
   isLoading = false;
   errorMessage = '';
 
   signup() {
-    if (this.signUpForm.invalid) return;
+      if(this.signUpForm.invalid) return;
 
-    this.isLoading = true;
-    this.errorMessage = '';
+      this.isLoading = true;
+      this.errorMessage = '';
 
-    const password = this.signUpForm.value.password;
-    const confirmPassword = this.signUpForm.value.confirmPassword;
+      const password = this.signUpForm.value.password;
+      const confirmPassword = this.signUpForm.value.confirmPassword;
 
-    if (password !== confirmPassword) {
-      alert('Registration failed: passwords must match');
-      this.isLoading = false;
+      if (password !== confirmPassword) {
+        alert('Error de registro: las contraseñas no coinciden');
+        this.isLoading = false;
+      }
+
+      this.authService.register(this.signUpForm.value).subscribe({
+            next: (response) => {
+                console.log("Backend:", response);
+                this.isLoading = false;
+                this.router.navigate(['/bio']);
+            },
+
+            error: (err) => {
+                alert("Error de registro: el correo ya tiene una cuenta");
+                console.error('Error de registro:', err);
+                this.isLoading = false;
+                this.errorMessage = err.error?.error || 'Error.';
+            }
+        })
     }
-
-    this.authService.register(this.signUpForm.value).subscribe({
-      next: (response) => {
-        console.log('Backend says:', response);
-        this.isLoading = false;
-        this.router.navigate(['/bio']);
-      },
-
-      error: (err) => {
-        alert('Registration failed: email already exists');
-        console.error('Registration failed:', err);
-        this.isLoading = false;
-        this.errorMessage = err.error?.error || 'An unexpected error occurred.';
-      },
-    });
-  }
 }
