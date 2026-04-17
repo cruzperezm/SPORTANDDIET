@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { DeporteService } from '../../../services/deportes';
 
 @Component({
@@ -12,11 +12,16 @@ import { DeporteService } from '../../../services/deportes';
 })
 export class DeportePlanComponent implements OnInit {
   categoriasDeporte: any[] = [];
+  planId: string | null = null;
 
-  constructor(private deporteService: DeporteService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private deporteService: DeporteService
+  ) {}
 
   ngOnInit() {
-    this.deporteService.obtenerPlanDeportivo().subscribe((datos) => {
+    this.planId = this.route.snapshot.paramMap.get('id');
+    this.deporteService.obtenerPlanDeportivo(this.planId).subscribe((datos) => {
       this.categoriasDeporte = datos;
     });
   }

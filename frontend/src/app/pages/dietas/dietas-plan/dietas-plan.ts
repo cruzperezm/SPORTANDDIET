@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { DietaService } from '../../../services/dietas';
 
 @Component({
@@ -9,22 +9,27 @@ import { DietaService } from '../../../services/dietas';
   imports: [CommonModule, RouterModule],
   templateUrl: './dietas-plan.html',
   styleUrl: './dietas-plan.css',
-})
-export class DietaPlanComponent implements OnInit {
+})export class DietaPlanComponent implements OnInit {
+  categoriasDieta: any[] = []; // Asegúrate de que empiece como array vacío
   dietaId: string | null = null;
-  categoriasDieta: any[] = [];
 
   constructor(
     private route: ActivatedRoute,
     private dietasService: DietaService,
+    private router: Router
   ) {}
 
   ngOnInit() {
     this.dietaId = this.route.snapshot.paramMap.get('id');
 
-    this.dietasService.obtenerPlanPorDieta(this.dietaId).subscribe((datos: any) => {
-      console.log('DATOS RECIBIDOS:', datos);
-      this.categoriasDieta = datos;
+    this.dietasService.obtenerPlanPorDieta(this.dietaId).subscribe({
+      next: (datos) => {
+        console.log("Componente: Datos recibidos del servicio:", datos);
+        this.categoriasDieta = datos;
+      },
+      error: (err) => {
+        console.error("Componente: Error crítico en la suscripción:", err);
+      }
     });
   }
 

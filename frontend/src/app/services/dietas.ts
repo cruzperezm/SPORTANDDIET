@@ -15,14 +15,17 @@ export class DietaService {
   }
 
   obtenerPlanPorDieta(id: string | null): Observable<any[]> {
-    return this.http.get<any>(this.jsonUrl).pipe(
-      map(data => {
-        const categorias = data.categoriasPlan || [];
-        return categorias.map((cat: any) => ({
+    const urlFresca = `${this.jsonUrl}?t=${new Date().getTime()}`;
+
+    return this.http.get<any>(urlFresca).pipe(
+      map((data) => {
+        const planEncontrado = data.planes[id || '1'] || [];
+
+        return planEncontrado.map((cat: any) => ({
           ...cat,
-          indiceActual: 0 //Importante para el crrusel
+          indiceActual: 0,
         }));
-      })
+      }),
     );
   }
 
@@ -38,13 +41,13 @@ export class DietaService {
   //buscador
   buscarRecetas(termino: string): Observable<any[]> {
     return this.http.get<any>(this.jsonUrl).pipe(
-      map(data => {
+      map((data) => {
         const texto = termino.toLowerCase().trim();
 
         const recetasEncontradas = data.recetas.filter((receta: any) => {
           const coincideNombre = receta.nombre.toLowerCase().includes(texto);
           const coincideIngrediente = receta.ingredientes.some((ing: string) =>
-            ing.toLowerCase().includes(texto)
+            ing.toLowerCase().includes(texto),
           );
           return coincideNombre || coincideIngrediente;
         });
@@ -53,10 +56,10 @@ export class DietaService {
           const dieta = data.dietasInicio.find((d: any) => d.id === receta.dietaId);
           return {
             ...receta,
-            nombreDieta: dieta ? dieta.nombre : 'General'
+            nombreDieta: dieta ? dieta.nombre : 'General',
           };
         });
-      })
+      }),
     );
   }
 }

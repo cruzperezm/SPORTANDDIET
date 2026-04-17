@@ -1,37 +1,32 @@
 :host {
-  --color-acento: #10B981; /* Verde esmeralda */
-  --color-acento-hover: #059669; /* Verde oscuro para el hover */
+  --color-acento: #10B981;
+  --color-acento-hover: #059669;
 }
+
 .plan-dietas {
   width: 95%;
   max-width: 1440px;
   margin: 0 auto;
   padding: 40px 0;
+  display: block; /* Asegura que el contenedor exista */
 }
 
+/* Estilo del botón volver */
 .btn-volver {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  color: var(--color-texto-suave, #4B5563);
-  text-decoration: none;
+  color: #4B5563;
+  background: transparent;
   font-weight: 600;
-  font-size: 1.1rem;
   padding: 8px 16px;
   border-radius: 20px;
-  background: transparent;
   transition: all 0.3s ease;
   margin-bottom: 20px;
 }
 
-.btn-volver:hover {
-  color: var(--color-acento, #10B981);
-  transform: translateX(-5px);
-  background: rgba(16, 185, 129, 0.1);
-}
-
 .hero-section {
-  background: linear-gradient(135deg, var(--color-acento, #10B981), var(--color-acento-hover, #059669));
+  background: linear-gradient(135deg, #10B981, #059669);
   border-radius: 30px;
   padding: 60px 20px;
   margin-bottom: 40px;
@@ -40,82 +35,41 @@
 }
 
 .text-96 {
-  font-size: clamp(40px, 6vw, 72px);
+  font-size: clamp(32px, 6vw, 72px);
   font-weight: 800;
   margin: 0;
-  letter-spacing: -1px;
-}
-
-.text-24-hero {
-  font-size: clamp(18px, 2vw, 24px);
-  margin-top: 10px;
-  opacity: 0.9;
-}
-
-
-.filtros-contenedor {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 12px;
-  margin: 20px auto 50px auto;
-  padding: 0 15px;
-  max-width: 800px;
-}
-
-.btn-filtro {
-  padding: 10px 24px;
-  border: 2px solid var(--color-acento, #10B981);
-  background-color: #FFFFFF;
-  color: var(--color-acento, #10B981);
-  border-radius: 50px;
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.btn-filtro:hover {
-  background-color: #F0FDF4;
-  transform: translateY(-2px);
-}
-
-.btn-filtro.active {
-  background-color: var(--color-acento, #10B981);
-  color: #FFFFFF;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(16, 185, 129, 0.3);
-}
-
-.seccion-comida {
-  margin-bottom: 80px;
+  color: white;
 }
 
 .text-48 {
-  font-size: clamp(28px, 4vw, 40px);
+  font-size: clamp(24px, 4vw, 40px);
   font-weight: 700;
-  color: var(--color-texto, #1F2937);
-  border-left: 5px solid var(--color-acento, #10B981);
+  color: #1F2937;
+  border-left: 5px solid #10B981;
   padding-left: 15px;
   margin-bottom: 20px;
 }
 
+/* Configuración del carrusel */
 .wrapper-carrusel {
-  overflow: hidden;
-  position: relative;
   width: 100%;
+  overflow: hidden;
 }
 
 .grid-3-cuadros {
   display: flex;
-  gap: 2vw;
-  width: 100%;
+  gap: 20px;
   padding-bottom: 15px;
+  scrollbar-width: none; /* Oculta scroll en Firefox */
+}
+
+.grid-3-cuadros::-webkit-scrollbar {
+  display: none; /* Oculta scroll en Chrome */
 }
 
 .contenedor-item {
-  flex: 0 0 calc(33.333% - 1.34vw); /* Por defecto, 3 columnas */
-  animation: scaleIn 0.4s ease-out;
+  flex: 0 0 calc(33.333% - 20px);
+  min-width: 280px; /* Evita que desaparezcan en pantallas pequeñas */
 }
 
 .cuadro-gris {
@@ -128,12 +82,7 @@
   background-size: cover;
   background-position: center;
   cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.cuadro-gris:hover {
-  transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease;
 }
 
 .texto-interior {
@@ -142,65 +91,14 @@
   left: 0;
   width: 100%;
   padding: 40px 20px 20px;
-  font-size: clamp(18px, 1.5vw, 22px);
+  font-size: 20px;
   font-weight: 600;
   color: white;
   background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0) 100%);
-  pointer-events: none;
-}
-
-.controles-carrusel {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 10px;
-  gap: 15px;
-}
-
-.btn-nav {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  border: none;
-  background: var(--color-acento, #10B981);
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-  cursor: pointer;
-}
-
-.btn-nav:hover {
-  background: var(--color-acento-hover, #059669);
-  transform: scale(1.1);
-}
-
-@keyframes scaleIn {
-  from { opacity: 0.8; transform: scale(0.98); }
-  to { opacity: 1; transform: scale(1); }
-}
-
-
-@media (max-width: 1024px) {
-  /* En tablets, mostramos 2 tarjetas en el carrusel en lugar de 3 */
-  .contenedor-item {
-    flex: 0 0 calc(50% - 1vw);
-  }
 }
 
 @media (max-width: 768px) {
-  /* En móviles, 1 sola tarjeta gigante que se desliza */
   .contenedor-item {
-    flex: 0 0 calc(100% - 2vw);
-  }
-
-  .controles-carrusel {
-    justify-content: center;
-    margin-top: 20px;
-  }
-
-  .hero-section {
-    padding: 40px 15px;
-    border-radius: 20px;
+    flex: 0 0 85%; /* En móvil se ve casi una tarjeta entera */
   }
 }

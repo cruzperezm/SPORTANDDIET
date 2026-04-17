@@ -1,40 +1,45 @@
 {
-  "categorias": [
+  "planes": [
     {
-      "titulo": "Fuerza y Tonificación",
-      "ejercicios": [
-        {
-          "id": "1",
-          "nombre": "Flexiones Diamante",
-          "img": "assets/img/ejercicio1.jpg",
-          "etiquetas": ["fuerza", "equipo"],
-          "videoUrl": "https://www.youtube.com/embed/S_B7sM9A_G4",
-          "musculos": ["Tríceps braquial", "Pectoral mayor", "Core"],
-          "calorias": "320 - 450 kcal"
-        },
-        {
-          "id": "2",
-          "nombre": "Sentadillas con Peso",
-          "img": "assets/img/ejercicio2.jpg",
-          "etiquetas": ["fuerza", "pierna"],
-          "videoUrl": "https://www.youtube.com/embed/otro-video",
-          "musculos": ["Cuádriceps", "Glúteos"],
-          "calorias": "400 - 500 kcal"
-        }
-      ]
+      "id": "p1",
+      "nombre": "Fuerza Estructural",
+      "descripcion": "Rutina basada en levantamientos compuestos.",
+      "imagen": "assets/img/fuerza.jpg",
+      "nivel": "Intermedio"
     },
     {
-      "titulo": "Cardio y Resistencia",
-      "ejercicios": [
-        {
-          "id": "3",
-          "nombre": "HIIT 15 Minutos",
-          "img": "assets/img/cardio1.jpg",
-          "etiquetas": ["cardio", "tiempo"],
-          "videoUrl": "https://www.youtube.com/embed/video-cardio",
-          "musculos": ["Cuerpo completo"],
-          "calorias": "200 - 300 kcal"
-        }
+      "id": "p2",
+      "nombre": "Cardio HIIT",
+      "descripcion": "Entrenamientos por intervalos de alta intensidad.",
+      "imagen": "assets/img/hiit.jpg",
+      "nivel": "Avanzado"
+    }
+  ],
+
+  "categoriasPlan": [
+    { "id": "cp1", "nombre": "Día 1: Empuje (Pecho, Hombro, Tríceps)" },
+    { "id": "cp2", "nombre": "Día 2: Tirón (Espalda, Bíceps)" },
+    { "id": "cp3", "nombre": "Calentamiento General" }
+  ],
+
+  "ejercicios": [
+    {
+      "id": "e1",
+      "planId": "p1",
+      "categoriaId": "cp1",
+      "nombre": "Press de Banca Plano",
+      "imagen": "assets/img/press-banca.jpg",
+      "videoUrl": "assets/videos/press-banca.mp4",
+      "musculosPrincipales": ["Pecho", "Pectoral Mayor"],
+      "musculosSecundarios": ["Tríceps", "Hombro Anterior"],
+      "equipamiento": ["Barra", "Banco", "Discos"],
+      "series": 4,
+      "repeticiones": "8-10",
+      "descansoSegundos": 120,
+      "instrucciones": [
+        "Acuéstate en el banco con los pies apoyados.",
+        "Agarra la barra a la anchura de los hombros.",
+        "Baja controlando hasta el pecho y empuja con fuerza."
       ]
     }
   ]

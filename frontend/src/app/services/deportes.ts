@@ -3,22 +3,36 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DeporteService {
-
   private jsonUrl = 'assets/data/deportes.json';
 
   constructor(private http: HttpClient) {}
 
-  obtenerPlanDeportivo(): Observable<any[]> {
+  obtenerPlanDeportivo(planId: string | null): Observable<any[]> {
     return this.http.get<any>(this.jsonUrl).pipe(
-      map(data => {
-        return data.categorias.map((cat: any) => ({
-          ...cat,
-          indiceActual: 0
-        }));
-      })
+      map((data) => {
+        if (!data || !data.categoriasPlan || !data.ejercicios) return [];
+
+        const ejerciciosDeEstePlan = data.ejercicios.filter(
+          (ej: any) => String(ej.planId) === String(planId),
+        );
+
+        const categoriasConEjercicios = data.categoriasPlan.map((categoria: any) => {
+          const ejerciciosEncontrados = ejerciciosDeEstePlan.filter(
+            (ej: any) => ej.categoriaId === categoria.id,
+          );
+
+          return {
+            titulo: categoria.nombre,
+            indiceActual: 0,
+            ejercicios: ejerciciosEncontrados,
+          };
+        });
+
+        return categoriasConEjercicios;
+      }),
     );
   }
 
@@ -45,7 +59,7 @@ export class DeporteService {
   //buscador
   buscarEjercicios(termino: string): Observable<any[]> {
     return this.http.get<any>(this.jsonUrl).pipe(
-      map(data => {
+      map((data) => {
         const texto = termino.toLowerCase().trim();
         let resultados: any[] = [];
 
@@ -54,21 +68,25 @@ export class DeporteService {
         data.categorias.forEach((categoria: any) => {
           const ejerciciosEncontrados = categoria.ejercicios.filter((ej: any) => {
             const coincideNombre = ej.nombre.toLowerCase().includes(texto);
-            const coincideEtiqueta = ej.etiquetas?.some((etq: string) => etq.toLowerCase().includes(texto));
-            const coincideMusculo = ej.musculos?.some((m: string) => m.toLowerCase().includes(texto));
+            const coincideEtiqueta = ej.etiquetas?.some((etq: string) =>
+              etq.toLowerCase().includes(texto),
+            );
+            const coincideMusculo = ej.musculos?.some((m: string) =>
+              m.toLowerCase().includes(texto),
+            );
 
             return coincideNombre || coincideEtiqueta || coincideMusculo;
           });
 
           const ejerciciosMapeados = ejerciciosEncontrados.map((ej: any) => ({
             ...ej,
-            nombreCategoria: categoria.titulo
+            nombreCategoria: categoria.titulo,
           }));
           resultados = [...resultados, ...ejerciciosMapeados];
         });
 
         return resultados;
-      })
+      }),
     );
   }
 }
