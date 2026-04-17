@@ -34,11 +34,41 @@ export class DeporteService {
       }),
     );
   }
+  //para calcular las calor
   calcularCaloriasReales(met: number, minutos: number, pesoKg: number = 70): number {
     //Calorías = MET x Peso(kg) x (Tiempo en horas)
     const horas = minutos / 60;
     const caloriasQuemadas = met * pesoKg * horas;
 
     return Math.round(caloriasQuemadas);
+  }
+  //buscador
+  buscarEjercicios(termino: string): Observable<any[]> {
+    return this.http.get<any>(this.jsonUrl).pipe(
+      map(data => {
+        const texto = termino.toLowerCase().trim();
+        let resultados: any[] = [];
+
+        if (!data || !data.categorias) return [];
+
+        data.categorias.forEach((categoria: any) => {
+          const ejerciciosEncontrados = categoria.ejercicios.filter((ej: any) => {
+            const coincideNombre = ej.nombre.toLowerCase().includes(texto);
+            const coincideEtiqueta = ej.etiquetas?.some((etq: string) => etq.toLowerCase().includes(texto));
+            const coincideMusculo = ej.musculos?.some((m: string) => m.toLowerCase().includes(texto));
+
+            return coincideNombre || coincideEtiqueta || coincideMusculo;
+          });
+
+          const ejerciciosMapeados = ejerciciosEncontrados.map((ej: any) => ({
+            ...ej,
+            nombreCategoria: categoria.titulo
+          }));
+          resultados = [...resultados, ...ejerciciosMapeados];
+        });
+
+        return resultados;
+      })
+    );
   }
 }

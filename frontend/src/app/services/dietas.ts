@@ -34,4 +34,29 @@ export class DietaService {
       }),
     );
   }
+
+  //buscador
+  buscarRecetas(termino: string): Observable<any[]> {
+    return this.http.get<any>(this.jsonUrl).pipe(
+      map(data => {
+        const texto = termino.toLowerCase().trim();
+
+        const recetasEncontradas = data.recetas.filter((receta: any) => {
+          const coincideNombre = receta.nombre.toLowerCase().includes(texto);
+          const coincideIngrediente = receta.ingredientes.some((ing: string) =>
+            ing.toLowerCase().includes(texto)
+          );
+          return coincideNombre || coincideIngrediente;
+        });
+
+        return recetasEncontradas.map((receta: any) => {
+          const dieta = data.dietasInicio.find((d: any) => d.id === receta.dietaId);
+          return {
+            ...receta,
+            nombreDieta: dieta ? dieta.nombre : 'General'
+          };
+        });
+      })
+    );
+  }
 }

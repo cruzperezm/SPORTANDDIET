@@ -19,6 +19,12 @@
     }
   ],
   "recetas": [
-    { "id": "1", "nombre": "Ensalada de Quinoa", "imagen": "assets/img/receta1.jpg", "tiempo": "15 min" }
+    {
+      "id": "1",
+      "dietaId": "1",
+      "nombre": "Ensalada de Quinoa",
+      "ingredientes": ["100g de Quinoa", "Medio aguacate", "Tomates cherry"],
+      "imagen": "assets/img/receta1.jpg"
+    }
   ]
 }
