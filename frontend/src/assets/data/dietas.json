@@ -1,19 +1,24 @@
 {
   "dietasInicio": [
-    { "id": "1", "nombre": "Pérdida de Grasa", "imagen": "assets/img/dieta1.jpg" },
-    { "id": "2", "nombre": "Volumen Muscular", "imagen": "assets/img/dieta2.jpg" }
+    { "id": "1", "nombre": "Pérdida de Grasa", "imagen": "assets/img/dieta1.jpg" }
+  ],
+  "categoriasPlan": [
+    {
+      "titulo": "Desayunos y Snacks",
+      "platos": [
+        { "id": "1", "nombre": "Ensalada de Quinoa", "img": "assets/img/receta1.jpg" },
+        { "id": "2", "nombre": "Tostada Keto", "img": "assets/img/dieta1.jpg" },
+        { "id": "3", "nombre": "Yogur con Nueces", "img": "assets/img/dieta2.jpg" }
+      ]
+    },
+    {
+      "titulo": "Comidas Principales",
+      "platos": [
+        { "id": "1", "nombre": "Ensalada de Quinoa", "img": "assets/img/receta1.jpg" }
+      ]
+    }
   ],
   "recetas": [
-    {
-      "id": "1",
-      "nombre": "Ensalada de Quinoa",
-      "imagen": "assets/img/receta1.jpg",
-      "tiempo": "15 min",
-      "calorias": "350 kcal",
-      "alergenos": ["gluten", "lacteos"],
-      "ingredientes": ["100g de Quinoa", "Medio aguacate", "Tomates cherry"],
-      "macros": { "proteinas": "12g", "grasas": "15g", "carbos": "45g" },
-      "instrucciones": "1. Cuece la quinoa...\n2. Corta los ingredientes..."
-    }
+    { "id": "1", "nombre": "Ensalada de Quinoa", "imagen": "assets/img/receta1.jpg", "tiempo": "15 min" }
   ]
 }

@@ -12,7 +12,7 @@ import { DietaService } from '../../../services/dietas';
 })
 export class DietaPlanComponent implements OnInit {
   dietaId: string | null = null;
-  categoriasDieta: any[] = []; // Nombre unificado
+  categoriasDieta: any[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -23,6 +23,7 @@ export class DietaPlanComponent implements OnInit {
     this.dietaId = this.route.snapshot.paramMap.get('id');
 
     this.dietasService.obtenerPlanPorDieta(this.dietaId).subscribe((datos: any) => {
+      console.log('DATOS RECIBIDOS:', datos);
       this.categoriasDieta = datos;
     });
   }
