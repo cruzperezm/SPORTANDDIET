@@ -17,7 +17,7 @@ model User {
   email      String      @unique
   username   String?
   password   String?
-  googleId   String?     @unique   // <-- ¡ESTE ES EL QUE FALTA!
+  googleId   String?     @unique // <-- ¡ESTE ES EL QUE FALTA!
   biometrics Biometrics?
   createdAt  DateTime    @default(now())
 }
