@@ -2,64 +2,68 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class DietaService {
   private jsonUrl = 'assets/data/dietas.json';
 
   constructor(private http: HttpClient) {}
 
-  obtenerDietasInicio(): Observable<any[]> {
-    return this.http.get<any>(this.jsonUrl).pipe(map((data) => data.dietasInicio));
-  }
+  // 1. Para la página de PLAN
+  obtenerPlanPorId(id: string | null): Observable<any> {
+    return this.http.get<any>(this.jsonUrl).pipe(
+      map(data => {
+        if (!data || !data.dietas) return null;
 
-  obtenerPlanPorDieta(id: string | null): Observable<any[]> {
-    const urlFresca = `${this.jsonUrl}?t=${new Date().getTime()}`;
+        // Convertimos el ID de la URL a string y limpiamos espacios
+        const idLimpio = String(id).trim();
 
-    return this.http.get<any>(urlFresca).pipe(
-      map((data) => {
-        const planEncontrado = data.planes[id || '1'] || [];
+        // Buscamos convirtiendo también el ID del JSON a string
+        const encontrado = data.dietas.find((d: any) => String(d.id).trim() === idLimpio);
 
-        return planEncontrado.map((cat: any) => ({
-          ...cat,
-          indiceActual: 0,
-        }));
-      }),
+        // PLAN B: Si no lo encuentra tras recargar, devuelve la dieta 1
+        if (!encontrado) {
+          console.warn("⚠️ No se encontró el ID en el JSON. Cargando dieta por defecto.");
+          return data.dietas[0];
+        }
+
+        return encontrado;
+      })
     );
   }
 
+  // 2. Para la página de DETALLE (Corrige el error TS2339)
   obtenerRecetaPorId(id: string | null): Observable<any> {
     return this.http.get<any>(this.jsonUrl).pipe(
-      map((data) => {
-        if (!data || !data.recetas) return null;
-        return data.recetas.find((r: any) => r.id == id);
-      }),
+      map(data => {
+        let recetaEncontrada = null;
+        data.dietas.forEach((dieta: any) => {
+          dieta.plan.forEach((fase: any) => {
+            const receta = fase.comidas.find((c: any) => c.id === id);
+            if (receta) recetaEncontrada = receta;
+          });
+        });
+        return recetaEncontrada;
+      })
     );
   }
 
-  //buscador
+  // 3. Para el BUSCADOR de la página de inicio (Corrige el error TS2339)
   buscarRecetas(termino: string): Observable<any[]> {
     return this.http.get<any>(this.jsonUrl).pipe(
-      map((data) => {
-        const texto = termino.toLowerCase().trim();
-
-        const recetasEncontradas = data.recetas.filter((receta: any) => {
-          const coincideNombre = receta.nombre.toLowerCase().includes(texto);
-          const coincideIngrediente = receta.ingredientes.some((ing: string) =>
-            ing.toLowerCase().includes(texto),
-          );
-          return coincideNombre || coincideIngrediente;
+      map(data => {
+        const resultados: any[] = [];
+        const busqueda = termino.toLowerCase();
+        data.dietas.forEach((dieta: any) => {
+          dieta.plan.forEach((fase: any) => {
+            fase.comidas.forEach((c: any) => {
+              if (c.nombre.toLowerCase().includes(busqueda)) {
+                resultados.push(c);
+              }
+            });
+          });
         });
-
-        return recetasEncontradas.map((receta: any) => {
-          const dieta = data.dietasInicio.find((d: any) => d.id === receta.dietaId);
-          return {
-            ...receta,
-            nombreDieta: dieta ? dieta.nombre : 'General',
-          };
-        });
-      }),
+        return resultados;
+      })
     );
   }
 }

@@ -1,46 +1,33 @@
 {
-  "dietasInicio": [
-    { "id": "1", "nombre": "Pérdida de Grasa", "imagen": "assets/img/keto.jpg" },
-    { "id": "2", "nombre": "Volumen Muscular", "imagen": "assets/img/vegana.jpg" }
-  ],
-
-  "planes": {
-    "1": [
-      {
-        "titulo": "Desayuno",
-        "platos": [
-          { "id": "r1", "nombre": "Tostada Keto", "img": "assets/img/keto.jpg" },
-          { "id": "r2", "nombre": "Huevos Revueltos", "img": "assets/img/paleo.jpg" },
-          { "id": "r3", "nombre": "Aguacate Relleno", "img": "assets/img/ayuno.jpg" }
-        ]
-      },
-      {
-        "titulo": "Almuerzo",
-        "platos": [
-          { "id": "r4", "nombre": "Ensalada de Atún", "img": "assets/img/mediterranea.jpg" },
-          { "id": "r5", "nombre": "Pollo al Horno", "img": "assets/img/singluten.jpg" }
-        ]
-      },
-      {
-        "titulo": "Cena",
-        "platos": [{ "id": "r6", "nombre": "Salmón a la Plancha", "img": "assets/img/keto.jpg" }]
-      }
-    ],
-    "2": [
-      {
-        "titulo": "Desayuno Volumen",
-        "platos": [{ "id": "r7", "nombre": "Avena con Plátano", "img": "assets/img/vegana.jpg" }]
-      }
-    ]
-  },
-
-  "recetas": [
+  "dietas": [
     {
-      "id": "r1",
-      "dietaId": "1",
-      "nombre": "Tostada Keto",
-      "imagen": "assets/img/keto.jpg",
-      "ingredientes": ["Pan Keto", "Aguacate"]
+      "id": "1",
+      "titulo": "Dieta Keto",
+      "subtitulo": "Baja en carbohidratos, alta en grasas saludables",
+      "plan": [
+        {
+          "momento": "Desayuno",
+          "comidas": [
+            { "id": "r1", "nombre": "Huevos con Bacon", "img": "assets/img/keto1.jpg", "alergenos": ["huevos"] },
+            { "id": "r2", "nombre": "Aguacate con Salmón", "img": "assets/img/keto2.jpg", "alergenos": ["pescado"] },
+            { "id": "r3", "nombre": "Tortilla de Queso", "img": "assets/img/keto3.jpg", "alergenos": ["huevos", "lacteos"] },
+            { "id": "r4", "nombre": "Café Bulletproof", "img": "assets/img/keto4.jpg", "alergenos": ["lacteos"] }
+          ]
+        },
+        {
+          "momento": "Almuerzo",
+          "comidas": [
+            { "id": "r5", "nombre": "Ensalada César", "img": "assets/img/keto5.jpg", "alergenos": ["lacteos", "gluten"] },
+            { "id": "r6", "nombre": "Pollo al Horno", "img": "assets/img/keto6.jpg", "alergenos": [] }
+          ]
+        },
+        {
+          "momento": "Cena",
+          "comidas": [
+            { "id": "r7", "nombre": "Pescado a la Plancha", "img": "assets/img/keto7.jpg", "alergenos": ["pescado"] }
+          ]
+        }
+      ]
     }
   ]
 }

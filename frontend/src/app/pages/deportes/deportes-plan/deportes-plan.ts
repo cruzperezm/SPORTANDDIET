@@ -8,7 +8,7 @@ import { DeporteService } from '../../../services/deportes';
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './deportes-plan.html',
-  styleUrl: './deportes-plan.css',
+  styleUrl: './deportes-plan.css'
 })
 export class DeportePlanComponent implements OnInit {
   categoriasDeporte: any[] = [];
@@ -21,37 +21,47 @@ export class DeportePlanComponent implements OnInit {
 
   ngOnInit() {
     this.planId = this.route.snapshot.paramMap.get('id');
-    this.deporteService.obtenerPlanDeportivo(this.planId).subscribe((datos) => {
-      this.categoriasDeporte = datos;
+
+    this.deporteService.obtenerPlanDeportivo(this.planId).subscribe({
+      next: (datos: any) => {
+        // Inicializamos el indiceActual para cada categoría si no viene en el JSON
+        this.categoriasDeporte = datos.map((cat: any) => ({
+          ...cat,
+          indiceActual: 0
+        }));
+      },
+      error: (err) => console.error("Error en deportes:", err)
     });
   }
 
+  // ESTA ES LA FUNCIÓN QUE EL HTML ESTÁ BUSCANDO
   getEjerciciosVisibles(categoria: any) {
-    if (!categoria || !categoria.ejercicios || categoria.ejercicios.length === 0) {
-      return [];
-    }
-    const lista = categoria.ejercicios;
-    const total = lista.length;
+    const ejercicios = categoria.ejercicios || [];
+    const total = ejercicios.length;
+
+    if (total === 0) return [];
+
     const i = categoria.indiceActual || 0;
-    if (total < 3) {
-      return lista;
-    }
+
+    // Si hay 3 o menos, los mostramos todos sin rotar
+    if (total <= 3) return ejercicios;
+
+    // Lógica circular para el carrusel
     return [
-      lista[i % total],
-      lista[(i + 1) % total],
-      lista[(i + 2) % total],
+      ejercicios[i % total],
+      ejercicios[(i + 1) % total],
+      ejercicios[(i + 2) % total]
     ];
   }
 
+  // Función para mover las flechas
   mover(direccion: number, categoria: any) {
-    if (!categoria.ejercicios) return;
-    const total = categoria.ejercicios.length;
+    const ejercicios = categoria.ejercicios || [];
+    const total = ejercicios.length;
+
     if (total === 0) return;
 
-    if (direccion === 1) {
-      categoria.indiceActual = (categoria.indiceActual + 1) % total;
-    } else {
-      categoria.indiceActual = (categoria.indiceActual - 1 + total) % total;
-    }
+    // Sumamos el total para evitar números negativos al ir hacia atrás
+    categoria.indiceActual = (categoria.indiceActual + direccion + total) % total;
   }
 }

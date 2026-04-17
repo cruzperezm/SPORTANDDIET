@@ -1,43 +1,43 @@
-<section class="plan-dietas"> <div class="mb-4" style="padding-left: 20px;">
-  <a routerLink="/deporte" class="btn-volver" style="display: inline-flex; align-items: center; gap: 8px; color: var(--color-texto-suave); text-decoration: none; font-weight: 600; transition: color 0.3s;">
-    <span class="material-symbols-outlined">arrow_back</span>
-    Volver a disciplinas
-  </a>
-</div>
+<section class="plan-dietas">
+  <div class="mb-4" style="padding-left: 20px;">
+    <a routerLink="/dietas" class="btn-volver">
+      <span class="material-symbols-outlined">arrow_back</span>
+      Volver a Dietas
+    </a>
+  </div>
 
   <div class="hero-section">
-    <h1 class="text-96">Plan de Entrenamiento</h1>
-    <p class="text-24-hero">Supera tus límites cada día</p>
+    <h1 class="text-96">Tu Plan de Dieta</h1>
+    <p class="text-24-hero">Alimentación equilibrada para tus objetivos</p>
   </div>
 
   <div class="filtros-contenedor">
-    <button class="btn-filtro-deporte active">Todos</button>
-    <button class="btn-filtro-deporte">Fuerza</button>
-    <button class="btn-filtro-deporte">Cardio</button>
-    <button class="btn-filtro-deporte">Sin Material</button>
+    <button class="btn-filtro active">Todos</button>
+    <button class="btn-filtro">Desayuno</button>
+    <button class="btn-filtro">Almuerzo</button>
+    <button class="btn-filtro">Cena</button>
   </div>
 
   <div class="seccion-comida" *ngFor="let categoria of categoriasDeporte">
     <h2 class="text-48">{{ categoria.titulo }}</h2>
 
     <div class="wrapper-carrusel">
-
       <div class="grid-3-cuadros">
 
         <div class="contenedor-item"
-             *ngFor="let ejercicio of getEjerciciosVisibles(categoria)"
-             [style.flex]="categoria.ejercicios.length < 3 ? '0 0 auto' : '0 0 calc(33.333% - 1.34vw)'">
+             *ngFor="let plato of getEjerciciosVisibles(categoria)"
+             [style.flex]="categoria.platos.length < 3 ? '0 0 auto' : '0 0 calc(33.333% - 1.34vw)'">
 
           <div class="cuadro-gris"
-               [style.backgroundImage]="'url(' + ejercicio.img + ')'"
-               [routerLink]="['/deporte/ejercicio', ejercicio.id]">
-            <div class="texto-interior">{{ ejercicio.nombre }}</div>
+               [style.backgroundImage]="'url(' + plato.img + ')'"
+               [routerLink]="['/dietas/receta', plato.id]"
+               style="cursor: pointer;">
+            <div class="texto-interior">{{ plato.nombre }}</div>
           </div>
-        </div>
 
-      </div>
+        </div> </div>
 
-      <div class="controles-carrusel">
+      <div class="controles-carrusel" *ngIf="categoria.platos.length > 3">
         <button class="btn-nav" (click)="mover(-1, categoria)">
           <span class="material-symbols-outlined">arrow_back</span>
         </button>
@@ -45,8 +45,6 @@
           <span class="material-symbols-outlined">arrow_forward</span>
         </button>
       </div>
-
     </div>
   </div>
-
 </section>
