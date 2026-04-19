@@ -45,8 +45,6 @@ const addBio = async (genre, age, height, goal, activity, c_weight, d_weight, we
   });
 };
 
-const jwt = require('jsonwebtoken');
-
 const login = async (email, password) => {
   // 1. Añadimos include: { biometrics: true } para traer sus datos físicos
   const user = await prisma.user.findUnique({

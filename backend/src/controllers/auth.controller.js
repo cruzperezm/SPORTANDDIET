@@ -81,4 +81,4 @@ const googleLogin = async(req, res) => {
 }
 
 // Actualizar las exportaciones
-module.exports = { registerUser, login, googleLogin }
+module.exports = { registerUser, login, userBioData, googleLogin }
