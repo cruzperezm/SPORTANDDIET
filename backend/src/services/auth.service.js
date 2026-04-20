@@ -28,6 +28,23 @@ const register = async (email, password, username) => {
   });
 };
 
+const addBio = async (genre, age, height, goal, activity, c_weight, d_weight, weeks, owner) => {
+
+  return await prisma.biometrics.create({
+    data: {
+      genre,
+      age,
+      height,
+      goal,
+      activity,
+      c_weight,
+      d_weight,
+      weeks,
+      ownerId: owner,
+    },
+  });
+};
+
 const login = async (email, password) => {
   // 1. Añadimos include: { biometrics: true } para traer sus datos físicos
   const user = await prisma.user.findUnique({
@@ -104,4 +121,4 @@ const googleAuth = async (idToken) => {
 };
 
 // 4. Actualizar las exportaciones
-module.exports = { register, login, googleAuth };
+module.exports = { register, login, addBio, googleAuth };

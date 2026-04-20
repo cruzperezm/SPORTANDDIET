@@ -20,6 +20,10 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/register`, user);
   }
 
+  bio(form: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/bio`, form);
+  }
+
   login(credentials: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/login`, credentials).pipe(
       tap(res => {
