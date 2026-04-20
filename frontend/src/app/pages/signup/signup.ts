@@ -1,7 +1,7 @@
 import { Component, inject, AfterViewInit, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
-import { AuthService } from "../../services/auth.service";
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
 
 declare var google: any;
 
@@ -23,7 +23,7 @@ export class Signup implements AfterViewInit {
     email: ['', [Validators.required, Validators.email]],
     username: ['', [Validators.required]],
     password: ['', [Validators.required]],
-    confirmPassword: ['', [Validators.required]]
+    confirmPassword: ['', [Validators.required]],
   });
 
   isLoading = false;
@@ -35,21 +35,18 @@ export class Signup implements AfterViewInit {
       if (typeof google !== 'undefined' && google.accounts) {
         google.accounts.id.initialize({
           client_id: this.clientId,
-          callback: this.handleGoogleResponse.bind(this)
+          callback: this.handleGoogleResponse.bind(this),
         });
 
         // Asegúrate de que el ID coincida con el HTML ("google-btn")
-        google.accounts.id.renderButton(
-          document.getElementById("google-btn"),
-          {
-            type: "icon",       // Modo icono de Google (solo la G)
-            shape: "circle",    // Forma circular
-            theme: "outline",   // Fondo blanco con borde sutil, ideal para tu fondo gris
-            size: "large"       // Tamaño óptimo para hacer clic
-          }
-        );
+        google.accounts.id.renderButton(document.getElementById('google-btn'), {
+          type: 'icon', // Modo icono de Google (solo la G)
+          shape: 'circle', // Forma circular
+          theme: 'outline', // Fondo blanco con borde sutil, ideal para tu fondo gris
+          size: 'large', // Tamaño óptimo para hacer clic
+        });
       } else {
-        console.error("El script de Google no se ha cargado correctamente en index.html");
+        console.error('El script de Google no se ha cargado correctamente en index.html');
       }
     }, 100);
   }
@@ -58,16 +55,16 @@ export class Signup implements AfterViewInit {
     this.isLoading = true;
     this.authService.googleAuth(response.credential).subscribe({
       next: (res: any) => {
-        console.log("Autenticación con Google exitosa");
+        console.log('Autenticación con Google exitosa');
         this.isLoading = false;
 
         this.ngZone.run(() => {
           // LA MAGIA ESTÁ AQUÍ: Evaluamos qué necesita el usuario
           if (res.needsOnboarding) {
-            console.log("El usuario necesita completar sus datos biométricos");
+            console.log('El usuario necesita completar sus datos biométricos');
             this.router.navigate(['/bio']); // Ruta a tu cuestionario
           } else {
-            console.log("El usuario ya tiene todo completo");
+            console.log('El usuario ya tiene todo completo');
             this.router.navigate(['/']); // Ruta principal / Dashboard
           }
         });
@@ -75,32 +72,31 @@ export class Signup implements AfterViewInit {
       error: (err) => {
         this.isLoading = false;
         this.ngZone.run(() => {
-          alert("Google Sign-In failed. Please try again.");
-          this.errorMessage = "Server error. Please try again later.";
+          alert('Google Sign-In failed. Please try again.');
+          this.errorMessage = 'Server error. Please try again later.';
         });
-      }
+      },
     });
   }
 
-  // ¡AQUÍ ESTÁ TU FUNCIÓN ORIGINAL RESTAURADA!
   signup() {
-    if(this.signUpForm.invalid) return;
+    if (this.signUpForm.invalid) return;
 
     this.isLoading = true;
     this.errorMessage = '';
 
     this.authService.register(this.signUpForm.value).subscribe({
       next: (response) => {
-        console.log("Backend says:", response);
+        console.log('Backend says:', response);
         this.isLoading = false;
         this.router.navigate(['/bio']);
       },
       error: (err) => {
-        alert("Registration failed: email already exists");
+        alert('Registration failed: email already exists');
         console.error('Registration failed:', err);
         this.isLoading = false;
         this.errorMessage = err.error?.error || 'An unexpected error occurred.';
-      }
+      },
     });
   }
 }

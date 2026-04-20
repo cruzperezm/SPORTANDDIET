@@ -16,12 +16,12 @@ form {
 }
 
 input {
-    padding: 15px;
+    padding: 12px;
     margin-bottom: 40px;
     width: 100%;
     border: none;
     display: block;
-    border-radius: 12px;
+    border-radius: 20px;
 }
 
 input:focus {
@@ -39,9 +39,9 @@ input[type="submit"] {
     border-radius: 20px;
     font-family: 'Inter', sans-serif;
     display: block;
-    width: 25%;
+    width: 40%;
     padding: 50px;
-    margin: 10% auto 10% auto;
+    margin: 10% auto;
 }
 
 #button-row {
@@ -60,6 +60,7 @@ input[type="submit"] {
     margin-bottom: 5%;
     left: 0;
     width: 40%;
+    border-radius: 20px;
 }
 
 #other-login {

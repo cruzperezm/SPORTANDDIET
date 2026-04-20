@@ -1,8 +1,9 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const searchController = require('../controllers/search.controller');
+const searchController = require("../controllers/search.controller");
 
-router.post('/search', searchController.search);
-router.post('/filter', searchController.filter)
+router.get("/suggestions", searchController.getSuggestions);
+router.get("/basicSearch", searchController.getSuggestions);
+router.get("/filter", searchController.filter);
 
 module.exports = router;
