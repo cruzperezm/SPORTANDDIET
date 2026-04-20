@@ -17,7 +17,7 @@ model User {
   email      String      @unique
   username   String?
   password   String?
-  googleId   String?     @unique   // <-- ¡ESTE ES EL QUE FALTA!
+  googleId   String?     @unique // <-- ¡ESTE ES EL QUE FALTA!
   biometrics Biometrics?
   createdAt  DateTime    @default(now())
 }
@@ -34,4 +34,26 @@ model Biometrics {
   c_weight Int
   d_weight Int
   weeks    Int
+}
+
+model Diet {
+  id      Int      @id @default(autoincrement())
+  recipes Recipe[]
+}
+
+model Recipe {
+  id     Int   @id @default(autoincrement())
+  diet   Diet? @relation(fields: [dietId], references: [id])
+  dietId Int?
+}
+
+model ExercisePlan {
+  id        Int        @id @default(autoincrement())
+  exercises Exercise[]
+}
+
+model Exercise {
+  id             Int           @id @default(autoincrement())
+  exercisePlan   ExercisePlan? @relation(fields: [exercisePlanId], references: [id])
+  exercisePlanId Int?
 }
