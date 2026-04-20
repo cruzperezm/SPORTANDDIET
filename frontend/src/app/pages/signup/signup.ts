@@ -84,23 +84,27 @@ export class Signup implements AfterViewInit {
 
   // ¡AQUÍ ESTÁ TU FUNCIÓN ORIGINAL RESTAURADA!
   signup() {
-    if(this.signUpForm.invalid) return;
+    if (this.signUpForm.invalid) return;
 
-    this.isLoading = true;
-    this.errorMessage = '';
+      this.isLoading = true;
+      this.errorMessage = '';
 
     this.authService.register(this.signUpForm.value).subscribe({
       next: (response) => {
-        console.log("Backend says:", response);
+        console.log('Backend says:', response);
         this.isLoading = false;
-        this.router.navigate(['/bio']);
+
+        const userId = response.id;
+        this.router.navigate(['/bio'], {
+          queryParams: { userId: userId },
+        });
       },
       error: (err) => {
-        alert("Registration failed: email already exists");
+        alert('Registration failed: email already exists');
         console.error('Registration failed:', err);
         this.isLoading = false;
         this.errorMessage = err.error?.error || 'An unexpected error occurred.';
-      }
+      },
     });
   }
 }

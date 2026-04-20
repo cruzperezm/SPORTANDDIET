@@ -45,16 +45,32 @@ input:focus {
   outline: 2px solid #2ECC71;
 }
 
+input.ng-touched.ng-invalid {
+  outline: 2px solid red;
+}
+
 input[type="button"] {
   width: 40%;
   background-color: #2ECC71;
   margin-bottom: 5%;
 }
 
+input[type="submit"] {
+  width: 40%;
+  background-color: #2ECC71;
+  margin-bottom: 5%;
+}
+
+#button-row {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+
 #container {
   background-color: #f5f7f9;
-  padding: 40px 0;
-  width: 100%;
   border-radius: 20px;
   font-family: 'Inter', sans-serif;
   display: block;
@@ -66,13 +82,7 @@ input[type="button"] {
 #error {
   color: red;
   font-size: small;
-}
-
-#button-row {
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  margin-bottom: 10px;
 }
 
 .radiowrapper input {
