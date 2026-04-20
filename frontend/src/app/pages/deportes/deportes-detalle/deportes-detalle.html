@@ -1,0 +1,30 @@
+<div class="guia-ejercicio" *ngIf="ejercicio">
+  <div class="hero-guia" [style.backgroundImage]="'linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.7)), url(' + ejercicio.imagen + ')'">
+    <h1 class="text-white">{{ ejercicio.nombre }}</h1>
+    <p class="text-white">⏱ {{ ejercicio.tiempo }} | 🔥 {{ ejercicio.dificultad }}</p>
+  </div>
+
+  <div class="contenedor-columnas">
+    <div class="columna">
+      <h2 class="text-40">Músculos Clave</h2>
+      <ul class="lista-columna">
+        <li *ngFor="let m of ejercicio.musculos">{{ m }}</li>
+      </ul>
+    </div>
+    <div class="columna">
+      <h2 class="text-40">Objetivo</h2>
+      <ul class="lista-columna">
+        <li><strong>Series:</strong> {{ ejercicio.estadisticas.series }}</li>
+        <li><strong>Reps:</strong> {{ ejercicio.estadisticas.repeticiones }}</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="bloque-inferior">
+    <h2 class="text-40">Ejecución</h2>
+    <div class="text-24-largo">{{ ejercicio.instrucciones }}</div>
+    <div class="text-center mt-4">
+      <button class="btn-primario">Registrar Entrenamiento</button>
+    </div>
+  </div>
+</div>
