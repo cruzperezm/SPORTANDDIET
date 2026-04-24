@@ -4,6 +4,7 @@
       "id": "1",
       "titulo": "Entrenamiento de Core",
       "subtitulo": "Fortalece tu zona abdominal con rutinas adaptadas a tu nivel.",
+      "imagen": "",
       "plan": [
         {
           "nivel": "Principiante",
@@ -11,7 +12,7 @@
             {
               "id": "e1",
               "nombre": "Plancha Abdominal",
-              "imagen": "assets/img/deporte/plancha.jpg",
+              "imagen": "assets/img/deporte/core/plancha.jpg",
               "tiempo": "10 min",
               "dificultad": "Media",
               "filtros": ["sin-material"],
@@ -21,7 +22,7 @@
                 "repeticiones": "45 seg",
                 "descanso": "30 seg"
               },
-              "instrucciones": "1. Apoya los antebrazos en el suelo.\n2. Mantén el cuerpo en línea recta.\n3. Aprieta el abdomen y aguanta la posición."
+              "gif": null
             },
             {
               "id": "e2",
