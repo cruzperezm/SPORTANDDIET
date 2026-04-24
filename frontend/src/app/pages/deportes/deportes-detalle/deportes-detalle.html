@@ -23,8 +23,19 @@
 
   <div class="bloque-inferior">
     <h2 class="text-40">Ejecución</h2>
-    <div class="text-24-largo">{{ detalleData.instrucciones || 'Mantén la postura correcta y la respiración controlada durante toda la ejecución.' }}</div>
+    <div class="contenedor-gif mt-4 mb-2 text-center">
 
+      <div *ngIf="detalleData.gif" class="caja-gif shadow-sm mx-auto" style="max-width: 500px; border-radius: 16px; overflow: hidden; border: 2px solid var(--color-acento, #e5e7eb);">
+        <img [src]="detalleData.gif" [alt]="'Ejecución de ' + detalleData.nombre" class="img-fluid w-100" style="display: block;">
+      </div>
+
+      <div *ngIf="!detalleData.gif" class="caja-placeholder mx-auto p-4 bg-light" style="max-width: 500px; border-radius: 16px; border: 2px dashed #cbd5e1;">
+        <span class="material-symbols-outlined text-muted mb-2" style="font-size: 2.5rem;">animation</span>
+        <p class="text-muted fw-medium mb-1">Animación no disponible</p>
+        <p class="text-muted small mb-0">{{ detalleData.instrucciones || 'Mantén la postura correcta y la respiración controlada durante toda la ejecución.' }}</p>
+      </div>
+
+    </div>
     <div class="text-center mt-5">
       <button class="btn-primario px-4 py-2 fs-5">Añadir al dashboard</button>
 
