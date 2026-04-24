@@ -65,9 +65,8 @@ export class DeportesPlanComponent implements OnInit {
   getEjerciciosFiltrados(fase: any): any[] {
     if (!fase?.ejercicios) return [];
     if (this.filtrosActivos.length === 0) return fase.ejercicios;
-    // Filtramos por material o categoría (mancuernas, cardio, etc)
     return fase.ejercicios.filter((e: any) =>
-      this.filtrosActivos.every((f) => e.filtros.includes(f)),
+      this.filtrosActivos.every((f) => e.musculos && e.musculos.includes(f))
     );
   }
 

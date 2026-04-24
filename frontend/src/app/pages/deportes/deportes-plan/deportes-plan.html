@@ -11,15 +11,15 @@
 
   <nav class="filtros-nav">
     <button (click)="toggleFiltro('todos')" [class.active]="filtrosActivos.length === 0">Todos</button>
-    <button (click)="toggleFiltro('sin-material')" [class.active]="filtrosActivos.includes('sin-material')">Sin Material</button>
-    <button (click)="toggleFiltro('mancuernas')" [class.active]="filtrosActivos.includes('mancuernas')">Mancuernas</button>
-    <button (click)="toggleFiltro('cardio')" [class.active]="filtrosActivos.includes('cardio')">Cardio</button>
+    <button (click)="toggleFiltro('Tren inferior')" [class.active]="filtrosActivos.includes('Tren inferior')">Tren Inferior</button>
+    <button (click)="toggleFiltro('Tren superior')" [class.active]="filtrosActivos.includes('Tren superior')">Tren Superior</button>
+    <button (click)="toggleFiltro('Core')" [class.active]="filtrosActivos.includes('Core')">Core</button>
+    <button (click)="toggleFiltro('Cuerpo completo')" [class.active]="filtrosActivos.includes('Cuerpo completo')">Cuerpo Completo</button>
   </nav>
 
   <section class="fase-seccion" *ngFor="let fase of deporte?.plan">
     <div class="header-fase">
       <h2 class="momento-label">{{ fase.nivel }}</h2>
-      <span class="badge-nivel" [ngClass]="fase.nivel.toLowerCase()">Nivel {{ fase.nivel }}</span>
     </div>
 
     <div class="carrusel-container">
