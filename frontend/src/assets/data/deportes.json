@@ -1,46 +1,193 @@
 {
   "deportes": [
     {
-      "id": "1",
-      "titulo": "Entrenamiento de Core",
-      "subtitulo": "Fortalece tu zona abdominal con rutinas adaptadas a tu nivel.",
-      "imagen": "",
+      "id": 1,
+      "titulo": "Pérdida de Grasa (HIIT)",
+      "subtitulo": "Quema calorías y mejora tu resistencia cardiovascular con este plan de intervalos de alta intensidad.",
+      "imagen": "assets/img/deporte/hiit/hiit-portada.jpg",
       "plan": [
         {
           "nivel": "Principiante",
           "ejercicios": [
             {
-              "id": "e1",
-              "nombre": "Plancha Abdominal",
-              "imagen": "assets/img/deporte/core/plancha.jpg",
-              "tiempo": "10 min",
-              "dificultad": "Media",
+              "id": "q-p1",
+              "nombre": "Marcha con Rodillas Altas",
+              "imagen": "assets/img/deporte/marcha.jpg",
+              "tiempo": "5 min",
+              "dificultad": "Baja",
               "filtros": ["sin-material"],
-              "musculos": ["Abdominales", "Core", "Hombros"],
+              "musculos": ["Cuerpo completo", "Tren inferior", "Core"],
               "estadisticas": {
-                "series": "4",
-                "repeticiones": "45 seg",
+                "series": "3",
+                "repeticiones": "30",
+                "descanso": "20 seg"
+              },
+              "gif": null
+            },
+            {
+              "id": "q-p2",
+              "nombre": "Sentadilla Lateral",
+              "imagen": "assets/img/deporte/sentadilla-lat.jpg",
+              "tiempo": "5 min",
+              "dificultad": "Baja",
+              "filtros": ["sin-material"],
+              "musculos": ["Tren inferior"],
+              "estadisticas": {
+                "series": "3",
+                "repeticiones": "15",
                 "descanso": "30 seg"
               },
               "gif": null
             },
             {
-              "id": "e2",
-              "nombre": "Crunch Abdominal",
-              "img": "assets/img/p2.jpg",
-              "filtros": ["sin-material"]
+              "id": "q-p3",
+              "nombre": "Flexiones en Pared",
+              "imagen": "assets/img/deporte/flexion-pared.jpg",
+              "tiempo": "5 min",
+              "dificultad": "Baja",
+              "filtros": ["pared"],
+              "musculos": ["Tren superior"],
+              "estadisticas": {
+                "series": "3",
+                "repeticiones": "12",
+                "descanso": "30 seg"
+              },
+              "gif": null
             },
             {
-              "id": "e3",
-              "nombre": "Elevación de Piernas",
-              "img": "assets/img/p3.jpg",
-              "filtros": ["sin-material"]
+              "id": "q-p4",
+              "nombre": "Step-ups Suaves",
+              "imagen": "assets/img/deporte/step-up.jpg",
+              "tiempo": "5 min",
+              "dificultad": "Baja",
+              "filtros": ["silla"],
+              "musculos": ["Tren inferior"],
+              "estadisticas": {
+                "series": "3",
+                "repeticiones": "20",
+                "descanso": "15 seg"
+              },
+              "gif": null
             },
             {
-              "id": "e4",
-              "nombre": "Bird Dog",
-              "img": "assets/img/p4.jpg",
-              "filtros": ["sin-material"]
+              "id": "q-p5",
+              "nombre": "Puente de Glúteo",
+              "imagen": "assets/img/deporte/puente.jpg",
+              "tiempo": "5 min",
+              "dificultad": "Baja",
+              "filtros": ["esterilla"],
+              "musculos": ["Tren inferior", "Core"],
+              "estadisticas": {
+                "series": "3",
+                "repeticiones": "20",
+                "descanso": "30 seg"
+              },
+              "gif": null
+            },
+            {
+              "id": "q-p6",
+              "nombre": "Caminata de Oso",
+              "imagen": "assets/img/deporte/oso.jpg",
+              "tiempo": "5 min",
+              "dificultad": "Baja",
+              "filtros": ["sin-material"],
+              "musculos": ["Cuerpo completo", "Core", "Tren superior"],
+              "estadisticas": {
+                "series": "3",
+                "repeticiones": "15",
+                "descanso": "30 seg"
+              },
+              "gif": null
+            },
+            {
+              "id": "q-p7",
+              "nombre": "Boxeo de Sombra Suave",
+              "imagen": "assets/img/deporte/shadow-p.jpg",
+              "tiempo": "5 min",
+              "dificultad": "Baja",
+              "filtros": ["sin-material"],
+              "musculos": ["Tren superior", "Core"],
+              "estadisticas": {
+                "series": "3",
+                "repeticiones": "30",
+                "descanso": "15 seg"
+              },
+              "gif": null
+            },
+            {
+              "id": "q-p8",
+              "nombre": "Elevación de Rodillas al Codo",
+              "imagen": "assets/img/deporte/rodilla-codo.jpg",
+              "tiempo": "5 min",
+              "dificultad": "Baja",
+              "filtros": ["sin-material"],
+              "musculos": ["Core", "Tren inferior"],
+              "estadisticas": {
+                "series": "3",
+                "repeticiones": "20",
+                "descanso": "20 seg"
+              },
+              "gif": null
+            },
+            {
+              "id": "q-p9",
+              "nombre": "Desplazamiento Lateral Tocado",
+              "imagen": "assets/img/deporte/desplazamiento.jpg",
+              "tiempo": "5 min",
+              "dificultad": "Baja",
+              "filtros": ["sin-material"],
+              "musculos": ["Tren inferior", "Cuerpo completo"],
+              "estadisticas": {
+                "series": "3",
+                "repeticiones": "20",
+                "descanso": "15 seg"
+              },
+              "gif": null
+            },
+            {
+              "id": "q-p10",
+              "nombre": "Plancha Inclinada",
+              "imagen": "assets/img/deporte/plancha-inclinada.jpg",
+              "tiempo": "5 min",
+              "dificultad": "Baja",
+              "filtros": ["silla"],
+              "musculos": ["Core", "Tren superior"],
+              "estadisticas": {
+                "series": "3",
+                "repeticiones": "20",
+                "descanso": "30 seg"
+              },
+              "gif": null
+            },
+            {
+              "id": "q-p11",
+              "nombre": "Tijeras Horizontales",
+              "imagen": "assets/img/deporte/tijeras-suelo.jpg",
+              "tiempo": "5 min",
+              "dificultad": "Baja",
+              "filtros": ["esterilla"],
+              "musculos": ["Core", "Tren inferior"],
+              "estadisticas": {
+                "series": "3",
+                "repeticiones": "20",
+                "descanso": "30 seg"
+              },
+              "gif": null
+            },
+            {
+              "id": "q-p12",
+              "nombre": "Zancada Hacia Atrás Estática",
+              "imagen": "assets/img/deporte/zancada-atras.jpg",
+              "tiempo": "5 min",
+              "dificultad": "Baja",
+              "filtros": ["sin-material"],
+              "musculos": ["Tren inferior"],
+              "estadisticas": {
+                "series": "3",
+                "repeticiones": "10",
+                "descanso": "30 seg"
+              },
+              "gif": null
             }
           ]
         },
@@ -48,22 +195,184 @@
           "nivel": "Intermedio",
           "ejercicios": [
             {
-              "id": "e5",
-              "nombre": "Plancha Lateral",
-              "img": "assets/img/i1.jpg",
-              "filtros": ["sin-material"]
+              "id": "q-i1",
+              "nombre": "Jumping Jacks",
+              "imagen": "assets/img/deporte/jacks.jpg",
+              "tiempo": "6 min",
+              "dificultad": "Media",
+              "filtros": ["sin-material"],
+              "musculos": ["Cuerpo completo"],
+              "estadisticas": {
+                "series": "4",
+                "repeticiones": "30",
+                "descanso": "15 seg"
+              },
+              "gif": null
             },
             {
-              "id": "e6",
-              "nombre": "Rueda Abdominal",
-              "img": "assets/img/i2.jpg",
-              "filtros": ["mancuernas"]
+              "id": "q-i2",
+              "nombre": "Zancadas Alternas",
+              "imagen": "assets/img/deporte/zancadas.jpg",
+              "tiempo": "6 min",
+              "dificultad": "Media",
+              "filtros": ["mancuernas"],
+              "musculos": ["Tren inferior"],
+              "estadisticas": {
+                "series": "4",
+                "repeticiones": "20",
+                "descanso": "30 seg"
+              },
+              "gif": null
             },
             {
-              "id": "e7",
-              "nombre": "V-Ups",
-              "img": "assets/img/i3.jpg",
-              "filtros": ["sin-material"]
+              "id": "q-i3",
+              "nombre": "Mountain Climbers",
+              "imagen": "assets/img/deporte/climbers.jpg",
+              "tiempo": "6 min",
+              "dificultad": "Media",
+              "filtros": ["sin-material"],
+              "musculos": ["Cuerpo completo", "Core", "Tren superior"],
+              "estadisticas": {
+                "series": "4",
+                "repeticiones": "30",
+                "descanso": "20 seg"
+              },
+              "gif": null
+            },
+            {
+              "id": "q-i4",
+              "nombre": "Plancha Abdominal",
+              "imagen": "assets/img/deporte/plancha.jpg",
+              "tiempo": "6 min",
+              "dificultad": "Media",
+              "filtros": ["esterilla"],
+              "musculos": ["Core", "Tren superior"],
+              "estadisticas": {
+                "series": "3",
+                "repeticiones": "20",
+                "descanso": "30 seg"
+              },
+              "gif": null
+            },
+            {
+              "id": "q-i5",
+              "nombre": "Skating Jumps",
+              "imagen": "assets/img/deporte/skating.jpg",
+              "tiempo": "6 min",
+              "dificultad": "Media",
+              "filtros": ["sin-material"],
+              "musculos": ["Tren inferior", "Cuerpo completo"],
+              "estadisticas": {
+                "series": "4",
+                "repeticiones": "20",
+                "descanso": "15 seg"
+              },
+              "gif": null
+            },
+            {
+              "id": "q-i6",
+              "nombre": "Sentadilla Isométrica",
+              "imagen": "assets/img/deporte/iso.jpg",
+              "tiempo": "6 min",
+              "dificultad": "Media",
+              "filtros": ["pared"],
+              "musculos": ["Tren inferior"],
+              "estadisticas": {
+                "series": "4",
+                "repeticiones": "20",
+                "descanso": "15 seg"
+              },
+              "gif": null
+            },
+            {
+              "id": "q-i7",
+              "nombre": "Cross Jacks",
+              "imagen": "assets/img/deporte/cross-jacks.jpg",
+              "tiempo": "6 min",
+              "dificultad": "Media",
+              "filtros": ["sin-material"],
+              "musculos": ["Cuerpo completo"],
+              "estadisticas": {
+                "series": "4",
+                "repeticiones": "30",
+                "descanso": "15 seg"
+              },
+              "gif": null
+            },
+            {
+              "id": "q-i8",
+              "nombre": "Sprawls",
+              "imagen": "assets/img/deporte/sprawls.jpg",
+              "tiempo": "6 min",
+              "dificultad": "Media",
+              "filtros": ["sin-material"],
+              "musculos": ["Cuerpo completo", "Core"],
+              "estadisticas": {
+                "series": "4",
+                "repeticiones": "15",
+                "descanso": "20 seg"
+              },
+              "gif": null
+            },
+            {
+              "id": "q-i9",
+              "nombre": "Puente de Glúteo a una Pierna",
+              "imagen": "assets/img/deporte/puente-unapierna.jpg",
+              "tiempo": "6 min",
+              "dificultad": "Media",
+              "filtros": ["esterilla"],
+              "musculos": ["Tren inferior", "Core"],
+              "estadisticas": {
+                "series": "3",
+                "repeticiones": "12",
+                "descanso": "30 seg"
+              },
+              "gif": null
+            },
+            {
+              "id": "q-i10",
+              "nombre": "T-Plank",
+              "imagen": "assets/img/deporte/t-plank.jpg",
+              "tiempo": "6 min",
+              "dificultad": "Media",
+              "filtros": ["esterilla"],
+              "musculos": ["Core", "Tren superior"],
+              "estadisticas": {
+                "series": "4",
+                "repeticiones": "15",
+                "descanso": "20 seg"
+              },
+              "gif": null
+            },
+            {
+              "id": "q-i11",
+              "nombre": "High Knees",
+              "imagen": "assets/img/deporte/skipping.jpg",
+              "tiempo": "6 min",
+              "dificultad": "Media",
+              "filtros": ["sin-material"],
+              "musculos": ["Tren inferior", "Cuerpo completo", "Core"],
+              "estadisticas": {
+                "series": "4",
+                "repeticiones": "30",
+                "descanso": "30 seg"
+              },
+              "gif": null
+            },
+            {
+              "id": "q-i12",
+              "nombre": "Sentadilla con patada",
+              "imagen": "assets/img/deporte/sentadilla-patada.jpg",
+              "tiempo": "6 min",
+              "dificultad": "Media",
+              "filtros": ["sin-material"],
+              "musculos": ["Tren inferior", "Core"],
+              "estadisticas": {
+                "series": "4",
+                "repeticiones": "20",
+                "descanso": "15 seg"
+              },
+              "gif": null
             }
           ]
         },
@@ -71,22 +380,184 @@
           "nivel": "Avanzado",
           "ejercicios": [
             {
-              "id": "e8",
-              "nombre": "Dragon Flag",
-              "img": "assets/img/a1.jpg",
-              "filtros": ["sin-material"]
+              "id": "q-a1",
+              "nombre": "Burpees Completos",
+              "imagen": "assets/img/deporte/burpees.jpg",
+              "tiempo": "8 min",
+              "dificultad": "Alta",
+              "filtros": ["sin-material"],
+              "musculos": ["Cuerpo completo"],
+              "estadisticas": {
+                "series": "5",
+                "repeticiones": "12",
+                "descanso": "30 seg"
+              },
+              "gif": null
             },
             {
-              "id": "e9",
-              "nombre": "L-Sit",
-              "img": "assets/img/a2.jpg",
-              "filtros": ["mancuernas"]
+              "id": "q-a2",
+              "nombre": "Tuck Jumps",
+              "imagen": "assets/img/deporte/tuck.jpg",
+              "tiempo": "8 min",
+              "dificultad": "Alta",
+              "filtros": ["sin-material"],
+              "musculos": ["Tren inferior", "Cuerpo completo", "Core"],
+              "estadisticas": {
+                "series": "4",
+                "repeticiones": "20",
+                "descanso": "30 seg"
+              },
+              "gif": null
             },
             {
-              "id": "e10",
-              "nombre": "Toes to Bar",
-              "img": "assets/img/a3.jpg",
-              "filtros": ["barra"]
+              "id": "q-a3",
+              "nombre": "Flexiones Diamante",
+              "imagen": "assets/img/deporte/diamante.jpg",
+              "tiempo": "8 min",
+              "dificultad": "Alta",
+              "filtros": ["sin-material"],
+              "musculos": ["Tren superior"],
+              "estadisticas": {
+                "series": "4",
+                "repeticiones": "12",
+                "descanso": "30 seg"
+              },
+              "gif": null
+            },
+            {
+              "id": "q-a4",
+              "nombre": "Sentadilla con Salto",
+              "imagen": "assets/img/deporte/jump-squat.jpg",
+              "tiempo": "8 min",
+              "dificultad": "Alta",
+              "filtros": ["sin-material"],
+              "musculos": ["Tren inferior", "Cuerpo completo"],
+              "estadisticas": {
+                "series": "4",
+                "repeticiones": "15",
+                "descanso": "30 seg"
+              },
+              "gif": null
+            },
+            {
+              "id": "q-a5",
+              "nombre": "Plancha con Toque de Hombros",
+              "imagen": "assets/img/deporte/shoulder-tap.jpg",
+              "tiempo": "8 min",
+              "dificultad": "Alta",
+              "filtros": ["sin-material"],
+              "musculos": ["Core", "Tren superior"],
+              "estadisticas": {
+                "series": "4",
+                "repeticiones": "30",
+                "descanso": "20 seg"
+              },
+              "gif": null
+            },
+            {
+              "id": "q-a6",
+              "nombre": "Spider-Man Pushups",
+              "imagen": "assets/img/deporte/spiderman.jpg",
+              "tiempo": "8 min",
+              "dificultad": "Alta",
+              "filtros": ["sin-material"],
+              "musculos": ["Tren superior", "Core"],
+              "estadisticas": {
+                "series": "3",
+                "repeticiones": "10",
+                "descanso": "30 seg"
+              },
+              "gif": null
+            },
+            {
+              "id": "q-a7",
+              "nombre": "Broad Jumps",
+              "imagen": "assets/img/deporte/broad-jump-p.jpg",
+              "tiempo": "8 min",
+              "dificultad": "Alta",
+              "filtros": ["sin-material"],
+              "musculos": ["Tren inferior", "Cuerpo completo"],
+              "estadisticas": {
+                "series": "4",
+                "repeticiones": "8",
+                "descanso": "45 seg"
+              },
+              "gif": null
+            },
+            {
+              "id": "q-a8",
+              "nombre": "Flexiones Pliométricas",
+              "imagen": "assets/img/deporte/flexion-plio.jpg",
+              "tiempo": "8 min",
+              "dificultad": "Alta",
+              "filtros": ["sin-material"],
+              "musculos": ["Tren superior", "Core"],
+              "estadisticas": {
+                "series": "3",
+                "repeticiones": "8",
+                "descanso": "60 seg"
+              },
+              "gif": null
+            },
+            {
+              "id": "q-a9",
+              "nombre": "Zancadas con Salto",
+              "imagen": "assets/img/deporte/jumping-lunges.jpg",
+              "tiempo": "8 min",
+              "dificultad": "Alta",
+              "filtros": ["sin-material"],
+              "musculos": ["Tren inferior"],
+              "estadisticas": {
+                "series": "4",
+                "repeticiones": "20",
+                "descanso": "20 seg"
+              },
+              "gif": null
+            },
+            {
+              "id": "q-a10",
+              "nombre": "Plancha Jack",
+              "imagen": "assets/img/deporte/plank-jacks.jpg",
+              "tiempo": "8 min",
+              "dificultad": "Alta",
+              "filtros": ["esterilla"],
+              "musculos": ["Core", "Tren superior", "Tren inferior"],
+              "estadisticas": {
+                "series": "4",
+                "repeticiones": "30",
+                "descanso": "15 seg"
+              },
+              "gif": null
+            },
+            {
+              "id": "q-a11",
+              "nombre": "Sprints en el Sitio",
+              "imagen": "assets/img/deporte/sprint-sitio.jpg",
+              "tiempo": "8 min",
+              "dificultad": "Alta",
+              "filtros": ["sin-material"],
+              "musculos": ["Cuerpo completo", "Tren inferior"],
+              "estadisticas": {
+                "series": "8",
+                "repeticiones": "40",
+                "descanso": "10 seg"
+              },
+              "gif": null
+            },
+            {
+              "id": "q-a12",
+              "nombre": "Flexion con palmada",
+              "imagen": "assets/img/deporte/flexion-palmada.jpg",
+              "tiempo": "8 min",
+              "dificultad": "Alta",
+              "filtros": ["sin-material"],
+              "musculos": ["Cuerpo completo", "Core"],
+              "estadisticas": {
+                "series": "4",
+                "repeticiones": "10",
+                "descanso": "45 seg"
+              },
+              "gif": null
             }
           ]
         }

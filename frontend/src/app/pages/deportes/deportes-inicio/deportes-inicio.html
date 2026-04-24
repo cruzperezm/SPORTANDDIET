@@ -26,7 +26,7 @@
     <div class="contenedor-grid">
       <div class="tarjeta-item" *ngFor="let plan of planesDeportivos" (click)="irAlPlan(plan.id)">
         <div class="placeholder-imagen" [style.backgroundImage]="'url(' + plan.imagen + ')'"></div>
-        <h3>{{ plan.nombre }}</h3>
+        <h3>{{ plan.titulo }}</h3>
       </div>
     </div>
   </div>
@@ -48,7 +48,7 @@
 
       <div class="col" *ngFor="let ejercicio of resultados">
         <div class="tarjeta-resultado d-flex" (click)="irAEjercicio(ejercicio.id)" style="cursor: pointer;">
-          <div class="imagen-resultado" [style.backgroundImage]="'url(' + ejercicio.img + ')'"></div>
+          <div class="imagen-resultado" [style.backgroundImage]="'url(' + ejercicio.imagen + ')'"></div>
 
           <div class="p-4 d-flex flex-column justify-content-center w-100">
             <h5 class="mb-2">{{ ejercicio.nombre }}</h5>

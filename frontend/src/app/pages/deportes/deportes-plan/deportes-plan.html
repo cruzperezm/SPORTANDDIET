@@ -29,11 +29,12 @@
       <div class="grid-comidas">
         <div class="card-comida"
              *ngFor="let ejercicio of getEjerciciosVisibles(fase)"
-             [routerLink]="['/deportes/guia', ejercicio.id]"> <div class="card-img" [style.background-image]="'url(' + ejercicio.img + ')'">
-            <div class="card-info">
-              <h3>{{ ejercicio.nombre }}</h3>
-            </div>
+             [routerLink]="['/deportes/guia', ejercicio.id]">
+          <div class="card-img" [style.background-image]="'url(' + ejercicio.imagen + ')'">
+          <div class="card-info">
+            <h3>{{ ejercicio.nombre }}</h3>
           </div>
+        </div>
         </div>
       </div>
 
