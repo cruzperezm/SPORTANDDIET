@@ -11,7 +11,7 @@
             {
               "id": "r1",
               "nombre": "Huevos con Aguacate",
-              "imagen": "assets/img/keto1.jpg",
+              "imagen": "assets/img/dieta/keto/keto1.jpg",
               "tiempo": "15 min",
               "calorias": "350 kcal",
               "alergenos": ["huevos"],
