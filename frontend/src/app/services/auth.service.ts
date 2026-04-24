@@ -20,9 +20,24 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/register`, user);
   }
 
+  bio(form: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/bio`, form);
+  }
+
   login(credentials: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/login`, credentials).pipe(
       tap(res => {
+        localStorage.setItem('token', res.token);
+        this.loggedIn.next(true);
+      })
+    );
+  }
+
+  // NUEVO MÉTODO AÑADIDO
+  googleAuth(idToken: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/google`, { idToken }).pipe(
+      tap(res => {
+        // Guardamos el token y actualizamos el estado, igual que en el login normal
         localStorage.setItem('token', res.token);
         this.loggedIn.next(true);
       })

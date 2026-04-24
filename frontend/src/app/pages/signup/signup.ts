@@ -1,7 +1,9 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, AfterViewInit, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { AuthService } from "../../services/auth.service";
+
+declare var google: any;
 
 @Component({
   selector: 'app-signup',
@@ -10,52 +12,99 @@ import { AuthService } from "../../services/auth.service";
   templateUrl: './signup.html',
   styleUrl: './signup.css',
 })
-export class Signup {
-  google_logo = 'shared/images/google-logo.png';
-  fb_logo = 'shared/images/facebook-logo.png';
-  icloud_logo = 'shared/images/icloud-logo.png';
-
+export class Signup implements AfterViewInit {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
-  private router = inject(Router)
+  private router = inject(Router);
+  private ngZone = inject(NgZone);
+  private clientId = '26076707626-0opcaocg1dgbcj4g8fn0kaasigov1u4r.apps.googleusercontent.com';
 
   signUpForm: FormGroup = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      username: ['', [Validators.required]],
-      password: ['', [Validators.required]],
-      confirmPassword: ['', [Validators.required]]
+    email: ['', [Validators.required, Validators.email]],
+    username: ['', [Validators.required]],
+    password: ['', [Validators.required]],
+    confirmPassword: ['', [Validators.required]]
   });
 
   isLoading = false;
   errorMessage = '';
 
+  ngAfterViewInit(): void {
+    // Retardo de seguridad
+    setTimeout(() => {
+      if (typeof google !== 'undefined' && google.accounts) {
+        google.accounts.id.initialize({
+          client_id: this.clientId,
+          callback: this.handleGoogleResponse.bind(this)
+        });
+
+        // Asegúrate de que el ID coincida con el HTML ("google-btn")
+        google.accounts.id.renderButton(
+          document.getElementById("google-btn"),
+          {
+            type: "icon",       // Modo icono de Google (solo la G)
+            shape: "circle",    // Forma circular
+            theme: "outline",   // Fondo blanco con borde sutil, ideal para tu fondo gris
+            size: "large"       // Tamaño óptimo para hacer clic
+          }
+        );
+      } else {
+        console.error("El script de Google no se ha cargado correctamente en index.html");
+      }
+    }, 100);
+  }
+
+  handleGoogleResponse(response: any) {
+    this.isLoading = true;
+    this.authService.googleAuth(response.credential).subscribe({
+      next: (res: any) => {
+        console.log("Autenticación con Google exitosa");
+        this.isLoading = false;
+
+        this.ngZone.run(() => {
+          // LA MAGIA ESTÁ AQUÍ: Evaluamos qué necesita el usuario
+          if (res.needsOnboarding) {
+            console.log("El usuario necesita completar sus datos biométricos");
+            this.router.navigate(['/bio']); // Ruta a tu cuestionario
+          } else {
+            console.log("El usuario ya tiene todo completo");
+            this.router.navigate(['/']); // Ruta principal / Dashboard
+          }
+        });
+      },
+      error: (err) => {
+        this.isLoading = false;
+        this.ngZone.run(() => {
+          alert("Google Sign-In failed. Please try again.");
+          this.errorMessage = "Server error. Please try again later.";
+        });
+      }
+    });
+  }
+
+  // ¡AQUÍ ESTÁ TU FUNCIÓN ORIGINAL RESTAURADA!
   signup() {
-      if(this.signUpForm.invalid) return;
+    if (this.signUpForm.invalid) return;
 
       this.isLoading = true;
       this.errorMessage = '';
 
-      const password = this.signUpForm.value.password;
-      const confirmPassword = this.signUpForm.value.confirmPassword;
-
-      if (password !== confirmPassword) {
-        alert('Error de registro: las contraseñas no coinciden');
+    this.authService.register(this.signUpForm.value).subscribe({
+      next: (response) => {
+        console.log('Backend says:', response);
         this.isLoading = false;
-      }
 
-      this.authService.register(this.signUpForm.value).subscribe({
-            next: (response) => {
-                console.log("Backend:", response);
-                this.isLoading = false;
-                this.router.navigate(['/bio']);
-            },
-
-            error: (err) => {
-                alert("Error de registro: el correo ya tiene una cuenta");
-                console.error('Error de registro:', err);
-                this.isLoading = false;
-                this.errorMessage = err.error?.error || 'Error.';
-            }
-        })
-    }
+        const userId = response.id;
+        this.router.navigate(['/bio'], {
+          queryParams: { userId: userId },
+        });
+      },
+      error: (err) => {
+        alert('Registration failed: email already exists');
+        console.error('Registration failed:', err);
+        this.isLoading = false;
+        this.errorMessage = err.error?.error || 'An unexpected error occurred.';
+      },
+    });
+  }
 }

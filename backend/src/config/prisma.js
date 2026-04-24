@@ -1,9 +1,10 @@
-// We don't use 'pg' or 'adapter-pg' for prisma+postgres:// URLs
+const { Pool } = require('pg');
+const { PrismaPg } = require('@prisma/adapter-pg');
 const { PrismaClient } = require('../generated/client');
 require('dotenv').config();
 
 const prisma = new PrismaClient({
-  accelerateUrl: process.env.DATABASE_URL,
-});
+    accelerateUrl: process.env.DATABASE_URL
+})
 
 module.exports = prisma;

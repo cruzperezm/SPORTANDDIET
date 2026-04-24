@@ -21,13 +21,16 @@ export class DeportesPlanComponent implements OnInit {
     private location: Location,
     private cdr: ChangeDetectorRef,
   ) {}
-
   ngOnInit() {
     this.route.paramMap.subscribe((params) => {
       const id = params.get('id');
+      console.log('1. ID capturado de la URL:', id); // Debe decir "quema-grasa"
+
       if (id) {
         this.deporteService.obtenerPlanPorId(id).subscribe({
           next: (data: any) => {
+            console.log('2. Datos devueltos por el servicio:', data); // Si pone 'undefined', el fallo es el Servicio
+
             this.deporte = data;
             if (this.deporte && this.deporte.plan) {
               this.indices = {};
@@ -35,6 +38,8 @@ export class DeportesPlanComponent implements OnInit {
                 this.indices[fase.nivel] = 0;
               });
               this.cdr.detectChanges();
+            } else {
+              console.error("3. ERROR: La variable deporte no tiene la propiedad 'plan'.");
             }
           },
         });
@@ -60,9 +65,8 @@ export class DeportesPlanComponent implements OnInit {
   getEjerciciosFiltrados(fase: any): any[] {
     if (!fase?.ejercicios) return [];
     if (this.filtrosActivos.length === 0) return fase.ejercicios;
-    // Filtramos por material o categoría (mancuernas, cardio, etc)
     return fase.ejercicios.filter((e: any) =>
-      this.filtrosActivos.every((f) => e.filtros.includes(f)),
+      this.filtrosActivos.every((f) => e.musculos && e.musculos.includes(f))
     );
   }
 
@@ -71,7 +75,9 @@ export class DeportesPlanComponent implements OnInit {
     const total = filtrados.length;
     if (total === 0) return [];
     if (total <= 3) return filtrados;
-    const i = this.indices[fase.momento] || 0;
+
+    const i = this.indices[fase.nivel] || 0;
+
     return [filtrados[i % total], filtrados[(i + 1) % total], filtrados[(i + 2) % total]];
   }
 
