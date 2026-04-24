@@ -26,6 +26,32 @@ const register = async (email, password, username) => {
   });
 };
 
+const addBio = async (
+  genre,
+  age,
+  height,
+  goal,
+  activity,
+  c_weight,
+  d_weight,
+  weeks,
+  owner,
+) => {
+  return await prisma.biometrics.create({
+    data: {
+      genre,
+      age,
+      height,
+      goal,
+      activity,
+      c_weight,
+      d_weight,
+      weeks,
+      ownerId: owner,
+    },
+  });
+};
+
 const login = async (email, password) => {
   const user = await prisma.user.findUnique({
     where: { email },
@@ -90,4 +116,5 @@ const googleAuth = async (idToken) => {
   }
 };
 
-module.exports = { register, login, googleAuth };
+// 4. Actualizar las exportaciones
+module.exports = { register, login, addBio, googleAuth };

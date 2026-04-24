@@ -40,6 +40,7 @@ model Diet {
   id       Int      @id @default(autoincrement())
   title    String
   subtitle String
+  image    String
   recipes  Recipe[]
 }
 
@@ -75,7 +76,8 @@ model Recipe {
   duration     Int
   calories     Int
   allergies    Allergies[]
-  ingredients  String[]
+  ingredients  Int[]
+  // Las macros se pondrán en orden Proteinas, Grasas, Carbos sin los títulos ni unidades
   macros       String[]
   moment       Moment
   instructions String
@@ -118,6 +120,7 @@ model Exercise {
   level          Level
   filtros        FilterExercise[]
   muscles        MuscleGroups[]
-  stats          String[]
-  instructions   String
+  // Las stats se pondrán en orden Series (nº), repeticiones (nº), dencanso (s)
+  stats          Int[]
+  gif            String
 }

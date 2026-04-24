@@ -21,6 +21,43 @@ const registerUser = async (req, res) => {
   }
 };
 
+const userBioData = async (req, res) => {
+  try {
+    const { gender, age, height, goal, act, cKg, dKg, nWeeks, id } = req.body;
+    console.log("Request received (bio)");
+
+    if (
+      !gender ||
+      !age ||
+      !height ||
+      !goal ||
+      !act ||
+      !cKg ||
+      !dKg ||
+      !nWeeks ||
+      !id
+    ) {
+      return res.status(400).json({ error: "Biodata is required!" });
+    }
+
+    const bioData = await authService.addBio(
+      gender,
+      age,
+      height,
+      goal,
+      act,
+      cKg,
+      dKg,
+      nWeeks,
+      id,
+    );
+    res.status(201).json(bioData);
+  } catch (error) {
+    console.error("PRISMA ERROR:", error);
+    res.status(400).json({ error: error.message });
+  }
+};
+
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -61,4 +98,4 @@ const googleLogin = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, login, googleLogin };
+module.exports = { registerUser, login, userBioData, googleLogin };
