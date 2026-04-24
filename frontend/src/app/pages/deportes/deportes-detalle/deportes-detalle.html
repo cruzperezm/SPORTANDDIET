@@ -24,9 +24,17 @@
   <div class="bloque-inferior">
     <h2 class="text-40">Ejecución</h2>
     <div class="text-24-largo">{{ detalleData.instrucciones || 'Mantén la postura correcta y la respiración controlada durante toda la ejecución.' }}</div>
-    <div class="text-center mt-4">
-      <button class="btn-primario" (click)="volver()">Volver</button>
+
+    <div class="text-center mt-5">
+      <button class="btn-primario px-4 py-2 fs-5">Añadir al dashboard</button>
+
+      <div class="mt-4">
+        <span (click)="volver()" class="text-muted fw-medium" style="cursor: pointer; text-decoration: underline;">
+          ← Volver a planes
+        </span>
+      </div>
     </div>
+
   </div>
 </div>
 
