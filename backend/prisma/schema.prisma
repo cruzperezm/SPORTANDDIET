@@ -17,7 +17,7 @@ model User {
   email      String      @unique
   username   String?
   password   String?
-  googleId   String?     @unique   // <-- ¡ESTE ES EL QUE FALTA!
+  googleId   String?     @unique // <-- ¡ESTE ES EL QUE FALTA!
   biometrics Biometrics?
   createdAt  DateTime    @default(now())
 }
@@ -34,4 +34,93 @@ model Biometrics {
   c_weight Int
   d_weight Int
   weeks    Int
+}
+
+model Diet {
+  id       Int      @id @default(autoincrement())
+  title    String
+  subtitle String
+  image    String
+  recipes  Recipe[]
+}
+
+enum Allergies {
+  huevos
+  gluten
+  lacteos
+  crustaceos
+  pescado
+  mani
+}
+
+enum AllergiesIcons {
+  egg
+  bakery_dining
+  set_meal
+  local_drink
+  eco
+}
+
+enum Moment {
+  BREAKFAST
+  LUNCH
+  DINNER
+}
+
+model Recipe {
+  id           Int         @id @default(autoincrement())
+  diet         Diet?       @relation(fields: [dietId], references: [id])
+  dietId       Int?
+  name         String
+  image        String
+  duration     Int
+  calories     Int
+  allergies    Allergies[]
+  ingredients  Int[]
+  // Las macros se pondrán en orden Proteinas, Grasas, Carbos sin los títulos ni unidades
+  macros       String[]
+  moment       Moment
+  instructions String
+}
+
+model ExercisePlan {
+  id        Int        @id @default(autoincrement())
+  title     String
+  subtitle  String
+  exercises Exercise[]
+}
+
+enum Level {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+}
+
+enum FilterExercise {
+  no_material
+  full_body
+  upper_body
+  lower_body
+}
+
+enum MuscleGroups {
+  ABS
+  CORE
+  SHOULDERS
+}
+
+model Exercise {
+  id             Int              @id @default(autoincrement())
+  exercisePlan   ExercisePlan?    @relation(fields: [exercisePlanId], references: [id])
+  exercisePlanId Int?
+  name           String
+  image          String
+  duration       String
+  difficulty     String
+  level          Level
+  filtros        FilterExercise[]
+  muscles        MuscleGroups[]
+  // Las stats se pondrán en orden Series (nº), repeticiones (nº), dencanso (s)
+  stats          Int[]
+  gif            String
 }

@@ -1,84 +1,101 @@
-const authService = require('../services/auth.service')
+const authService = require("../services/auth.service");
 
-const registerUser = async(req, res) => {
-    try {
-        
-        const { email, username, password } = req.body;
-        console.log("Request received (register)");
+const registerUser = async (req, res) => {
+  try {
+    const { email, username, password } = req.body;
+    console.log("Request received (register)");
 
-        if (!email || !password) {
-            return res.status(400).json({ error: 'Email and password are required' })
-        } 
-
-        const registeredUser = await authService.register(email, password, username)
-        res.status(201).json(registeredUser)
-    } catch (error) {
-        console.error("PRISMA ERROR:", error);
-        res.status(400).json({ error: error.message })
+    if (!email || !password) {
+      return res.status(400).json({ error: "Email and password are required" });
     }
-}
 
-const userBioData = async(req, res) => {
-    try {
+    const registeredUser = await authService.register(
+      email,
+      password,
+      username,
+    );
+    res.status(201).json(registeredUser);
+  } catch (error) {
+    console.error("PRISMA ERROR:", error);
+    res.status(400).json({ error: error.message });
+  }
+};
 
-        const { gender, age, height, goal, act, cKg, dKg, nWeeks, id} = req.body;
-        console.log("Request received (bio)");
+const userBioData = async (req, res) => {
+  try {
+    const { gender, age, height, goal, act, cKg, dKg, nWeeks, id } = req.body;
+    console.log("Request received (bio)");
 
-        if (!gender || !age || !height || !goal || !act || !cKg || !dKg || !nWeeks || !id){
-            return res.status(400).json({ error: 'Biodata is required!' })
-        }
-
-        const bioData = await authService.addBio(gender, age, height, goal, act, cKg, dKg, nWeeks, id);
-        res.status(201).json(bioData)
-    } catch (error) {
-        console.error("PRISMA ERROR:", error);
-        res.status(400).json({ error: error.message })
+    if (
+      !gender ||
+      !age ||
+      !height ||
+      !goal ||
+      !act ||
+      !cKg ||
+      !dKg ||
+      !nWeeks ||
+      !id
+    ) {
+      return res.status(400).json({ error: "Biodata is required!" });
     }
-}
 
-const login = async(req, res) => {
-    try {
-        const { email, password } = req.body;
-        console.log("Request received (login)");
+    const bioData = await authService.addBio(
+      gender,
+      age,
+      height,
+      goal,
+      act,
+      cKg,
+      dKg,
+      nWeeks,
+      id,
+    );
+    res.status(201).json(bioData);
+  } catch (error) {
+    console.error("PRISMA ERROR:", error);
+    res.status(400).json({ error: error.message });
+  }
+};
 
-        const loggedUser = await authService.login(email, password)
-        res.status(201).json(loggedUser)
+const login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    console.log("Request received (login)");
 
-    } catch (error) {
-        console.error("PRISMA ERROR:", error);
-        if (error.name === 'AuthError') {
-            res.status(error.statusCode).json({ error: error.message })
-        } else {
-            res.status(400).json({ error: error.message })
-        }
-        
+    const loggedUser = await authService.login(email, password);
+    res.status(201).json(loggedUser);
+  } catch (error) {
+    console.error("PRISMA ERROR:", error);
+    if (error.name === "AuthError") {
+      res.status(error.statusCode).json({ error: error.message });
+    } else {
+      res.status(400).json({ error: error.message });
     }
-}
+  }
+};
 
-// NUEVO CONTROLADOR:
-const googleLogin = async(req, res) => {
-    try {
-        // El frontend nos enviará el ID Token de Google en el body
-        const { idToken } = req.body;
-        console.log("Request received (Google Auth)");
+const googleLogin = async (req, res) => {
+  try {
+    const { idToken } = req.body;
+    console.log("Request received (Google Auth)");
 
-        if (!idToken) {
-            return res.status(400).json({ error: 'El token de Google es obligatorio' });
-        }
-
-        const loggedUser = await authService.googleAuth(idToken);
-        // Devolvemos 200 OK con el usuario y nuestro JWT
-        res.status(200).json(loggedUser);
-
-    } catch (error) {
-        console.error("GOOGLE AUTH ERROR:", error);
-        if (error.name === 'AuthError') {
-            res.status(error.statusCode).json({ error: error.message })
-        } else {
-            res.status(400).json({ error: error.message })
-        }
+    if (!idToken) {
+      return res
+        .status(400)
+        .json({ error: "El token de Google es obligatorio" });
     }
-}
 
-// Actualizar las exportaciones
-module.exports = { registerUser, login, userBioData, googleLogin }
+    const loggedUser = await authService.googleAuth(idToken);
+    res.status(200).json(loggedUser);
+  } catch (error) {
+    console.error("GOOGLE AUTH ERROR:", error);
+    if (error.name === "AuthError") {
+      res.status(error.statusCode).json({ error: error.message });
+    } else {
+      res.status(400).json({ error: error.message });
+    }
+  }
+};
+
+module.exports = { registerUser, login, userBioData, googleLogin };
