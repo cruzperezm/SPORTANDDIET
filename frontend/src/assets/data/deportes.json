@@ -100,7 +100,9 @@
               ],
               "musculos": [
                 "Piernas",
-                "Glúteos"
+                "Glúteos",
+                "Abdominales",
+                "Espalda"
               ],
               "estadisticas": {
                 "series": "3",
@@ -120,7 +122,9 @@
               ],
               "musculos": [
                 "Cardio",
-                "Cardiovascular system"
+                "Gemelos",
+                "Hombros",
+                "Cuádriceps"
               ],
               "estadisticas": {
                 "series": "3",
@@ -140,7 +144,9 @@
               ],
               "musculos": [
                 "Cardio",
-                "Cardiovascular system"
+                "Cuádriceps",
+                "Abdominales",
+                "Gemelos"
               ],
               "estadisticas": {
                 "series": "3",
@@ -200,7 +206,8 @@
               ],
               "musculos": [
                 "Piernas",
-                "Cuádriceps"
+                "Cuádriceps",
+                "Glúteos"
               ],
               "estadisticas": {
                 "series": "3",
@@ -240,7 +247,9 @@
               ],
               "musculos": [
                 "Piernas",
-                "Glúteos"
+                "Glúteos",
+                "Gemelos",
+                "Abdominales"
               ],
               "estadisticas": {
                 "series": "3",
@@ -260,7 +269,11 @@
               ],
               "musculos": [
                 "Cardio",
-                "Cardiovascular system"
+                "Bíceps",
+                "Abdominales",
+                "Hombros",
+                "Glúteos",
+                "Cuádricpes"
               ],
               "estadisticas": {
                 "series": "3",
@@ -300,7 +313,8 @@
               ],
               "musculos": [
                 "Brazos",
-                "Tríceps"
+                "Tríceps",
+                "Pecho"
               ],
               "estadisticas": {
                 "series": "3",
@@ -345,7 +359,8 @@
               ],
               "musculos": [
                 "Espalda",
-                "Dorsales"
+                "Dorsales",
+                "Hombros"
               ],
               "estadisticas": {
                 "series": "4",
@@ -425,7 +440,8 @@
               ],
               "musculos": [
                 "Brazos",
-                "Bíceps"
+                "Bíceps",
+                "Espalda"
               ],
               "estadisticas": {
                 "series": "4",
@@ -505,7 +521,8 @@
               ],
               "musculos": [
                 "Brazos",
-                "Bíceps"
+                "Bíceps",
+                "Abdominales"
               ],
               "estadisticas": {
                 "series": "4",
@@ -564,7 +581,6 @@
                 "peso-corporal"
               ],
               "musculos": [
-                "Gemelos",
                 "Gemelos"
               ],
               "estadisticas": {
@@ -709,7 +725,6 @@
                 "peso-corporal"
               ],
               "musculos": [
-                "Gemelos",
                 "Gemelos"
               ],
               "estadisticas": {
@@ -730,7 +745,11 @@
               ],
               "musculos": [
                 "Cardio",
-                "Cardiovascular system"
+                "Abdominales",
+                "Pecho",
+                "Pierna",
+                "Gemelos",
+                "Cuádriceps"
               ],
               "estadisticas": {
                 "series": "4",
@@ -750,7 +769,7 @@
               ],
               "musculos": [
                 "Piernas",
-                "Adductors"
+                "Aductores"
               ],
               "estadisticas": {
                 "series": "4",
@@ -769,7 +788,6 @@
                 "peso-corporal"
               ],
               "musculos": [
-                "Gemelos",
                 "Gemelos"
               ],
               "estadisticas": {
@@ -789,7 +807,6 @@
                 "peso-corporal"
               ],
               "musculos": [
-                "Gemelos",
                 "Gemelos"
               ],
               "estadisticas": {
@@ -1022,8 +1039,7 @@
                 "barra"
               ],
               "musculos": [
-                "Piernas",
-                "Cuádriceps"
+                "Piernas"
               ],
               "estadisticas": {
                 "series": "3",
@@ -1103,7 +1119,9 @@
               ],
               "musculos": [
                 "Piernas",
-                "Cuádriceps"
+                "Cuádriceps",
+                "Abdominales",
+                "Glúteos"
               ],
               "estadisticas": {
                 "series": "3",
@@ -1347,7 +1365,6 @@
                 "barra"
               ],
               "musculos": [
-                "Gemelos",
                 "Gemelos"
               ],
               "estadisticas": {
@@ -1733,7 +1750,7 @@
               ],
               "musculos": [
                 "Pecho",
-                "Serratus anterior"
+                "Dorsales"
               ],
               "estadisticas": {
                 "series": "4",
@@ -1753,7 +1770,8 @@
               ],
               "musculos": [
                 "Piernas",
-                "Glúteos"
+                "Glúteos",
+                "Gemelos"
               ],
               "estadisticas": {
                 "series": "4",
@@ -1986,7 +2004,7 @@
               ],
               "musculos": [
                 "Piernas",
-                "Adductors"
+                "Aductores"
               ],
               "estadisticas": {
                 "series": "3",
@@ -2025,7 +2043,6 @@
                 "cuerda"
               ],
               "musculos": [
-                "Gemelos",
                 "Gemelos"
               ],
               "estadisticas": {
@@ -2065,7 +2082,6 @@
                 "peso-corporal"
               ],
               "musculos": [
-                "Gemelos",
                 "Gemelos"
               ],
               "estadisticas": {
@@ -2350,8 +2366,7 @@
                 "peso-corporal"
               ],
               "musculos": [
-                "Cuello",
-                "Levator scapulae"
+                "Cuello"
               ],
               "estadisticas": {
                 "series": "4",
@@ -2390,7 +2405,6 @@
                 "cuerda"
               ],
               "musculos": [
-                "Gemelos",
                 "Gemelos"
               ],
               "estadisticas": {
@@ -2410,7 +2424,6 @@
                 "cuerda"
               ],
               "musculos": [
-                "Gemelos",
                 "Gemelos"
               ],
               "estadisticas": {
@@ -2575,7 +2588,6 @@
                 "peso-corporal"
               ],
               "musculos": [
-                "Gemelos",
                 "Gemelos"
               ],
               "estadisticas": {
@@ -2675,8 +2687,7 @@
                 "peso-corporal"
               ],
               "musculos": [
-                "Cuello",
-                "Levator scapulae"
+                "Cuello"
               ],
               "estadisticas": {
                 "series": "4",
@@ -2695,7 +2706,6 @@
                 "peso-corporal"
               ],
               "musculos": [
-                "Antebrazos",
                 "Antebrazos"
               ],
               "estadisticas": {
@@ -2755,7 +2765,6 @@
                 "peso-corporal"
               ],
               "musculos": [
-                "Gemelos",
                 "Gemelos"
               ],
               "estadisticas": {
@@ -2929,7 +2938,10 @@
               ],
               "musculos": [
                 "Core",
-                "Abdominales"
+                "Abdominales",
+                "Piernas",
+                "Cuádriceps",
+                "Pecho"
               ],
               "estadisticas": {
                 "series": "3",
@@ -3029,7 +3041,8 @@
               ],
               "musculos": [
                 "Piernas",
-                "Glúteos"
+                "Glúteos",
+                "Espalda"
               ],
               "estadisticas": {
                 "series": "3",
@@ -3154,7 +3167,8 @@
               ],
               "musculos": [
                 "Piernas",
-                "Glúteos"
+                "Glúteos",
+                "Espalda"
               ],
               "estadisticas": {
                 "series": "4",
@@ -3499,7 +3513,10 @@
               ],
               "musculos": [
                 "Piernas",
-                "Cuádriceps"
+                "Cuádriceps",
+                "Pecho",
+                "Bíceps",
+                "Gemelos"
               ],
               "estadisticas": {
                 "series": "4",
@@ -3547,13 +3564,8 @@
               "imagen": "https://raw.githubusercontent.com/hasaneyldrm/exercises-dataset/main/images/2331-XSCHmiI.jpg",
               "tiempo": "5 min",
               "dificultad": "Baja",
-              "filtros": [
-                "máquina-palanca"
-              ],
-              "musculos": [
-                "Cardio",
-                "Cardiovascular system"
-              ],
+              "filtros": ["máquina-palanca"],
+              "musculos": ["Cardio", "Pecho", "Bíceps", "Cuádricpes", "Hombros"],
               "estadisticas": {
                 "series": "3",
                 "repeticiones": "15",
@@ -3572,7 +3584,10 @@
               ],
               "musculos": [
                 "Cardio",
-                "Cardiovascular system"
+                "Pecho",
+                "Bíceps",
+                "Cuádricpes",
+                "Hombros"
               ],
               "estadisticas": {
                 "series": "3",
@@ -3612,7 +3627,8 @@
               ],
               "musculos": [
                 "Cardio",
-                "Cardiovascular system"
+                "Gemelos",
+                "Cuádriceps"
               ],
               "estadisticas": {
                 "series": "3",
@@ -3632,7 +3648,10 @@
               ],
               "musculos": [
                 "Cardio",
-                "Cardiovascular system"
+                "Pecho",
+                "Bíceps",
+                "Cuádricpes",
+                "Hombros"
               ],
               "estadisticas": {
                 "series": "3",
@@ -3652,7 +3671,9 @@
               ],
               "musculos": [
                 "Cardio",
-                "Cardiovascular system"
+                "Bíceps",
+                "Cuádricpes",
+                "Hombros"
               ],
               "estadisticas": {
                 "series": "3",
@@ -3672,7 +3693,8 @@
               ],
               "musculos": [
                 "Cardio",
-                "Cardiovascular system"
+                "Glúteos",
+                "Gemelos"
               ],
               "estadisticas": {
                 "series": "3",
@@ -3692,7 +3714,8 @@
               ],
               "musculos": [
                 "Cardio",
-                "Cardiovascular system"
+                "Glúteos",
+                "Abdominales"
               ],
               "estadisticas": {
                 "series": "3",
@@ -3712,7 +3735,8 @@
               ],
               "musculos": [
                 "Cardio",
-                "Cardiovascular system"
+                "Gemelos",
+                "Abdominales"
               ],
               "estadisticas": {
                 "series": "3",
@@ -3732,7 +3756,8 @@
               ],
               "musculos": [
                 "Cardio",
-                "Cardiovascular system"
+                "Dorsales",
+                "Cuádriceps"
               ],
               "estadisticas": {
                 "series": "3",
@@ -3743,7 +3768,7 @@
             },
             {
               "id": "ej-5-pri-11",
-              "nombre": "Run (equipment)",
+              "nombre": "Run",
               "imagen": "https://raw.githubusercontent.com/hasaneyldrm/exercises-dataset/main/images/0684-y5p0H8a.jpg",
               "tiempo": "5 min",
               "dificultad": "Baja",
@@ -3752,7 +3777,9 @@
               ],
               "musculos": [
                 "Cardio",
-                "Cardiovascular system"
+                "Dorsales",
+                "Gemelos",
+                "Cuádriceps"
               ],
               "estadisticas": {
                 "series": "3",
@@ -3772,7 +3799,8 @@
               ],
               "musculos": [
                 "Cardio",
-                "Cardiovascular system"
+                "Gemelos",
+                "Cuádriceps"
               ],
               "estadisticas": {
                 "series": "3",
@@ -3792,7 +3820,8 @@
               ],
               "musculos": [
                 "Cardio",
-                "Cardiovascular system"
+                "Glúteos",
+                "Cuádriceps"
               ],
               "estadisticas": {
                 "series": "3",
@@ -3812,7 +3841,7 @@
               ],
               "musculos": [
                 "Cardio",
-                "Cardiovascular system"
+                "Cuádriceps"
               ],
               "estadisticas": {
                 "series": "3",
@@ -3832,7 +3861,9 @@
               ],
               "musculos": [
                 "Cardio",
-                "Cardiovascular system"
+                "Cuádriceps",
+                "Gemelos",
+                "Abdominales"
               ],
               "estadisticas": {
                 "series": "3",
@@ -3855,10 +3886,7 @@
               "filtros": [
                 "peso-corporal"
               ],
-              "musculos": [
-                "Cardio",
-                "Cardiovascular system"
-              ],
+              "musculos": ["Cardio", "Cuádricpes", "Gemelos"],
               "estadisticas": {
                 "series": "4",
                 "repeticiones": "15",
@@ -3875,10 +3903,7 @@
               "filtros": [
                 "peso-corporal"
               ],
-              "musculos": [
-                "Cardio",
-                "Cardiovascular system"
-              ],
+              "musculos": ["Cardio", "Cuádricpes", "Gemelos", "Hombro", "Dorsales"],
               "estadisticas": {
                 "series": "4",
                 "repeticiones": "15",
@@ -3895,10 +3920,7 @@
               "filtros": [
                 "stationary-bike"
               ],
-              "musculos": [
-                "Cardio",
-                "Cardiovascular system"
-              ],
+              "musculos": ["Cardio", "Cuádricpes", "Gemelos"],
               "estadisticas": {
                 "series": "4",
                 "repeticiones": "15",
@@ -3915,10 +3937,7 @@
               "filtros": [
                 "máquina-palanca"
               ],
-              "musculos": [
-                "Cardio",
-                "Cardiovascular system"
-              ],
+              "musculos": ["Cardio", "Cuádricpes", "Gemelos"],
               "estadisticas": {
                 "series": "4",
                 "repeticiones": "15",
@@ -3935,10 +3954,7 @@
               "filtros": [
                 "peso-corporal"
               ],
-              "musculos": [
-                "Cardio",
-                "Cardiovascular system"
-              ],
+              "musculos": ["Cardio", "Cuádricpes", "Gemelos", "Espalda", "Dorsales"],
               "estadisticas": {
                 "series": "4",
                 "repeticiones": "15",
@@ -3955,10 +3971,7 @@
               "filtros": [
                 "elíptica"
               ],
-              "musculos": [
-                "Cardio",
-                "Cardiovascular system"
-              ],
+              "musculos": ["Cardio", "Cuádricpes", "Gemelos", "Hombro", "Abdominales", "Pecho"],
               "estadisticas": {
                 "series": "4",
                 "repeticiones": "15",
@@ -3975,10 +3988,7 @@
               "filtros": [
                 "peso-corporal"
               ],
-              "musculos": [
-                "Cardio",
-                "Cardiovascular system"
-              ],
+              "musculos": ["Cardio", "Cuádricpes", "Gemelos"],
               "estadisticas": {
                 "series": "4",
                 "repeticiones": "15",
@@ -3995,10 +4005,7 @@
               "filtros": [
                 "máquina-palanca"
               ],
-              "musculos": [
-                "Cardio",
-                "Cardiovascular system"
-              ],
+              "musculos": ["Cardio", "Cuádricpes", "Gemelos"],
               "estadisticas": {
                 "series": "4",
                 "repeticiones": "15",
@@ -4015,10 +4022,7 @@
               "filtros": [
                 "escaladora"
               ],
-              "musculos": [
-                "Cardio",
-                "Cardiovascular system"
-              ],
+              "musculos": ["Cardio", "Cuádricpes", "Gemelos", "Glúteos"],
               "estadisticas": {
                 "series": "4",
                 "repeticiones": "15",
@@ -4035,10 +4039,7 @@
               "filtros": [
                 "peso-corporal"
               ],
-              "musculos": [
-                "Cardio",
-                "Cardiovascular system"
-              ],
+              "musculos": ["Cardio", "Cuádricpes", "Gemelos", "Hombros", "Bíceps", "Espalda"],
               "estadisticas": {
                 "series": "4",
                 "repeticiones": "15",
@@ -4495,7 +4496,8 @@
               ],
               "musculos": [
                 "Core",
-                "Abdominales"
+                "Abdominales",
+                "Cuádriceps"
               ],
               "estadisticas": {
                 "series": "3",

@@ -93,13 +93,13 @@ export class DeportesPlanComponent implements OnInit {
     this.cdr.detectChanges();
   }
 
-  // --- ATENCIÓN: Ahora filtramos por 'gruposMusculares' en vez de 'musculos' ---
   getEjerciciosFiltrados(fase: any): any[] {
     if (!fase?.ejercicios) return [];
+
     if (this.filtrosActivos.length === 0) return fase.ejercicios;
 
     return fase.ejercicios.filter((e: any) =>
-      this.filtrosActivos.every((f) => e.gruposMusculares && e.gruposMusculares.includes(f))
+      this.filtrosActivos.some((f) => e.gruposMusculares && e.gruposMusculares.includes(f))
     );
   }
 
