@@ -10,14 +10,24 @@ export class SportService {
 
   constructor(private http: HttpClient) {}
 
-  getPlanById() {}
+  // Pendiente de implementar en backend
+  getPlanById(id: string): Observable<any[]> {
+    let params = new HttpParams();
+    params = params.set('id', id);
+    return this.http.get<any[]>(`${this.apiUrl}/exercisePlans`, { params });
+  }
 
-  getExerciseById() {}
+  // Pendiente de implementar en backend
+  getExerciseById(id: string): Observable<any[]> {
+    let params = new HttpParams();
+    params = params.set('id', id);
+    return this.http.get<any[]>(`${this.apiUrl}/exercisePlans/exercises`, { params });
+  }
 
-  search(searchString: string, type: string): Observable<any[]> {
+  search(searchString: string): Observable<any[]> {
     let params = new HttpParams();
     params = params.set('searchString', searchString);
-    params = params.set('type', type);
+    params = params.set('type', 'exercises');
     return this.http.get<any[]>(`${this.apiUrl}/search/basicSearch`, { params });
   }
 

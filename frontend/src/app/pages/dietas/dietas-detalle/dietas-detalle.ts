@@ -36,7 +36,6 @@ export class DietasDetalleComponent implements OnInit {
       next: (data) => {
         console.log('Receta encontrada:', data);
         this.receta = data;
-        // Forzamos a Angular a pintar los datos
         this.cdr.detectChanges();
       },
       error: (err) => console.error('Error al cargar detalle:', err),

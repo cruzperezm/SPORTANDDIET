@@ -5,56 +5,66 @@
     </button>
 
     <header class="pill-header">
-      <h1 class="titulo-pill">{{ dieta.titulo }}</h1>
-      <p class="subtitulo-pill">{{ dieta.subtitulo }}</p>
+      <h1 class="titulo-pill">{{ dieta.title }}</h1>
+      <p class="subtitulo-pill">{{ dieta.subtitle }}</p>
     </header>
 
-    <nav class="filtros-nav">
-      <button (click)="toggleFiltro('todos')" [class.active]="filtrosActivos.length === 0">
+    <nav class="filtros-nav d-flex flex-wrap gap-2">
+      <button
+        (click)="toggleFiltro('todos')"
+        [class.active]="filtrosActivos.length === 0"
+        class="btn-filtro"
+      >
         Todos
       </button>
-      <button (click)="toggleFiltro('gluten')" [class.active]="filtrosActivos.includes('gluten')">
-        Sin Gluten
-      </button>
-      <button (click)="toggleFiltro('lacteos')" [class.active]="filtrosActivos.includes('lacteos')">
-        Sin Lácteos
-      </button>
-      <button (click)="toggleFiltro('huevos')" [class.active]="filtrosActivos.includes('huevos')">
-        Sin Huevos
-      </button>
+
+      @for (alergeno of LISTA_ALERGENOS; track alergeno.valor) {
+        <button
+          (click)="toggleFiltro(alergeno.valor)"
+          [class.active]="filtrosActivos.includes(alergeno.valor)"
+          class="btn-filtro"
+        >
+          {{ alergeno.etiqueta }}
+        </button>
+      }
     </nav>
 
-    @for (fase of dieta.plan; track fase.momento) {
-      <section class="fase-seccion">
-        <h2 class="momento-label">{{ fase.momento }}</h2>
+    @for (momento of MOMENTOS; track momento) {
+      @if (recipes$[momento] | async; as comidas) {
+        <section class="fase-seccion mb-5">
+          <h2 class="momento-label ms-4 mb-3">{{ momento }}</h2>
 
-        <div class="carrusel-container">
-          @if (getComidasFiltradas(fase).length > 3) {
-            <button class="flecha-nav" (click)="mover(-1, fase.momento)">‹</button>
-          }
+          <div class="position-relative carrusel-wrapper">
+            @if (comidas.length > 0) {
+              <button class="flecha-nav prev" (click)="mover(-1, momento, carrusel)">‹</button>
 
-          <div class="grid-comidas">
-            @for (comida of getComidasVisibles(fase); track comida.id) {
-              <div class="card-comida" [routerLink]="['/dietas/receta', comida.id]">
-                <div
-                  class="card-img"
-                  [style.background-image]="'url(' + (comida.img || comida.imagen) + ')'"
-                >
-                  <div class="card-info">
-                    <h3>{{ comida.nombre }}</h3>
+              <div class="carrusel-scroll d-flex gap-3 px-4" #carrusel>
+                @for (comida of comidas; track comida.id) {
+                  <div
+                    class="card-comida flex-shrink-0"
+                    [routerLink]="['/dietas/receta', comida.id]"
+                  >
+                    <div
+                      class="card-img shadow-sm"
+                      [style.background-image]="'url(' + comida.image + ')'"
+                    >
+                      <div class="card-info">
+                        <h3 class="m-0">{{ comida.name }}</h3>
+                      </div>
+                    </div>
                   </div>
-                </div>
+                }
               </div>
-            } @empty {
-              <p class="no-results">No hay comidas con estos filtros.</p>
+
+              <button class="flecha-nav next" (click)="mover(1, momento, carrusel)">›</button>
+            } @else {
+              <p class="text-center text-muted py-4">
+                No hay comidas disponibles para el {{ momento }}.
+              </p>
             }
           </div>
-
-          @if (getComidasFiltradas(fase).length > 3) {
-            <button class="flecha-nav" (click)="mover(1, fase.momento)">›</button>
-          }
-        </div>
-      </section>
+        </section>
+      }
     }
   </div>
 } @else {

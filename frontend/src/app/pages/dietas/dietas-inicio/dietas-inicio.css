@@ -114,11 +114,15 @@
 }
 
 .tarjeta-resultado .imagen-resultado {
-  width: 140px;
+  min-width: 140px;
   min-height: 100%;
   background-size: cover;
   background-position: center;
   background-color: #E5E7EB;
+}
+
+.tarjeta-resultado p {
+  text-wrap-mode: wrap;
 }
 
 .tarjeta-resultado h5 {

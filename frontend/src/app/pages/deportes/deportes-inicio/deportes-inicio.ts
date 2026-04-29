@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-import { DeporteService } from '../../../services/deportes';
+import { SportService } from '../../../services/deportes.service';
 
 @Component({
   selector: 'app-deportes-inicio',
@@ -30,7 +30,7 @@ export class DeportesInicioComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private deporteService: DeporteService,
+    private deporteService: SportService,
   ) {}
 
   ngOnInit() {}
@@ -45,7 +45,7 @@ export class DeportesInicioComponent implements OnInit {
 
     if (this.textoBusqueda.length > 2) {
       this.modoBusqueda = true;
-      this.deporteService.buscarEjercicios(this.textoBusqueda).subscribe((datos: any[]) => {
+      this.deporteService.search(this.textoBusqueda).subscribe((datos: any[]) => {
         this.resultados = datos;
       });
     } else {

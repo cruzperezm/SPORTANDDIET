@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { DeporteService } from '../../../services/deportes';
+import { SportService } from '../../../services/deportes.service';
 
 @Component({
   selector: 'app-deportes-plan',
@@ -17,7 +17,7 @@ export class DeportesPlanComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private deporteService: DeporteService,
+    private deporteService: SportService,
     private location: Location,
     private cdr: ChangeDetectorRef,
   ) {}
@@ -27,7 +27,7 @@ export class DeportesPlanComponent implements OnInit {
       console.log('1. ID capturado de la URL:', id); // Debe decir "quema-grasa"
 
       if (id) {
-        this.deporteService.obtenerPlanPorId(id).subscribe({
+        this.deporteService.getPlanById(id).subscribe({
           next: (data: any) => {
             console.log('2. Datos devueltos por el servicio:', data); // Si pone 'undefined', el fallo es el Servicio
 

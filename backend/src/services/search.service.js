@@ -1,3 +1,5 @@
+const prisma = require("../config/prisma");
+
 const getSuggestions = async (searchString, type) => {
   if (type === "diets") {
     return await prisma.recipe.findMany({
@@ -30,7 +32,7 @@ const getSuggestions = async (searchString, type) => {
   }
 };
 
-const basicSearch = async (searchSring, type) => {
+const basicSearch = async (searchString, type) => {
   if (type === "diets") {
     return await prisma.recipe.findMany({
       where: {
@@ -39,9 +41,15 @@ const basicSearch = async (searchSring, type) => {
           mode: "insensitive",
         },
       },
+      include: {
+        diet: {
+          select: { title: true },
+        },
+      },
     });
   } else if (type === "exercises") {
     return await prisma.exercise.findMany({
+      relationLoadStrategy: "join",
       where: {
         name: {
           contains: searchString,
@@ -52,12 +60,14 @@ const basicSearch = async (searchSring, type) => {
   }
 };
 
-const filter = async (tags, type) => {
+const filter = async (id, tags, type, classification) => {
   if (type === "diets") {
     return await prisma.recipe.findMany({
       where: {
+        dietId: id,
+        moment: classification,
         NOT: {
-          filters: {
+          allergies: {
             hasSome: tags,
           },
         },

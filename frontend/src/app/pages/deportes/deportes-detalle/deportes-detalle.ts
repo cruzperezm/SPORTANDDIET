@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { DeporteService } from '../../../services/deportes';
+import { SportService } from '../../../services/deportes.service';
 
 @Component({
   selector: 'app-deportes-detalle',
@@ -17,7 +17,7 @@ export class DeportesDetalleComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private deporteService: DeporteService,
+    private deporteService: SportService,
     private location: Location,
     private cdr: ChangeDetectorRef,
   ) {}
@@ -32,7 +32,7 @@ export class DeportesDetalleComponent implements OnInit {
   }
 
   cargarDatos(id: string) {
-    this.deporteService.obtenerEjercicioPorId(id).subscribe({
+    this.deporteService.getExerciseById(id).subscribe({
       next: (data: any) => {
         this.detalleData = data;
 

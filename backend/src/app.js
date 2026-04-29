@@ -2,6 +2,7 @@ var express = require("express");
 var cors = require("cors");
 var authRoutes = require("./routes/auth.routes");
 var searchRoutes = require("./routes/search.routes");
+var dietRoutes = require("./routes/diet.routes");
 
 var app = express();
 const PORT = 3000;
@@ -20,6 +21,7 @@ app.use(cors());
 app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/search", searchRoutes);
+app.use("/diets", dietRoutes);
 
 app.use(function (err, req, res, next) {
   // Log the error to your terminal so you can see it

@@ -18,14 +18,7 @@ export class DietasInicioComponent implements OnInit {
   textoBusqueda: string = '';
 
   //grid inicial
-  dietas = [
-    { id: 1, nombre: 'Dieta Keto', imagen: 'assets/img/keto.jpg' },
-    { id: 2, nombre: 'Dieta Vegana', imagen: 'assets/img/vegana.jpg' },
-    { id: 3, nombre: 'Mediterránea', imagen: 'assets/img/mediterranea.jpg' },
-    { id: 4, nombre: 'Ayuno Intermitente', imagen: 'assets/img/ayuno.jpg' },
-    { id: 5, nombre: 'Sin Gluten', imagen: 'assets/img/singluten.jpg' },
-    { id: 6, nombre: 'Paleo', imagen: 'assets/img/paleo.jpg' },
-  ];
+  dietas$!: Observable<any[]>;
 
   constructor(
     private router: Router,
@@ -33,9 +26,7 @@ export class DietasInicioComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    //si en el futuro quieren cargar las dietas iniciales desde el JSON también,
-    //podrías borrar el array de arriba y descomentar esta línea:
-    //this.dietaService.obtenerDietasInicio().subscribe(data => this.dietas = data);
+    this.dietas$ = this.dietaService.getAllDiets();
   }
 
   //navegación original a los planes -

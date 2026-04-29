@@ -10,7 +10,8 @@ const getSuggestions = async (req, res) => {
     const results = await searchService.getSuggestions(searchQuery, type);
     res.status(200).json(results);
   } catch (error) {
-    res.status(500).json({ error: "Search failed" });
+    console.log("ERROR:", error.message);
+    res.status(500).json({ error: "Suggestions failed" });
   }
 };
 
@@ -24,6 +25,7 @@ const basicSearch = async (req, res) => {
     const results = await searchService.basicSearch(searchQuery, type);
     res.status(200).json(results);
   } catch (error) {
+    console.log("ERROR:", error.message);
     res.status(500).json({ error: "Search failed" });
   }
 };
@@ -33,10 +35,13 @@ const filter = async (req, res) => {
     // Expected format: ?tags=vegan,keto
     const tags = req.query.tags ? req.query.tags.split(",") : [];
     const type = req.query.type;
+    const dietId = parseInt(req.query.dietId);
+    const moment = req.query.moment.toUpperCase();
 
-    const results = await searchService.filter(tags, type);
+    const results = await searchService.filter(dietId, tags, type, moment);
     res.status(200).json(results);
   } catch (error) {
+    console.log("ERROR:", error.message);
     res.status(500).json({ error: "Filter search failed" });
   }
 };
