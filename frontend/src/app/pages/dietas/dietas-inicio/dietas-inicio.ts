@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-import { DietaService } from '../../../services/dietas';
+import { DietService } from '../../../services/dietas.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-dietas-inicio',
@@ -13,7 +14,7 @@ import { DietaService } from '../../../services/dietas';
 export class DietasInicioComponent implements OnInit {
   //variables del buscador
   modoBusqueda: boolean = false;
-  resultados: any[] = [];
+  resultados$!: Observable<any[]>;
   textoBusqueda: string = '';
 
   //grid inicial
@@ -28,7 +29,7 @@ export class DietasInicioComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private dietaService: DietaService,
+    private dietaService: DietService,
   ) {}
 
   ngOnInit() {
@@ -43,7 +44,6 @@ export class DietasInicioComponent implements OnInit {
     this.router.navigate(['/dietas/plan', id]);
   }
 
-
   //logica del buscador simple
   onBuscar(event: any) {
     this.textoBusqueda = event.target.value;
@@ -52,20 +52,18 @@ export class DietasInicioComponent implements OnInit {
     if (this.textoBusqueda.length > 2) {
       this.modoBusqueda = true;
 
-      this.dietaService.buscarRecetas(this.textoBusqueda).subscribe((datos: any[]) => {
-        this.resultados = datos;
-      });
+      this.resultados$ = this.dietaService.search(this.textoBusqueda);
     } else {
       //si se borra el texto o hay menos de 3 letras, apagamos el buscador
       this.modoBusqueda = false;
-      this.resultados = [];
+      this.resultados$ = new Observable<any[]>();
     }
   }
 
   limpiarBusqueda() {
     this.textoBusqueda = '';
     this.modoBusqueda = false;
-    this.resultados = [];
+    this.resultados$ = new Observable<any[]>();
   }
 
   //para navegar a la receta desde el buscador

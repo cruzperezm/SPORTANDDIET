@@ -18,15 +18,19 @@ export class DeportesInicioComponent implements OnInit {
 
   //lista original de planes
   planesDeportivos = [
-    { id: 1, titulo: 'Pérdida de Grasa (HIIT)', imagen: 'assets/img/deporte/hiit/hiit-portada.jpg' },
+    {
+      id: 1,
+      titulo: 'Pérdida de Grasa (HIIT)',
+      imagen: 'assets/img/deporte/hiit/hiit-portada.jpg',
+    },
     { id: 2, titulo: 'Cardio', imagen: 'assets/img/cardio.jpg' },
     { id: 3, titulo: 'Flexibilidad', imagen: 'assets/img/flex.jpg' },
-    { id: 4, titulo: 'Calistenia', imagen: 'assets/img/calistenia.jpg' }
+    { id: 4, titulo: 'Calistenia', imagen: 'assets/img/calistenia.jpg' },
   ];
 
   constructor(
     private router: Router,
-    private deporteService: DeporteService
+    private deporteService: DeporteService,
   ) {}
 
   ngOnInit() {}

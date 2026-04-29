@@ -1,14 +1,14 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { DietaService } from '../../../services/dietas';
+import { DietService } from '../../../services/dietas.service';
 
 @Component({
   selector: 'app-dieta-detalle',
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './dietas-detalle.html',
-  styleUrl: './dietas-detalle.css'
+  styleUrl: './dietas-detalle.css',
 })
 export class DietasDetalleComponent implements OnInit {
   recetaId: string | null = null;
@@ -16,14 +16,14 @@ export class DietasDetalleComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private dietasService: DietaService,
+    private dietasService: DietService,
     private location: Location,
-    private cdr: ChangeDetectorRef // Importante para refrescar la vista
+    private cdr: ChangeDetectorRef, // Importante para refrescar la vista
   ) {}
 
   ngOnInit() {
     // Usamos paramMap para que funcione siempre, incluso al recargar
-    this.route.paramMap.subscribe(params => {
+    this.route.paramMap.subscribe((params) => {
       this.recetaId = params.get('id');
       if (this.recetaId) {
         this.cargarReceta(this.recetaId);
@@ -32,14 +32,14 @@ export class DietasDetalleComponent implements OnInit {
   }
 
   cargarReceta(id: string) {
-    this.dietasService.obtenerRecetaPorId(id).subscribe({
+    this.dietasService.getRecipeById(id).subscribe({
       next: (data) => {
         console.log('Receta encontrada:', data);
         this.receta = data;
         // Forzamos a Angular a pintar los datos
         this.cdr.detectChanges();
       },
-      error: (err) => console.error('Error al cargar detalle:', err)
+      error: (err) => console.error('Error al cargar detalle:', err),
     });
   }
 

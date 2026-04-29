@@ -1,16 +1,18 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { DietaService } from '../../../services/dietas';
+import { DietService } from '../../../services/dietas.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-dietas-plan',
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './dietas-plan.html',
-  styleUrl: './dietas-plan.css'
+  styleUrl: './dietas-plan.css',
 })
 export class DietasPlanComponent implements OnInit {
+  dietas$!: Observable<any[]>;
   // Variables de estado
   dieta: any = null;
   idDieta: string | null = null;
@@ -19,14 +21,14 @@ export class DietasPlanComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private dietaService: DietaService,
+    private dietaService: DietService,
     private location: Location,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit() {
     // Escuchamos cambios en la URL (importante para recargas con F5)
-    this.route.paramMap.subscribe(params => {
+    this.route.paramMap.subscribe((params) => {
       this.idDieta = params.get('id');
       if (this.idDieta) {
         this.cargarDatos(this.idDieta);
@@ -35,23 +37,9 @@ export class DietasPlanComponent implements OnInit {
   }
 
   cargarDatos(id: string) {
-    this.dietaService.obtenerPlanPorId(id).subscribe({
-      next: (data: any) => {
-        this.dieta = data;
-        if (this.dieta && this.dieta.plan) {
-          this.indices = {};
-          this.dieta.plan.forEach((fase: any) => {
-            this.indices[fase.momento] = 0;
-          });
-          // Forzamos a Angular a pintar los datos recién llegados
-          this.cdr.detectChanges();
-        }
-      },
-      error: (err) => console.error("Error al cargar datos:", err)
-    });
+    // TODO: Comprobar que funciona cuando este el backend
+    this.dietas$ = this.dietaService.getDietById(id);
   }
-
-  // --- LAS FUNCIONES QUE FALTABAN SEGÚN TUS ERRORES ---
 
   volver() {
     this.location.back();
@@ -62,13 +50,13 @@ export class DietasPlanComponent implements OnInit {
       this.filtrosActivos = [];
     } else {
       if (this.filtrosActivos.includes(tipo)) {
-        this.filtrosActivos = this.filtrosActivos.filter(f => f !== tipo);
+        this.filtrosActivos = this.filtrosActivos.filter((f) => f !== tipo);
       } else {
         this.filtrosActivos.push(tipo);
       }
     }
     // Al filtrar, reseteamos carruseles a la posición inicial
-    Object.keys(this.indices).forEach(k => this.indices[k] = 0);
+    Object.keys(this.indices).forEach((k) => (this.indices[k] = 0));
     this.cdr.detectChanges();
   }
 
@@ -78,7 +66,7 @@ export class DietasPlanComponent implements OnInit {
 
     return fase.comidas.filter((c: any) => {
       const alergenosPlato = c.alergenos || [];
-      return !this.filtrosActivos.some(f => alergenosPlato.includes(f));
+      return !this.filtrosActivos.some((f) => alergenosPlato.includes(f));
     });
   }
 
@@ -90,11 +78,7 @@ export class DietasPlanComponent implements OnInit {
     if (total <= 3) return filtradas;
 
     const i = this.indices[fase.momento] || 0;
-    return [
-      filtradas[i % total],
-      filtradas[(i + 1) % total],
-      filtradas[(i + 2) % total]
-    ];
+    return [filtradas[i % total], filtradas[(i + 1) % total], filtradas[(i + 2) % total]];
   }
 
   mover(paso: number, momento: string) {

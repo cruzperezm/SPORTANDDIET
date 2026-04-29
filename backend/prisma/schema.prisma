@@ -38,7 +38,7 @@ model Biometrics {
 
 model Diet {
   id       Int      @id @default(autoincrement())
-  title    String
+  title    String   @unique
   subtitle String
   image    String
   recipes  Recipe[]
@@ -50,7 +50,10 @@ enum Allergies {
   lacteos
   crustaceos
   pescado
-  mani
+  frutos_secos
+  cacahuete
+  soja
+  sesamo
 }
 
 enum AllergiesIcons {
@@ -62,21 +65,21 @@ enum AllergiesIcons {
 }
 
 enum Moment {
-  BREAKFAST
-  LUNCH
-  DINNER
+  DESAYUNO
+  ALMUERZO
+  CENA
 }
 
 model Recipe {
   id           Int         @id @default(autoincrement())
   diet         Diet?       @relation(fields: [dietId], references: [id])
   dietId       Int?
-  name         String
+  name         String      @unique
   image        String
   duration     Int
   calories     Int
   allergies    Allergies[]
-  ingredients  Int[]
+  ingredients  String[]
   // Las macros se pondrán en orden Proteinas, Grasas, Carbos sin los títulos ni unidades
   macros       String[]
   moment       Moment
@@ -85,37 +88,68 @@ model Recipe {
 
 model ExercisePlan {
   id        Int        @id @default(autoincrement())
-  title     String
+  title     String     @unique
   subtitle  String
+  image     String
   exercises Exercise[]
 }
 
 enum Level {
-  BEGINNER
-  INTERMEDIATE
-  ADVANCED
+  PRINCIPIANTE
+  INTERMEDIO
+  AVANZADOS
 }
 
 enum FilterExercise {
-  no_material
-  full_body
-  upper_body
-  lower_body
+  peso_corporal
+  polea
+  barra
+  asistido
+  pelota_pilates
+  cuerda
+  rodillo
+  maquina_palanca
+  mancuernas
+  stationary_bike
+  eliptica
+  escaladora
+  balon_medicinal
+  banda_elastica
 }
 
 enum MuscleGroups {
-  ABS
-  CORE
-  SHOULDERS
+  Piernas
+  Cuadriceps
+  Gemelos
+  Espalda
+  Dorsales
+  Pecho
+  Pectorales
+  Gluteos
+  Abdominales
+  Cardio
+  Hombros
+  Espalda_alta
+  Biceps
+  Brazos
+  Triceps
+  Aductores
+  Deltoides
+  Core
+  Isquiotibiales
+  Columna
+  Cuello
+  Antebrazos
+  Trapecios
 }
 
 model Exercise {
   id             Int              @id @default(autoincrement())
   exercisePlan   ExercisePlan?    @relation(fields: [exercisePlanId], references: [id])
   exercisePlanId Int?
-  name           String
+  name           String           @unique
   image          String
-  duration       String
+  duration       Int
   difficulty     String
   level          Level
   filtros        FilterExercise[]

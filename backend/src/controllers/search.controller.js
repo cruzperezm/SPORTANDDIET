@@ -16,10 +16,10 @@ const getSuggestions = async (req, res) => {
 
 const basicSearch = async (req, res) => {
   try {
-    const searchQuery = req.query.q;
+    const searchQuery = req.query.searchString;
     const type = req.query.type;
 
-    if (!searchQuery) return res.status(200).json([]);
+    if (!searchQuery) return res.status(400).json([]);
 
     const results = await searchService.basicSearch(searchQuery, type);
     res.status(200).json(results);
