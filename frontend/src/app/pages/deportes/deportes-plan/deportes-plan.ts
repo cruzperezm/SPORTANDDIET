@@ -15,31 +15,62 @@ export class DeportesPlanComponent implements OnInit {
   filtrosActivos: string[] = [];
   indices: { [key: string]: number } = {};
 
+  musculosDisponibles: string[] = [];
+
+  mapaGrupos: { [key: string]: string } = {
+    'Bíceps': 'Brazos', 'Tríceps': 'Brazos', 'Antebrazos': 'Brazos', 'Brazos': 'Brazos',
+    'Cuádriceps': 'Piernas', 'Isquiotibiales': 'Piernas', 'Gemelos': 'Piernas', 'Glúteos': 'Piernas', 'Piernas': 'Piernas',
+    'Espalda': 'Espalda', 'Espalda alta': 'Espalda', 'Lumbar': 'Espalda', 'Dorsales': 'Espalda', 'Trapecios': 'Espalda',
+    'Pecho': 'Pecho', 'Pectorales': 'Pecho',
+    'Hombros': 'Hombros', 'Deltoides': 'Hombros',
+    'Core': 'Core', 'Abdominales': 'Core',
+    'Cardio': 'Cardio',
+    'Estiramientos': 'Movilidad', 'Columna': 'Movilidad', 'Cuello': 'Movilidad'
+  };
+
   constructor(
     private route: ActivatedRoute,
     private deporteService: DeporteService,
     private location: Location,
     private cdr: ChangeDetectorRef,
   ) {}
+
   ngOnInit() {
     this.route.paramMap.subscribe((params) => {
       const id = params.get('id');
-      console.log('1. ID capturado de la URL:', id); // Debe decir "quema-grasa"
 
       if (id) {
         this.deporteService.obtenerPlanPorId(id).subscribe({
           next: (data: any) => {
-            console.log('2. Datos devueltos por el servicio:', data); // Si pone 'undefined', el fallo es el Servicio
-
             this.deporte = data;
             if (this.deporte && this.deporte.plan) {
               this.indices = {};
+
+              const gruposSet = new Set<string>();
+
               this.deporte.plan.forEach((fase: any) => {
                 this.indices[fase.nivel] = 0;
+
+                fase.ejercicios?.forEach((ej: any) => {
+                  ej.gruposMusculares = [];
+
+                  ej.musculos?.forEach((m: string) => {
+                    const grupo = this.mapaGrupos[m] || 'Otros';
+
+                    if (!ej.gruposMusculares.includes(grupo)) {
+                      ej.gruposMusculares.push(grupo);
+                    }
+
+                    gruposSet.add(grupo);
+                  });
+                });
               });
+
+              // Evitamos mostrar un botón que diga "Otros" si no es estrictamente necesario
+              const gruposArray = Array.from(gruposSet).filter(g => g !== 'Otros');
+              this.musculosDisponibles = gruposArray.sort();
+
               this.cdr.detectChanges();
-            } else {
-              console.error("3. ERROR: La variable deporte no tiene la propiedad 'plan'.");
             }
           },
         });
@@ -62,11 +93,13 @@ export class DeportesPlanComponent implements OnInit {
     this.cdr.detectChanges();
   }
 
+  // --- ATENCIÓN: Ahora filtramos por 'gruposMusculares' en vez de 'musculos' ---
   getEjerciciosFiltrados(fase: any): any[] {
     if (!fase?.ejercicios) return [];
     if (this.filtrosActivos.length === 0) return fase.ejercicios;
+
     return fase.ejercicios.filter((e: any) =>
-      this.filtrosActivos.every((f) => e.musculos && e.musculos.includes(f))
+      this.filtrosActivos.every((f) => e.gruposMusculares && e.gruposMusculares.includes(f))
     );
   }
 

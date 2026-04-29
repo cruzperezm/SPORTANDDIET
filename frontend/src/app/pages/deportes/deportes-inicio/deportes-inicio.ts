@@ -20,14 +20,14 @@ export class DeportesInicioComponent implements OnInit {
   planesDeportivos = [
     {
       id: 1,
-      titulo: 'Pérdida de Grasa (HIIT)',
-      imagen: 'assets/img/deporte/hiit/hiit-portada.jpg',
+      titulo: 'HIIT',
+      imagen: '/assets/img/deporte/portadas/portada-1.jpg',
     },
-    { id: 2, titulo: 'Aumento de Masa Muscular', imagen: 'assets/img/cardio.jpg' },
-    { id: 3, titulo: 'Yoga y Flexibilidad', imagen: 'assets/img/flex.jpg' },
-    { id: 4, titulo: 'Potencia y Explosividad', imagen: 'assets/img/calistenia.jpg' },
-    { id: 5, titulo: 'Resistencia Cardiovascular', imagen: 'assets/img/calistenia.jpg' },
-    { id: 6, titulo: 'Entrenamiento en Casa', imagen: 'assets/img/calistenia.jpg' },
+    { id: 2, titulo: 'Aumento de Masa Muscular', imagen: '/assets/img/deporte/portadas/portada-2.jpg' },
+    { id: 3, titulo: 'Flexibilidad', imagen: '/assets/img/deporte/portadas/portada-3.jpg' },
+    { id: 4, titulo: 'Potencia', imagen: '/assets/img/deporte/portadas/portada-4.jpg' },
+    { id: 5, titulo: 'Resistencia', imagen: '/assets/img/deporte/portadas/portada-5.jpg' },
+    { id: 6, titulo: 'Entrenamiento en Casa', imagen: '/assets/img/deporte/portadas/portada-6.jpg' },
   ];
 
   constructor(

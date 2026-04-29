@@ -102,7 +102,7 @@
 }
 
 .lista-columna li::before {
-  content: "*"; /* Icono naranja sutil */
+  content: "●"; /* Icono naranja sutil */
   margin-right: 12px;
   font-size: 0.9rem;
 }
