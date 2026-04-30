@@ -59,7 +59,7 @@ export class DietService {
     }
     params = params.set('dietId', dietId);
     params = params.set('type', 'diets');
-    params = params.set('moment', moment);
+    params = params.set('classification', moment);
 
     return this.http.get<any[]>(`${this.apiUrl}/search/filter`, { params });
   }

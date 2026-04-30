@@ -12,14 +12,17 @@
   height: 85px;
   width: auto;
   margin: 0;
-  padding: 0 20px 0  20px;
+  padding: 0 20px 0 20px;
 }
 
 .links-group {
+  position: absolute;
   display: flex;
   gap: 12px;
   align-items: center;
-  height: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 85px;
 }
 
 .nav-pill {
@@ -40,11 +43,11 @@
 
 .nav-pill:hover {
   background-color: #e8f5ed;
-  color: #2ECC71;
+  color: #2ecc71;
 }
 
 .nav-pill.active-link {
-  background-color: #2ECC71;
+  background-color: #2ecc71;
   color: white !important;
   font-weight: 600;
   box-shadow: 0 4px 10px rgba(46, 204, 113, 0.2);
@@ -68,11 +71,11 @@
 
 .logo-link:hover {
   background-color: #e8f5ed;
-  color: #2ECC71;
+  color: #2ecc71;
 }
 
 .logo-link.active-link {
-  background-color: #2ECC71;
+  background-color: #2ecc71;
   color: white !important;
   font-weight: 600;
   box-shadow: 0 4px 10px rgba(46, 204, 113, 0.2);
@@ -92,7 +95,7 @@
 
 .logo-image {
   height: auto;
-  width: auto;  
+  width: auto;
   max-height: 30px;
   object-fit: contain;
 }
@@ -112,8 +115,8 @@
 }
 
 .login-button:hover {
-  border-color: #2ECC71;
-  color: #2ECC71;
+  border-color: #2ecc71;
+  color: #2ecc71;
 }
 .signup-button {
   text-decoration: none;
@@ -130,14 +133,14 @@
 }
 
 .signup-button:hover {
-  border-color: #2ECC71;
-  color: #2ECC71;
+  border-color: #2ecc71;
+  color: #2ecc71;
 }
 
 .profile-icon {
   cursor: pointer;
   height: auto;
-  width: auto;  
+  width: auto;
   max-height: 30px;
   object-fit: contain;
 }

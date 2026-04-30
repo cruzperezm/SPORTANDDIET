@@ -34,7 +34,6 @@ export class DietasDetalleComponent implements OnInit {
   cargarReceta(id: string) {
     this.dietasService.getRecipeById(id).subscribe({
       next: (data) => {
-        console.log('Receta encontrada:', data);
         this.receta = data;
         this.cdr.detectChanges();
       },

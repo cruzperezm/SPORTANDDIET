@@ -46,7 +46,7 @@ const getRecipesByMoment = async (req, res) => {
     res.status(200).json(results);
   } catch (error) {
     console.log("ERROR:", error.message);
-    res.status(500).json({ error: "Fetch of breakfast recipes failed" });
+    res.status(500).json({ error: "Fetch of recipes by moment failed" });
   }
 };
 

@@ -9,25 +9,29 @@
       <p class="subtitulo-pill">{{ dieta.subtitle }}</p>
     </header>
 
-    <nav class="filtros-nav d-flex flex-wrap gap-2">
-      <button
-        (click)="toggleFiltro('todos')"
-        [class.active]="filtrosActivos.length === 0"
-        class="btn-filtro"
-      >
-        Todos
-      </button>
-
-      @for (alergeno of LISTA_ALERGENOS; track alergeno.valor) {
+    <div class="filtros-container-scroll mb-4">
+      <div class="filtros-scroll-wrapper d-flex gap-2 py-2">
+        <!-- Botón fijo "Todos" -->
         <button
-          (click)="toggleFiltro(alergeno.valor)"
-          [class.active]="filtrosActivos.includes(alergeno.valor)"
-          class="btn-filtro"
+          (click)="toggleFiltro('todos')"
+          [class.active]="filtrosActivos.length === 0"
+          class="btn-filtro-chip"
         >
-          {{ alergeno.etiqueta }}
+          Todos
         </button>
-      }
-    </nav>
+
+        <!-- Chips de filtros -->
+        @for (alergeno of LISTA_ALERGENOS; track alergeno.valor) {
+          <button
+            (click)="toggleFiltro(alergeno.valor)"
+            [class.active]="filtrosActivos.includes(alergeno.valor)"
+            class="btn-filtro-chip"
+          >
+            {{ alergeno.etiqueta }}
+          </button>
+        }
+      </div>
+    </div>
 
     @for (momento of MOMENTOS; track momento) {
       @if (recipes$[momento] | async; as comidas) {
@@ -69,6 +73,7 @@
   </div>
 } @else {
   <div class="loading-state">
+    <div class="spinner-border text-success mb-3" role="status"></div>
     <p>Cargando tu plan nutricional...</p>
   </div>
 }

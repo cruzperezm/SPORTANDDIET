@@ -1,7 +1,7 @@
 :host {
-  --naranja: #F97316;
-  --naranja-dark: #EA580C;
-  --naranja-soft: #FFF7ED;
+  --naranja: #f97316;
+  --naranja-dark: #ea580c;
+  --naranja-soft: #fff7ed;
   --sombra: 0 10px 25px -5px rgba(249, 115, 22, 0.2), 0 8px 10px -6px rgba(249, 115, 22, 0.1);
 }
 
@@ -62,6 +62,9 @@
   gap: 12px;
   margin-bottom: 60px;
   flex-wrap: wrap;
+  position: sticky;
+  top: 20px;
+  z-index: 10;
 }
 
 .filtros-nav button {
@@ -106,21 +109,38 @@
   gap: 20px;
 }
 
-.grid-comidas { /* Mantenemos el nombre para reusar lógica */
+.grid-comidas {
+  /* Mantenemos el nombre para reusar lógica */
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 30px;
   flex: 1;
 }
 
+.carrusel-scroll {
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding-bottom: 10px;
+}
+
+.carrusel-scroll::-webkit-scrollbar {
+  display: none; /* Oculta scrollbar en Chrome/Safari */
+}
+
 /* CARDS DE EJERCICIOS */
 .card-comida {
   cursor: pointer;
+  width: 300px;
+  scroll-snap-align: start;
+  transition: transform 0.2s;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .card-comida:hover {
-  transform: translateY(-12px);
+  transform: scale(1.05);
 }
 
 .card-img {
@@ -130,7 +150,7 @@
   border-radius: 30px;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
 
 .card-info {
@@ -138,7 +158,7 @@
   bottom: 0;
   width: 100%;
   padding: 30px 20px 20px;
-  background: linear-gradient(transparent, rgba(0,0,0,0.9));
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.9));
   color: white;
 }
 
@@ -150,30 +170,82 @@
 
 /* BOTONES DE NAVEGACIÓN */
 .flecha-nav {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  background: var(--naranja);
   border: none;
-  background: white;
-  color: var(--naranja);
-  font-size: 32px;
-  cursor: pointer;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  font-size: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-  transition: all 0.3s ease;
-  border: 1px solid #f1f5f9;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  color: white;
+  cursor: pointer;
+}
+
+.flecha-nav.prev {
+  left: 5px;
+}
+.flecha-nav.next {
+  right: 5px;
 }
 
 .flecha-nav:hover {
-  background: var(--naranja);
+  background: var(--naranja-dark);
   color: white;
-  transform: scale(1.1);
 }
 
-@media (max-width: 768px) {
-  .grid-comidas { grid-template-columns: 1fr; }
-  .pill-header { border-radius: 40px; padding: 40px 20px; }
-  .flecha-nav { display: none; } /* En móvil mejor usar scroll natural o quitar flechas */
+.loading-state {
+  text-align: center;
+  font-size: larger;
+  font-weight: bold;
+  margin: 40px;
+}
+
+.filtros-container-scroll {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.filtros-scroll-wrapper {
+  overflow-x: auto;
+  white-space: nowrap;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.filtros-scroll-wrapper::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+.btn-filtro-chip {
+  padding: 8px 20px;
+  border-radius: 50px;
+  border: 1px solid #e5e7eb;
+  background-color: white;
+  color: #4b5563;
+  font-size: 0.9rem;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.btn-filtro-chip:hover {
+  background-color: #f3f4f6;
+}
+
+.btn-filtro-chip.active {
+  background-color: var(--naranja-dark, #000);
+  color: white;
+  border-color: var(--naranja-dark, #000);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }

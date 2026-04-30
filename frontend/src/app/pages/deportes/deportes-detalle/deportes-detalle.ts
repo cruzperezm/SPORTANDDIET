@@ -11,8 +11,8 @@ import { SportService } from '../../../services/deportes.service';
   styleUrl: './deportes-detalle.css',
 })
 export class DeportesDetalleComponent implements OnInit {
-  itemId: string | null = null;
-  detalleData: any = null;
+  exerciseId: string | null = null;
+  exercise: any = null;
   tipoVista: 'plan' | 'ejercicio' | null = null; // <- Añadimos esta variable
 
   constructor(
@@ -24,9 +24,9 @@ export class DeportesDetalleComponent implements OnInit {
 
   ngOnInit() {
     this.route.paramMap.subscribe((params) => {
-      this.itemId = params.get('id');
-      if (this.itemId) {
-        this.cargarDatos(this.itemId);
+      this.exerciseId = params.get('id');
+      if (this.exerciseId) {
+        this.cargarDatos(this.exerciseId);
       }
     });
   }
@@ -34,15 +34,7 @@ export class DeportesDetalleComponent implements OnInit {
   cargarDatos(id: string) {
     this.deporteService.getExerciseById(id).subscribe({
       next: (data: any) => {
-        this.detalleData = data;
-
-        // Detectamos qué nos ha devuelto el JSON
-        if (this.detalleData && this.detalleData.plan) {
-          this.tipoVista = 'plan'; // Es el HIIT entero
-        } else if (this.detalleData && this.detalleData.estadisticas) {
-          this.tipoVista = 'ejercicio'; // Es un ejercicio suelto
-        }
-
+        this.exercise = data;
         this.cdr.detectChanges();
       },
       error: (err) => console.error('Error al cargar:', err),

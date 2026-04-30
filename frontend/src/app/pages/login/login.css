@@ -1,66 +1,68 @@
 h2 {
-    margin-top: 0;
-    text-align: center;
+  margin-top: 0;
+  text-align: center;
 }
 
 #form-section {
-    height: fit-content;
+  height: fit-content;
 }
 
 form {
-    margin: 40px auto auto auto;
-    width: 80%;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
+  margin: 40px auto auto auto;
+  width: 80%;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 input {
-    padding: 12px;
-    margin-bottom: 40px;
-    width: 100%;
-    border: none;
-    display: block;
-    border-radius: 20px;
+  padding: 12px 18px;
+  margin-bottom: 40px;
+  width: 100%;
+  border: none;
+  display: block;
+  border-radius: 12px;
 }
 
 input:focus {
-    outline: 2px solid #2ECC71;
+  outline: 2px solid #2ecc71;
 }
 
-input[type="submit"] {
-    width: auto;
-    background-color: #2ECC71;
-    margin-bottom: 5%;
+input[type='submit'] {
+  width: auto;
+  background-color: #2ecc71;
+  margin-bottom: 5%;
 }
 
 #login-container {
-    background-color: #f5f7f9;
-    border-radius: 20px;
-    font-family: 'Inter', sans-serif;
-    display: block;
-    width: 40%;
-    padding: 50px;
-    margin: 10% auto;
+  background-color: #f5f7f9;
+  border-radius: 12px;
+  font-family: 'Inter', sans-serif;
+  display: block;
+  width: 35%;
+  min-height: 90%;
+  padding: 50px;
+  margin: 10% auto;
 }
 
 #button-row {
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
 
-#cancel-button:hover, #login-button:hover {
-    cursor: pointer;
+#cancel-button:hover,
+#login-button:hover {
+  cursor: pointer;
 }
 
 #cancel-button {
-    margin-left: 0;
-    margin-bottom: 5%;
-    left: 0;
-    width: 40%;
-    border-radius: 20px;
+  margin-left: 0;
+  margin-bottom: 5%;
+  left: 0;
+  width: 40%;
+  border-radius: 12px;
 }
 
 #other-login {

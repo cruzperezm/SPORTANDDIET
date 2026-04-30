@@ -49,7 +49,7 @@ export class DietasPlanComponent implements OnInit {
       if (this.idDieta) {
         this.dietaService.getDietById(this.idDieta).subscribe({
           next: (data) => {
-            console.log('Receta encontrada:', data);
+            console.log('Dieta encontrada:', data);
             this.dieta = data;
             this.cdr.detectChanges();
           },

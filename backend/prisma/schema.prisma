@@ -1,8 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client-js"
   output   = "../src/generated"
@@ -16,24 +11,24 @@ model User {
   id         Int         @id @default(autoincrement())
   email      String      @unique
   username   String?
-  password   String?
-  googleId   String?     @unique // <-- ¡ESTE ES EL QUE FALTA!
-  biometrics Biometrics?
   createdAt  DateTime    @default(now())
+  password   String?
+  googleId   String?     @unique
+  biometrics Biometrics?
 }
 
 model Biometrics {
   id       Int    @id @default(autoincrement())
-  owner    User   @relation(fields: [ownerId], references: [id])
   ownerId  Int    @unique
-  genre    String
-  age      Int
   height   Int
-  goal     String
   activity String
+  age      Int
   c_weight Int
   d_weight Int
+  genre    String
+  goal     String
   weeks    Int
+  owner    User   @relation(fields: [ownerId], references: [id])
 }
 
 model Diet {
@@ -42,6 +37,44 @@ model Diet {
   subtitle String
   image    String
   recipes  Recipe[]
+}
+
+model Recipe {
+  id           Int         @id @default(autoincrement())
+  dietId       Int?
+  name         String      @unique
+  image        String
+  duration     Int
+  calories     Int
+  allergies    Allergies[]
+  moment       Moment
+  instructions String
+  ingredients  String[]
+  macros       String[]
+  diet         Diet?       @relation(fields: [dietId], references: [id])
+}
+
+model ExercisePlan {
+  id        Int        @id @default(autoincrement())
+  title     String     @unique
+  subtitle  String
+  image     String
+  exercises Exercise[]
+}
+
+model Exercise {
+  id             Int              @id @default(autoincrement())
+  exercisePlanId Int?
+  name           String           @unique
+  image          String
+  difficulty     String
+  level          Level
+  filters        FilterExercise[]
+  muscles        MuscleGroups[]
+  gif            String
+  stats          Int[]
+  duration       Int
+  exercisePlan   ExercisePlan?    @relation(fields: [exercisePlanId], references: [id])
 }
 
 enum Allergies {
@@ -68,30 +101,6 @@ enum Moment {
   DESAYUNO
   ALMUERZO
   CENA
-}
-
-model Recipe {
-  id           Int         @id @default(autoincrement())
-  diet         Diet?       @relation(fields: [dietId], references: [id])
-  dietId       Int?
-  name         String      @unique
-  image        String
-  duration     Int
-  calories     Int
-  allergies    Allergies[]
-  ingredients  String[]
-  // Las macros se pondrán en orden Proteinas, Grasas, Carbos sin los títulos ni unidades
-  macros       String[]
-  moment       Moment
-  instructions String
-}
-
-model ExercisePlan {
-  id        Int        @id @default(autoincrement())
-  title     String     @unique
-  subtitle  String
-  image     String
-  exercises Exercise[]
 }
 
 enum Level {
@@ -141,20 +150,4 @@ enum MuscleGroups {
   Cuello
   Antebrazos
   Trapecios
-}
-
-model Exercise {
-  id             Int              @id @default(autoincrement())
-  exercisePlan   ExercisePlan?    @relation(fields: [exercisePlanId], references: [id])
-  exercisePlanId Int?
-  name           String           @unique
-  image          String
-  duration       Int
-  difficulty     String
-  level          Level
-  filtros        FilterExercise[]
-  muscles        MuscleGroups[]
-  // Las stats se pondrán en orden Series (nº), repeticiones (nº), dencanso (s)
-  stats          Int[]
-  gif            String
 }

@@ -171,3 +171,46 @@
   font-weight: bold;
   margin: 40px;
 }
+
+.filtros-container-scroll {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.filtros-scroll-wrapper {
+  overflow-x: auto;
+  white-space: nowrap;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.filtros-scroll-wrapper::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+.btn-filtro-chip {
+  padding: 8px 20px;
+  border-radius: 50px;
+  border: 1px solid #e5e7eb;
+  background-color: white;
+  color: #4b5563;
+  font-size: 0.9rem;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.btn-filtro-chip:hover {
+  background-color: #f3f4f6;
+}
+
+.btn-filtro-chip.active {
+  background-color: var(--verde-dark, #000);
+  color: white;
+  border-color: var(--verde-dark, #000);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}

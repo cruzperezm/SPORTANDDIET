@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { SportService } from '../../../services/deportes.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-deportes-inicio',
@@ -13,27 +14,19 @@ import { SportService } from '../../../services/deportes.service';
 export class DeportesInicioComponent implements OnInit {
   //variables del Buscador
   modoBusqueda: boolean = false;
-  resultados: any[] = [];
+  resultados$!: Observable<any[]>;
   textoBusqueda: string = '';
 
-  //lista original de planes
-  planesDeportivos = [
-    {
-      id: 1,
-      titulo: 'Pérdida de Grasa (HIIT)',
-      imagen: 'assets/img/deporte/hiit/hiit-portada.jpg',
-    },
-    { id: 2, titulo: 'Cardio', imagen: 'assets/img/cardio.jpg' },
-    { id: 3, titulo: 'Flexibilidad', imagen: 'assets/img/flex.jpg' },
-    { id: 4, titulo: 'Calistenia', imagen: 'assets/img/calistenia.jpg' },
-  ];
+  planes$!: Observable<any[]>;
 
   constructor(
     private router: Router,
     private deporteService: SportService,
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.planes$ = this.deporteService.getAllPlans();
+  }
 
   irAlPlan(id: number) {
     this.router.navigate(['/deportes/plan', id]);
@@ -45,19 +38,17 @@ export class DeportesInicioComponent implements OnInit {
 
     if (this.textoBusqueda.length > 2) {
       this.modoBusqueda = true;
-      this.deporteService.search(this.textoBusqueda).subscribe((datos: any[]) => {
-        this.resultados = datos;
-      });
+      this.resultados$ = this.deporteService.search(this.textoBusqueda);
     } else {
       this.modoBusqueda = false;
-      this.resultados = [];
+      this.resultados$ = new Observable<any[]>();
     }
   }
 
   limpiarBusqueda() {
     this.textoBusqueda = '';
     this.modoBusqueda = false;
-    this.resultados = [];
+    this.resultados$ = new Observable<any[]>();
   }
 
   irAEjercicio(id: string) {

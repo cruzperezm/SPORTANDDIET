@@ -17,7 +17,6 @@ export class DietasInicioComponent implements OnInit {
   resultados$!: Observable<any[]>;
   textoBusqueda: string = '';
 
-  //grid inicial
   dietas$!: Observable<any[]>;
 
   constructor(
@@ -31,11 +30,9 @@ export class DietasInicioComponent implements OnInit {
 
   //navegación original a los planes -
   irAlPlan(id: number) {
-    console.log('Intentando navegar al ID:', id);
     this.router.navigate(['/dietas/plan', id]);
   }
 
-  //logica del buscador simple
   onBuscar(event: any) {
     this.textoBusqueda = event.target.value;
 

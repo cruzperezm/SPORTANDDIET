@@ -1,7 +1,14 @@
 const prisma = require("../config/prisma");
 
 const getAllDiets = async () => {
-  return await prisma.diet.findMany();
+  return await prisma.diet.findMany({
+    select: {
+      id: true,
+      title: true,
+      subtitle: true,
+      image: true,
+    },
+  });
 };
 
 const getDietById = async (dietId) => {

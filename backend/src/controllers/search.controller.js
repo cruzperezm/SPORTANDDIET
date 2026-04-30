@@ -36,9 +36,14 @@ const filter = async (req, res) => {
     const tags = req.query.tags ? req.query.tags.split(",") : [];
     const type = req.query.type;
     const dietId = parseInt(req.query.dietId);
-    const moment = req.query.moment.toUpperCase();
+    const planId = parseInt(req.query.planId);
 
-    const results = await searchService.filter(dietId, tags, type, moment);
+    const id = !isNaN(dietId) ? dietId : planId;
+
+    console.log("This is the id:", id);
+    const classification = req.query.classification.toUpperCase();
+
+    const results = await searchService.filter(id, tags, type, classification);
     res.status(200).json(results);
   } catch (error) {
     console.log("ERROR:", error.message);

@@ -49,11 +49,15 @@ const basicSearch = async (searchString, type) => {
     });
   } else if (type === "exercises") {
     return await prisma.exercise.findMany({
-      relationLoadStrategy: "join",
       where: {
         name: {
           contains: searchString,
           mode: "insensitive",
+        },
+      },
+      include: {
+        exercisePlan: {
+          select: { title: true },
         },
       },
     });
@@ -76,7 +80,9 @@ const filter = async (id, tags, type, classification) => {
   } else if (type === "exercises") {
     return await prisma.exercise.findMany({
       where: {
-        filters: {
+        exercisePlanId: id,
+        level: classification,
+        muscles: {
           hasSome: tags,
         },
       },

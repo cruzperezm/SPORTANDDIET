@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { SportService } from '../../../services/deportes.service';
+import { Observable, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-deportes-plan',
@@ -11,7 +12,45 @@ import { SportService } from '../../../services/deportes.service';
   styleUrl: './deportes-plan.css',
 })
 export class DeportesPlanComponent implements OnInit {
-  deporte: any = null;
+  readonly NIVELES = ['Principiante', 'Intermedio', 'Avanzados'] as const;
+  readonly LISTA_FILTROS = [
+    // General / Cardio
+    { valor: 'Cardio', etiqueta: 'Cardio' },
+    { valor: 'Core', etiqueta: 'Core' },
+    { valor: 'Abdominales', etiqueta: 'Abdominales' },
+
+    // Tren Superior
+    { valor: 'Pecho', etiqueta: 'Pecho' },
+    { valor: 'Pectorales', etiqueta: 'Pectorales' },
+    { valor: 'Espalda', etiqueta: 'Espalda' },
+    { valor: 'Espalda_alta', etiqueta: 'Espalda Alta' },
+    { valor: 'Dorsales', etiqueta: 'Dorsales' },
+    { valor: 'Trapecios', etiqueta: 'Trapecios' },
+    { valor: 'Hombros', etiqueta: 'Hombros' },
+    { valor: 'Deltoides', etiqueta: 'Deltoides' },
+    { valor: 'Brazos', etiqueta: 'Brazos' },
+    { valor: 'Biceps', etiqueta: 'Bíceps' },
+    { valor: 'Triceps', etiqueta: 'Tríceps' },
+    { valor: 'Antebrazos', etiqueta: 'Antebrazos' },
+
+    // Tren Inferior
+    { valor: 'Piernas', etiqueta: 'Piernas' },
+    { valor: 'Gluteos', etiqueta: 'Glúteos' },
+    { valor: 'Cuadriceps', etiqueta: 'Cuádriceps' },
+    { valor: 'Isquiotibiales', etiqueta: 'Isquiotibiales' },
+    { valor: 'Gemelos', etiqueta: 'Gemelos' },
+    { valor: 'Aductores', etiqueta: 'Aductores' },
+
+    // Otros
+    { valor: 'Cuello', etiqueta: 'Cuello' },
+    { valor: 'Columna', etiqueta: 'Columna' },
+  ];
+
+  exercises$!: Record<string, Observable<any[]>>;
+  filtros$!: Observable<string[]>;
+
+  plan: any = null;
+  idPlan: string | null = null;
   filtrosActivos: string[] = [];
   indices: { [key: string]: number } = {};
 
@@ -23,32 +62,46 @@ export class DeportesPlanComponent implements OnInit {
   ) {}
   ngOnInit() {
     this.route.paramMap.subscribe((params) => {
-      const id = params.get('id');
-      console.log('1. ID capturado de la URL:', id); // Debe decir "quema-grasa"
+      this.idPlan = params.get('id');
 
-      if (id) {
-        this.deporteService.getPlanById(id).subscribe({
-          next: (data: any) => {
-            console.log('2. Datos devueltos por el servicio:', data); // Si pone 'undefined', el fallo es el Servicio
-
-            this.deporte = data;
-            if (this.deporte && this.deporte.plan) {
-              this.indices = {};
-              this.deporte.plan.forEach((fase: any) => {
-                this.indices[fase.nivel] = 0;
-              });
-              this.cdr.detectChanges();
-            } else {
-              console.error("3. ERROR: La variable deporte no tiene la propiedad 'plan'.");
-            }
+      if (this.idPlan) {
+        this.deporteService.getPlanById(this.idPlan).subscribe({
+          next: (data) => {
+            console.log('Plan encontrado:', data);
+            this.plan = data;
+            this.cdr.detectChanges();
           },
+          error: (err) => console.error('Error al cargar plan:', err),
         });
+        this.cargarDatos(this.idPlan);
       }
     });
+    this.filtros$ = this.deporteService.filtrosActivos$;
+    this.filtrosActivos = this.deporteService.getFiltrosActuales();
+  }
+
+  cargarDatos(id: string) {
+    this.exercises$ = {
+      Principiante: this.crearFlujoFiltrado(id, 'PRINCIPIANTE'),
+      Intermedio: this.crearFlujoFiltrado(id, 'INTERMEDIO'),
+      Avanzados: this.crearFlujoFiltrado(id, 'AVANZADOS'),
+    };
   }
 
   volver() {
     this.location.back();
+  }
+
+  private crearFlujoFiltrado(id: string, nivel: string) {
+    return this.deporteService.filtrosActivos$.pipe(
+      switchMap((tags) => {
+        if (tags.length === 0) {
+          return this.deporteService.getExercisesByLevel(id, nivel);
+        }
+
+        return this.deporteService.filter(id, tags, nivel);
+      }),
+    );
   }
 
   toggleFiltro(tipo: string) {
@@ -58,35 +111,14 @@ export class DeportesPlanComponent implements OnInit {
         ? (this.filtrosActivos = this.filtrosActivos.filter((f) => f !== tipo))
         : this.filtrosActivos.push(tipo);
     }
-    Object.keys(this.indices).forEach((k) => (this.indices[k] = 0));
-    this.cdr.detectChanges();
+    this.deporteService.setFiltros(this.filtrosActivos);
   }
 
-  getEjerciciosFiltrados(fase: any): any[] {
-    if (!fase?.ejercicios) return [];
-    if (this.filtrosActivos.length === 0) return fase.ejercicios;
-    // Filtramos por material o categoría (mancuernas, cardio, etc)
-    return fase.ejercicios.filter((e: any) =>
-      this.filtrosActivos.every((f) => e.filtros.includes(f)),
-    );
-  }
-
-  getEjerciciosVisibles(fase: any): any[] {
-    const filtrados = this.getEjerciciosFiltrados(fase);
-    const total = filtrados.length;
-    if (total === 0) return [];
-    if (total <= 3) return filtrados;
-
-    const i = this.indices[fase.nivel] || 0;
-
-    return [filtrados[i % total], filtrados[(i + 1) % total], filtrados[(i + 2) % total]];
-  }
-
-  mover(paso: number, nivel: string) {
-    const fase = this.deporte.plan.find((f: any) => f.nivel === nivel);
-    const total = this.getEjerciciosFiltrados(fase).length;
-    if (total <= 3) return;
-    this.indices[nivel] = (this.indices[nivel] + paso + total) % total;
-    this.cdr.detectChanges();
+  mover(direccion: number, momento: string, elemento: HTMLElement) {
+    const desplazar = 320 * direccion;
+    elemento.scrollBy({
+      left: desplazar,
+      behavior: 'smooth',
+    });
   }
 }
