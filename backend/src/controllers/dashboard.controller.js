@@ -1,86 +1,56 @@
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
+const DashboardService = require('../services/dashboard.service');
 
 const getUserId = (req) => {
-    return req.query.userId || req.headers['x-user-id'] || 'demo-user';
+  return req.query.userId || req.headers['x-user-id'] || req.user?.id || 'demo-user';
 };
 
-// 🥗 DIETA - SOLO LECTURA
+/**
+ * GET /api/dashboard/dieta
+ * Retrieve diet dashboard data
+ */
 exports.getDietaDashboard = async (req, res) => {
-    try {
-        const userId = getUserId(req);
-
-        const dashboard = await prisma.dashboard.findFirst({
-            where: { userId },
-            select: {
-                dieta: {
-                    select: {
-                        calorias_objetivo: true,
-                        calorias_totales: true,
-                        macros1: true,
-                        macros2: true,
-                        recetas: true
-                    }
-                }
-            }
-        });
-
-        if (!dashboard?.dieta) {
-            return res.status(404).json({
-                error: `No dieta dashboard found for user: ${userId}`
-            });
-        }
-
-        res.json({
-            usuario: {
-                nombre: req.user?.name || `Usuario ${userId.slice(0,8)}`,
-                id: userId
-            },
-            dieta: dashboard.dieta
-        });
-    } catch (error) {
-        console.error('GET dieta error:', error);
-        res.status(500).json({ error: 'Server error' });
-    }
+  try {
+    const userId = getUserId(req);
+    const data = await DashboardService.getDietaDashboard(userId);
+    res.json(data);
+  } catch (error) {
+    console.error('GET dieta error:', error);
+    res.status(404).json({ error: error.message || 'Dashboard not found' });
+  }
 };
 
-// 🏋️ DEPORTE - SOLO LECTURA
+/**
+ * GET /api/dashboard/deporte
+ * Retrieve sport dashboard data
+ */
 exports.getDeporteDashboard = async (req, res) => {
-    try {
-        const userId = getUserId(req);
+  try {
+    const userId = getUserId(req);
+    const data = await DashboardService.getDeporteDashboard(userId);
+    res.json(data);
+  } catch (error) {
+    console.error('GET deporte error:', error);
+    res.status(404).json({ error: error.message || 'Dashboard not found' });
+  }
+};
 
-        const dashboard = await prisma.dashboard.findFirst({
-            where: { userId },
-            select: {
-                deporte: {
-                    select: {
-                        actividades: true,
-                        semana: true,
-                        ejercicios: true
-                    }
-                }
-            }
-        });
+/**
+ * POST /api/dashboard/upsert
+ * Create or update dashboard data
+ */
+exports.upsertDashboard = async (req, res) => {
+  try {
+    const userId = getUserId(req);
+    const { dieta, deporte } = req.body;
 
-        if (!dashboard?.deporte) {
-            return res.status(404).json({
-                error: `No deporte dashboard found for user: ${userId}`
-            });
-        }
+    const data = await DashboardService.upsertDashboard(userId, {
+      ...(dieta && { dieta }),
+      ...(deporte && { deporte }),
+    });
 
-        res.json({
-            usuario: {
-                nombre: req.user?.name || `Usuario ${userId.slice(0,8)}`,
-                id: userId
-            },
-            actividades: dashboard.deporte.actividades || [],
-            deporte: {
-                semana: dashboard.deporte.semana || [],
-                ejercicios: dashboard.deporte.ejercicios || []
-            }
-        });
-    } catch (error) {
-        console.error('GET deporte error:', error);
-        res.status(500).json({ error: 'Server error' });
-    }
+    res.json({ message: 'Dashboard updated successfully', data });
+  } catch (error) {
+    console.error('POST upsert error:', error);
+    res.status(500).json({ error: error.message || 'Server error' });
+  }
 };

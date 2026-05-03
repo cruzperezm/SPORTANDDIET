@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Subscription, interval } from 'rxjs';
 import { switchMap, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { DashboardService } from '../../services/dashboard.service';
 
 interface SportData {
   usuario: { nombre: string };
@@ -22,9 +23,7 @@ interface SportData {
 export class DashboardDeporteComponent implements OnInit, OnDestroy {
   private http = inject(HttpClient);
   private router = inject(Router);
-
-  // Backend API URL (your Prisma backend)
-  private apiUrl = 'http://localhost:3000/api/dashboard/deporte'; // Adjust port
+  private dashboardService = inject(DashboardService);
 
   private subscription?: Subscription;
 
@@ -53,7 +52,12 @@ export class DashboardDeporteComponent implements OnInit, OnDestroy {
   error = '';
 
   ngOnInit() {
-    // Poll every 30 seconds (or use WebSocket/SSE for real-time)
+    // Initial load
+    this.fetchDeporteData().subscribe((data) => {
+      if (data) this.updateData(data);
+    });
+
+    // Poll every 30 seconds
     this.subscription = interval(30000)
       .pipe(
         switchMap(() => this.fetchDeporteData()),
@@ -70,25 +74,17 @@ export class DashboardDeporteComponent implements OnInit, OnDestroy {
           this.loading = false;
         }
       });
-
-    // Initial load
-    this.fetchDeporteData().subscribe((data) => {
-      if (data) this.updateData(data);
-    });
   }
 
   ngOnDestroy() {
     this.subscription?.unsubscribe();
   }
 
-  // Fetch data from Prisma backend
-  // Cambiar fetchDeporteData()
   private fetchDeporteData() {
     const userId = localStorage.getItem('userId');
-    return inject(DashboardService).getDeporteDashboard(userId);
+    return this.dashboardService.getDeporteDashboard(userId);
   }
 
-  // Navigation methods
   toggleToDieta() {
     this.router.navigate(['/dashboard-dieta']);
   }
@@ -115,5 +111,6 @@ export class DashboardDeporteComponent implements OnInit, OnDestroy {
       (this as any)[`trainText${i}`] = exercise?.nombre || '';
       (this as any)[`trainAmount${i}`] = exercise?.valor || '';
     }
+    this.loading = false;
   }
 }

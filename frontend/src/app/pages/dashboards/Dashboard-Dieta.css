@@ -12,6 +12,19 @@
 }
 
 
+#dashboard-dieta {
+  display: grid !important;
+  place-items: center !important;
+  min-height: 100vh !important;
+  transform: scale(0.5);
+  transform-origin: top left;
+  margin-left: 10vw;
+}
+
+* {
+  max-width: 100vw !important;
+  font-size: clamp(0.8rem, 4vw, 2rem) !important;
+}
 
 #dashboard-dieta .text16{color: #00120c; }
 #dashboard-dieta .text20{color: #4B5563; }
@@ -50,7 +63,6 @@
     background-color: #FAFAFA;
   }
   #dashboard-dieta {
-    position: absolute;
     min-height: 145rem;
     width: 100vw;
     background-color: #FAFAFA;
@@ -124,6 +136,7 @@
     position: absolute;
     left: 7.05rem;
     top: 4rem;
+    font-size: 6.4rem;
   }
   #calories-goal{
     position: absolute;

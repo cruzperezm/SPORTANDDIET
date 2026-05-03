@@ -23,15 +23,11 @@ interface DietData {
   styleUrls: ['./Dashboard-Dieta.css'],
 })
 export class DashboardDietaComponent implements OnInit, OnDestroy {
-  private http = inject(HttpClient);
   private router = inject(Router);
-
-  // Backend API URL (your Node.js/Prisma backend)
-  private apiUrl = 'http://localhost:3000/api/dashboard/dieta'; // Adjust port
+  private dashboardService = inject(DashboardService);
 
   private subscription?: Subscription;
 
-  // All your UI properties
   userName = '';
   caloriesGoal = '';
   caloriesAmount = '';
@@ -70,7 +66,12 @@ export class DashboardDietaComponent implements OnInit, OnDestroy {
   error = '';
 
   ngOnInit() {
-    // Poll every 30 seconds OR use WebSocket for real-time
+    // Initial load
+    this.fetchDietaData().subscribe((data) => {
+      if (data) this.updateData(data);
+    });
+
+    // Poll every 30 seconds
     this.subscription = interval(30000)
       .pipe(
         switchMap(() => this.fetchDietaData()),
@@ -87,24 +88,17 @@ export class DashboardDietaComponent implements OnInit, OnDestroy {
           this.loading = false;
         }
       });
-
-    // Initial load
-    this.fetchDietaData().subscribe((data) => {
-      if (data) this.updateData(data);
-    });
   }
 
   ngOnDestroy() {
     this.subscription?.unsubscribe();
   }
 
-  // Fetch data from your Prisma backend
   private fetchDietaData() {
     const userId = localStorage.getItem('userId');
-    return inject(DashboardService).getDietaDashboard(userId);
+    return this.dashboardService.getDietaDashboard(userId);
   }
 
-  // Navigation methods
   toggleToDeporte() {
     this.router.navigate(['/dashboard-deporte']);
   }
@@ -152,5 +146,6 @@ export class DashboardDietaComponent implements OnInit, OnDestroy {
     this.dietText4 = recetas[3]?.nombre || '';
     this.dietAmount5 = recetas[4]?.valor || '';
     this.dietText5 = recetas[4]?.nombre || '';
+    this.loading = false;
   }
 }
