@@ -52,6 +52,6 @@ export class DeportesInicioComponent implements OnInit {
   }
 
   irAEjercicio(id: string) {
-    this.router.navigate(['/deportes/ejercicio', id]);
+    this.router.navigate(['/deportes/guia', id]);
   }
 }
