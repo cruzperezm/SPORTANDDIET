@@ -1,20 +1,39 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
-@Injectable({ providedIn: 'root' })
-export class DBService {
-  constructor(private http: HttpClient) {}
+@Injectable({
+  providedIn: 'root',
+})
+export class DashboardService {
+  private http = inject(HttpClient);
+  private apiUrl = `${environment.apiUrl}/dashboard`;
 
-  getUsername(): Observable<{ user: string }> {
-    return this.http.get<{ user: string }>('http://localhost:3000/api/user/1');
+  private getHeaders(): HttpHeaders {
+    return new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token') || ''}`,
+    });
   }
 
-  getDataName(): Observable<{ dataName: string }> {
-    return this.http.get<{ dataName: string }>('http://localhost:3000/api/data/1');
+  getDietaDashboard(userId?: string): Observable<any> {
+    const params = userId ? `?userId=${userId}` : '';
+    return this.http.get(`${this.apiUrl}/dieta${params}`, {
+      headers: this.getHeaders(),
+    });
   }
 
-  getDataProgress(): Observable<{ dataProgress: string }> {
-    return this.http.get<{ dataProgress: string }>('http://localhost:3000/api/data/1');
+  getDeporteDashboard(userId?: string): Observable<any> {
+    const params = userId ? `?userId=${userId}` : '';
+    return this.http.get(`${this.apiUrl}/deporte${params}`, {
+      headers: this.getHeaders(),
+    });
+  }
+
+  upsertDashboard(dashboardData: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/upsert`, dashboardData, {
+      headers: this.getHeaders(),
+    });
   }
 }
