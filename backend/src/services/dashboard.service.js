@@ -1,5 +1,4 @@
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
+const prisma = require("../config/prisma");
 
 class DashboardService {
   /**
@@ -7,10 +6,12 @@ class DashboardService {
    */
   static async getDietaDashboard(userId) {
     try {
-      const dashboard = await prisma.dashboard.findFirst({
-        where: { userId },
+      const dashboard = await prisma.user.findFirst({
+        where: { userId: userId },
         select: {
           userId: true,
+        },
+        include: {
           dieta: {
             select: {
               id: true,
@@ -51,6 +52,8 @@ class DashboardService {
         where: { userId },
         select: {
           userId: true,
+        },
+        include: {
           deporte: {
             select: {
               id: true,

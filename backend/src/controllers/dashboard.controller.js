@@ -1,8 +1,4 @@
-const DashboardService = require('../services/dashboard.service');
-
-const getUserId = (req) => {
-  return req.query.userId || req.headers['x-user-id'] || req.user?.id || 'demo-user';
-};
+const DashboardService = require("../services/dashboard.service");
 
 /**
  * GET /api/dashboard/dieta
@@ -10,12 +6,13 @@ const getUserId = (req) => {
  */
 exports.getDietaDashboard = async (req, res) => {
   try {
-    const userId = getUserId(req);
+    const userId = req.user.userId;
+    console.log("Recibido el userID:", userId);
     const data = await DashboardService.getDietaDashboard(userId);
     res.json(data);
   } catch (error) {
-    console.error('GET dieta error:', error);
-    res.status(404).json({ error: error.message || 'Dashboard not found' });
+    console.error("GET dieta error:", error);
+    res.status(404).json({ error: error.message || "Dashboard not found" });
   }
 };
 
@@ -25,12 +22,12 @@ exports.getDietaDashboard = async (req, res) => {
  */
 exports.getDeporteDashboard = async (req, res) => {
   try {
-    const userId = getUserId(req);
+    const userId = req.user.userId;
     const data = await DashboardService.getDeporteDashboard(userId);
     res.json(data);
   } catch (error) {
-    console.error('GET deporte error:', error);
-    res.status(404).json({ error: error.message || 'Dashboard not found' });
+    console.error("GET deporte error:", error);
+    res.status(404).json({ error: error.message || "Dashboard not found" });
   }
 };
 
@@ -40,7 +37,7 @@ exports.getDeporteDashboard = async (req, res) => {
  */
 exports.upsertDashboard = async (req, res) => {
   try {
-    const userId = getUserId(req);
+    const userId = req.user.userId;
     const { dieta, deporte } = req.body;
 
     const data = await DashboardService.upsertDashboard(userId, {
@@ -48,9 +45,9 @@ exports.upsertDashboard = async (req, res) => {
       ...(deporte && { deporte }),
     });
 
-    res.json({ message: 'Dashboard updated successfully', data });
+    res.json({ message: "Dashboard updated successfully", data });
   } catch (error) {
-    console.error('POST upsert error:', error);
-    res.status(500).json({ error: error.message || 'Server error' });
+    console.error("POST upsert error:", error);
+    res.status(500).json({ error: error.message || "Server error" });
   }
 };

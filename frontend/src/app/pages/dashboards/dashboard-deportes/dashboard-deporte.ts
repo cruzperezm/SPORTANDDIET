@@ -1,10 +1,10 @@
 import { Component, OnInit, inject, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Subscription, interval } from 'rxjs';
+import { Observable, Subscription, interval } from 'rxjs';
 import { switchMap, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
-import { DashboardService } from '../../services/dashboard.service';
+import { DashboardService } from '../../../services/dashboard.service';
 
 interface SportData {
   usuario: { nombre: string };
@@ -27,26 +27,42 @@ export class DashboardDeporteComponent implements OnInit, OnDestroy {
 
   private subscription?: Subscription;
 
-  weekData: Array<{ dia: string; valor: number }> = [];
+  userName = 'Usuario de ejemplo';
 
-  userName = '';
-  moveText = '';
-  moveCalories = '';
-  exerciseText = '';
-  exerciseCalories = '';
-  standText = '';
-  standCalories = '';
+  // Activity Ring Data
+  moveText = 'Moverse';
+  moveCalories = '450 / 600 kcal';
+  exerciseText = 'Ejercicio';
+  exerciseCalories = '45 / 30 min';
+  standText = 'De Pie';
+  standCalories = '10 / 12 hr';
 
-  trainText1 = '';
-  trainAmount1 = '';
-  trainText2 = '';
-  trainAmount2 = '';
-  trainText3 = '';
-  trainAmount3 = '';
-  trainText4 = '';
-  trainAmount4 = '';
-  trainText5 = '';
-  trainAmount5 = '';
+  // Training List - Individual Variables
+  trainText1 = 'Carrera Matutina';
+  trainAmount1 = '5.2 km';
+
+  trainText2 = 'Entrenamiento Fuerza';
+  trainAmount2 = '45 min';
+
+  trainText3 = 'Sesión Yoga';
+  trainAmount3 = '20 min';
+
+  trainText4 = 'Ciclismo Urbano';
+  trainAmount4 = '12 km';
+
+  trainText5 = 'Estiramientos';
+  trainAmount5 = '10 min';
+
+  // Don't forget the chart data since the @if and @for need it to render the bars!
+  weekData = [
+    { dia: 'L', valor: 45 },
+    { dia: 'M', valor: 30 },
+    { dia: 'X', valor: 60 },
+    { dia: 'J', valor: 25 },
+    { dia: 'V', valor: 50 },
+    { dia: 'S', valor: 80 },
+    { dia: 'D', valor: 40 },
+  ];
 
   loading = true;
   error = '';
@@ -81,16 +97,15 @@ export class DashboardDeporteComponent implements OnInit, OnDestroy {
   }
 
   private fetchDeporteData() {
-    const userId = localStorage.getItem('userId');
-    return this.dashboardService.getDeporteDashboard(userId);
+    return this.dashboardService.getDeporteDashboard();
   }
 
   toggleToDieta() {
-    this.router.navigate(['/dashboard-dieta']);
+    this.router.navigate(['/dashboard/dieta']);
   }
 
   goToDeporte() {
-    this.router.navigate(['/deporte']);
+    this.router.navigate(['/deportes']);
   }
 
   private updateData(data: SportData) {

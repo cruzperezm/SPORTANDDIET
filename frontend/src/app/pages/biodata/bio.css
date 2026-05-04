@@ -1,10 +1,12 @@
 h2 {
   margin-top: 0;
   text-align: center;
+  font-weight: bold;
 }
 
 h3 {
   margin-top: 0;
+  margin-bottom: 40px;
   text-align: center;
 }
 
@@ -40,24 +42,23 @@ label {
   border-radius: 12px;
 }
 
-
 input:focus {
-  outline: 2px solid #2ECC71;
+  outline: 2px solid #2ecc71;
 }
 
 input.ng-touched.ng-invalid {
   outline: 2px solid red;
 }
 
-input[type="button"] {
-  width: 40%;
-  background-color: #2ECC71;
+input[type='button'] {
+  width: fit-content;
+  background-color: #2ecc71;
   margin-bottom: 5%;
 }
 
-input[type="submit"] {
+input[type='submit'] {
   width: 40%;
-  background-color: #2ECC71;
+  background-color: #2ecc71;
   margin-bottom: 5%;
 }
 
@@ -68,13 +69,12 @@ input[type="submit"] {
   justify-content: space-between;
 }
 
-
 #container {
   background-color: #f5f7f9;
   border-radius: 20px;
   font-family: 'Inter', sans-serif;
   display: block;
-  width: 25%;
+  width: 30%;
   padding: 50px;
   margin: 10% auto 10% auto;
 }
@@ -87,11 +87,11 @@ input[type="submit"] {
 
 .radiowrapper input {
   position: absolute;
-  visibility:hidden;
-  width:0;
+  visibility: hidden;
+  width: 0;
 }
 
-.radiowrapper:hover label{
+.radiowrapper:hover label {
   background-color: #37ba8f;
   color: #ffffff;
   border-color: #37ba8f;
@@ -104,6 +104,3 @@ input[type="submit"] {
   color: #ffffff;
   box-shadow: 0 4px 12px rgb(38, 122, 95);
 }
-
-
-

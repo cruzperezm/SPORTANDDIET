@@ -1,6 +1,5 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated"
 }
 
 datasource db {
@@ -15,6 +14,7 @@ model User {
   password   String?
   googleId   String?     @unique
   biometrics Biometrics?
+  dashboards Dashboard[]
 }
 
 model Biometrics {
@@ -40,18 +40,20 @@ model Diet {
 }
 
 model Recipe {
-  id           Int         @id @default(autoincrement())
-  dietId       Int?
-  name         String      @unique
-  image        String
-  duration     Int
-  calories     Int
-  allergies    Allergies[]
-  moment       Moment
-  instructions String
-  ingredients  String[]
-  macros       String[]
-  diet         Diet?       @relation(fields: [dietId], references: [id])
+  id              Int            @id @default(autoincrement())
+  dietId          Int?
+  name            String         @unique
+  image           String
+  duration        Int
+  calories        Int
+  allergies       Allergies[]
+  moment          Moment
+  instructions    String
+  ingredients     String[]
+  macros          String[]
+  diet            Diet?          @relation(fields: [dietId], references: [id])
+  dashboardDiet   DashboardDiet? @relation(fields: [dashboardDietId], references: [id])
+  dashboardDietId Int?
 }
 
 model ExercisePlan {
@@ -75,6 +77,38 @@ model Exercise {
   stats          Int[]
   duration       Int
   exercisePlan   ExercisePlan?    @relation(fields: [exercisePlanId], references: [id])
+}
+
+model DashboardDiet {
+  id                Int         @id @default(autoincrement())
+  calorias_objetivo Int
+  calorias_totales  Int
+  macros1           Int
+  macros2           Int
+  recetas           Recipe[]
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @default(now())
+  dashboards        Dashboard[]
+}
+
+model DashboardSport {
+  id          Int         @id @default(autoincrement())
+  actividades Int
+  semana      Int
+  ejercicios  Int
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @default(now())
+  dashboards  Dashboard[]
+}
+
+model Dashboard {
+  id               Int            @id @default(autoincrement())
+  user             User           @relation(fields: [userId], references: [id])
+  userId           Int
+  dieta            DashboardDiet  @relation(fields: [dashboardDietId], references: [id])
+  dashboardDietId  Int
+  deporte          DashboardSport @relation(fields: [dashboardSportId], references: [id])
+  dashboardSportId Int
 }
 
 enum Allergies {

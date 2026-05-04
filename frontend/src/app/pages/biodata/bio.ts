@@ -1,6 +1,13 @@
 import { Component, inject } from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import {ActivatedRoute, Router, RouterLink} from '@angular/router';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -10,7 +17,6 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './bio.html',
   styleUrl: './bio.css',
 })
-
 export class Bio {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
@@ -23,6 +29,7 @@ export class Bio {
 
   ngOnInit() {
     this.queryId = parseInt(<string>this.route.snapshot.queryParamMap.get('userId'));
+    console.log('id:', this.queryId);
   }
 
   bioForm: FormGroup = this.fb.group({
@@ -34,13 +41,13 @@ export class Bio {
     cKg: ['', [Validators.required]],
     dKg: ['', [Validators.required]],
     nWeeks: ['', [Validators.required, Validators.min(1)]],
-    id: ['']
+    id: [''],
   });
 
   next() {
     this.bioData += 1;
   }
-  back(){
+  back() {
     this.bioData -= 1;
   }
 
@@ -48,7 +55,7 @@ export class Bio {
   errorMessage = '';
 
   saveData() {
-    this.bioForm.patchValue({id: this.queryId})
+    this.bioForm.patchValue({ id: this.queryId });
     if (this.bioForm.invalid) return;
 
     this.isLoading = true;
@@ -69,36 +76,35 @@ export class Bio {
     });
   }
 
-  get gender(){
-    return this.bioForm.get('gender')
+  get gender() {
+    return this.bioForm.get('gender');
   }
 
-  get height(){
-    return this.bioForm.get('height')
+  get height() {
+    return this.bioForm.get('height');
   }
 
-  get age(){
-    return this.bioForm.get('age')
+  get age() {
+    return this.bioForm.get('age');
   }
 
-  get goal(){
-    return this.bioForm.get('goal')
+  get goal() {
+    return this.bioForm.get('goal');
   }
 
-  get act(){
-    return this.bioForm.get('act')
+  get act() {
+    return this.bioForm.get('act');
   }
 
-  get cKg(){
-    return this.bioForm.get('cKg')
+  get cKg() {
+    return this.bioForm.get('cKg');
   }
 
-  get dKg(){
-    return this.bioForm.get('dKg')
+  get dKg() {
+    return this.bioForm.get('dKg');
   }
 
-  get nWeeks(){
-    return this.bioForm.get('nWeeks')
+  get nWeeks() {
+    return this.bioForm.get('nWeeks');
   }
-
 }

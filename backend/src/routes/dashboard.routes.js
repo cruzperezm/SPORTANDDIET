@@ -1,12 +1,17 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const dashboardController = require('../controllers/dashboard.controller');
+const dashboardController = require("../controllers/dashboard.controller");
+const authenticateToken = require("../middleware/auth.middleware");
 
 // GET dashboard endpoints
-router.get('/dieta', dashboardController.getDietaDashboard);
-router.get('/deporte', dashboardController.getDeporteDashboard);
+router.get("/dieta", authenticateToken, dashboardController.getDietaDashboard);
+router.get(
+  "/deporte",
+  authenticateToken,
+  dashboardController.getDeporteDashboard,
+);
 
 // POST upsert endpoint
-router.post('/upsert', dashboardController.upsertDashboard);
+router.post("/upsert", authenticateToken, dashboardController.upsertDashboard);
 
 module.exports = router;
