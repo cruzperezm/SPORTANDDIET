@@ -9,7 +9,7 @@
     <div class="ellipse-container" id="e1">
       <div class="ellipse" id="e2">
         <p id="calories-goal">{{ caloriesGoal }}</p>
-        <p id="calories-amount">{{ caloriesAmount }} /</p>
+        <p id="calories-amount">{{ caloriesAmount }}</p>
       </div>
     </div>
 
@@ -46,6 +46,6 @@
     <p class="text20" [id]="'diet-text' + (i + 1)">{{ item.text }}</p>
     <p class="text16" [id]="'diet-amount' + (i + 1)">{{ item.amount }}</p>
   } @empty {
-    <p class="text16">No meals found for today.</p>
+    <p class="text16">No se encontraron comidas para hoy.</p>
   }
 </div>
