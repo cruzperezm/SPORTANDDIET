@@ -65,7 +65,7 @@ export class Bio {
       next: (response) => {
         console.log('Backend says:', response);
         this.isLoading = false;
-        this.router.navigate(['/login']);
+        this.router.navigate(['/']);
       },
       error: (err) => {
         alert('Form failed to upload');

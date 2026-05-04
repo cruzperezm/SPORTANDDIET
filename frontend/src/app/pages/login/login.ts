@@ -89,7 +89,7 @@ export class Login implements AfterViewInit {
         this.isLoading = false;
 
         // Mismo control que en Google
-        const userId = res.id;
+        const userId = res.user.id;
         if (res.needsOnboarding) {
           this.router.navigate(['/bio'], {
             queryParams: { userId: userId },
