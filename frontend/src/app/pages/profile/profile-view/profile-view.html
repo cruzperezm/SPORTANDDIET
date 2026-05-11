@@ -1,0 +1,166 @@
+<div class="dashboard-container">
+
+  <div class="profile-edit-card">
+
+    <div class="card-header">
+      <div class="user-info-header">
+        <div class="avatar-wrapper">
+          <img [src]="user.photoUrl || 'assets/img/default-avatar.png'" alt="Foto">
+          <button class="edit-photo-icon">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </div>
+        <div class="user-text">
+          <h2>{{ user.username || 'Your name' }}</h2>
+          <p>{{ user.email || 'yourname@gmail.com' }}</p>
+        </div>
+      </div>
+    </div>
+
+    <mat-tab-group dynamicHeight class="custom-tabs">
+
+      <mat-tab label="Mi Cuenta">
+        <div class="tab-content">
+          <form [formGroup]="accountForm">
+            <div class="form-grid">
+
+              <div class="input-group">
+                <label>Nombre</label>
+                <input type="text" formControlName="username" placeholder="Tu nombre">
+              </div>
+
+              <div class="input-group">
+                <label>Pronombres</label>
+                <mat-select formControlName="pronouns" placeholder="Selecciona">
+                  <mat-option value="EL">Él</mat-option>
+                  <mat-option value="ELLA">Ella</mat-option>
+                  <mat-option value="ELLO">Elle / Neutro</mat-option>
+                  <mat-option value="NO_DECIR">Prefiero no decir</mat-option>
+                </mat-select>
+              </div>
+
+              <div class="input-group full-width">
+                <label>Correo Electrónico</label>
+                <input type="email" formControlName="email" placeholder="ejemplo@correo.com"
+                       [class.invalid-input]="emailCtrl?.invalid && emailCtrl?.touched">
+                <div class="error-text" *ngIf="emailCtrl?.invalid && emailCtrl?.touched">
+                  <span *ngIf="emailCtrl?.hasError('required')">El correo es obligatorio.</span>
+                  <span *ngIf="emailCtrl?.hasError('email')">Formato no válido.</span>
+                </div>
+              </div>
+
+              <div class="input-group full-width">
+                <label>Confirmar Correo</label>
+                <input type="email" formControlName="confirmEmail" placeholder="Repite tu correo"
+                       [class.invalid-input]="(confirmEmailCtrl?.invalid || form?.hasError('emailMismatch')) && confirmEmailCtrl?.touched">
+                <div class="error-text" *ngIf="confirmEmailCtrl?.touched">
+                  <span *ngIf="confirmEmailCtrl?.hasError('required')">Debes confirmar el correo.</span>
+                  <span *ngIf="form?.hasError('emailMismatch') && !confirmEmailCtrl?.hasError('required')">Los correos no coinciden.</span>
+                </div>
+              </div>
+
+            </div>
+          </form>
+        </div>
+      </mat-tab>
+
+      <mat-tab label="Biometría">
+        <div class="tab-content">
+          <form [formGroup]="biometricsForm">
+
+            <div class="form-grid">
+              <div class="input-group">
+                <label>Edad</label>
+                <input type="number" formControlName="age" placeholder="Años"
+                       [class.invalid-input]="ageCtrl?.invalid && ageCtrl?.touched">
+                <div class="error-text" *ngIf="ageCtrl?.invalid && ageCtrl?.touched">
+                  <span *ngIf="ageCtrl?.hasError('required')">Requerido.</span>
+                  <span *ngIf="ageCtrl?.hasError('min') || ageCtrl?.hasError('max')">Debe estar entre 14 y 99 años.</span>
+                </div>
+              </div>
+
+              <div class="input-group">
+                <label>Altura (cm)</label>
+                <input type="number" formControlName="height" placeholder="Ej: 175"
+                       [class.invalid-input]="heightCtrl?.invalid && heightCtrl?.touched">
+                <div class="error-text" *ngIf="heightCtrl?.invalid && heightCtrl?.touched">
+                  <span *ngIf="heightCtrl?.hasError('required')">Requerido.</span>
+                  <span *ngIf="heightCtrl?.hasError('min') || heightCtrl?.hasError('max')">Altura no válida (100-250cm).</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-grid">
+              <div class="input-group">
+                <label>Peso Actual (kg)</label>
+                <input type="number" formControlName="weight" placeholder="Ej: 70"
+                       [class.invalid-input]="weightCtrl?.invalid && weightCtrl?.touched">
+                <div class="error-text" *ngIf="weightCtrl?.invalid && weightCtrl?.touched">
+                  <span *ngIf="weightCtrl?.hasError('required')">Requerido.</span>
+                  <span *ngIf="weightCtrl?.hasError('min') || weightCtrl?.hasError('max')">Peso no válido.</span>
+                </div>
+              </div>
+
+              <div class="input-group">
+                <label>Peso Ideal / Meta (kg)</label>
+                <input type="number" formControlName="targetWeight" placeholder="Ej: 65"
+                       [class.invalid-input]="targetWeightCtrl?.invalid && targetWeightCtrl?.touched">
+                <div class="error-text" *ngIf="targetWeightCtrl?.invalid && targetWeightCtrl?.touched">
+                  <span *ngIf="targetWeightCtrl?.hasError('required')">Requerido.</span>
+                  <span *ngIf="targetWeightCtrl?.hasError('min') || targetWeightCtrl?.hasError('max')">Meta no válida.</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-grid">
+              <div class="input-group">
+                <label>Semanas de seguimiento</label>
+                <input type="number" formControlName="trackingWeeks" placeholder="1 a 52 semanas"
+                       [class.invalid-input]="trackingWeeksCtrl?.invalid && trackingWeeksCtrl?.touched">
+                <div class="error-text" *ngIf="trackingWeeksCtrl?.invalid && trackingWeeksCtrl?.touched">
+                  <span *ngIf="trackingWeeksCtrl?.hasError('required')">Requerido.</span>
+                  <span *ngIf="trackingWeeksCtrl?.hasError('min') || trackingWeeksCtrl?.hasError('max')">Debe ser entre 1 y 52 semanas.</span>
+                </div>
+              </div>
+              <div></div>
+            </div>
+
+          </form>
+        </div>
+      </mat-tab>
+
+      <mat-tab label="Preferencias">
+        <div class="tab-content">
+          <form [formGroup]="preferencesForm">
+            <div class="form-grid">
+              <div class="input-group full-width">
+                <label>Nivel de Actividad</label>
+                <mat-select formControlName="activityLevel" placeholder="Selecciona tu nivel">
+                  <mat-option value="NOTHING">Nada</mat-option>
+                  <mat-option value="LITTLE">Poca</mat-option>
+                  <mat-option value="MODERATE">Moderado</mat-option>
+                  <mat-option value="INTENSE">Intenso</mat-option>
+                </mat-select>
+              </div>
+
+              <div class="input-group full-width">
+                <label>Alérgenos / Restricciones</label>
+                <mat-select formControlName="allergens" multiple placeholder="Selecciona">
+                  <mat-option value="GLUTEN">Gluten</mat-option>
+                  <mat-option value="LACTOSE">Lactosa</mat-option>
+                  <mat-option value="VEGAN">Vegana</mat-option>
+                </mat-select>
+              </div>
+            </div>
+          </form>
+        </div>
+      </mat-tab>
+
+    </mat-tab-group>
+
+    <div class="form-footer">
+      <button mat-flat-button class="btn-save">Guardar</button>
+    </div>
+
+  </div>
+</div>
