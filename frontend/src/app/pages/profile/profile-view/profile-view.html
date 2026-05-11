@@ -1,0 +1,65 @@
+<div class="profile-container">
+  <div class="profile-header">
+    <div class="avatar-wrapper">
+      <img [src]="user.photoUrl || 'assets/img/default-avatar.png'" alt="Foto de perfil">
+      <button mat-mini-fab color="primary" class="edit-photo-btn">
+        <mat-icon>edit</mat-icon>
+      </button>
+    </div>
+    <h1>{{ user.username || 'Usuario' }}</h1>
+    <p class="user-email">{{ user.email }}</p>
+  </div>
+
+  <div class="tabs-container shadow-box">
+    <mat-tab-group dynamicHeight>
+
+      <mat-tab label="Mi Cuenta">
+        <form [formGroup]="accountForm" class="tab-content">
+          <mat-form-field appearance="outline">
+            <mat-label>Nombre de usuario</mat-label>
+            <input matInput formControlName="username">
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" readonly>
+          </mat-form-field>
+        </form>
+      </mat-tab>
+
+      <mat-tab label="Ajustes Biométricos">
+        <form [formGroup]="biometricsForm" class="tab-content grid-layout">
+          <mat-form-field appearance="outline">
+            <mat-label>Peso (kg)</mat-label>
+            <input matInput type="number" formControlName="weight">
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Altura (cm)</mat-label>
+            <input matInput type="number" formControlName="height">
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Género</mat-label>
+            <mat-select formControlName="gender">
+              <mat-option value="MALE">Masculino</mat-option>
+              <mat-option value="FEMALE">Femenino</mat-option>
+              <mat-option value="OTHER">Otro</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </form>
+      </mat-tab>
+
+      <mat-tab label="Preferencias">
+        <div class="tab-content">
+          <h3>Personalización</h3>
+          <p>Configura tus metas de entrenamiento y dieta aquí.</p>
+        </div>
+      </mat-tab>
+
+    </mat-tab-group>
+
+    <div class="actions-footer">
+      <button mat-raised-button color="primary" (click)="saveChanges()" [disabled]="!isDirty()">
+        Guardar Cambios
+      </button>
+    </div>
+  </div>
+</div>

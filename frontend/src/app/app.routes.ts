@@ -9,6 +9,7 @@ import { DietasDetalleComponent } from './pages/dietas/dietas-detalle/dietas-det
 import { DeportesInicioComponent } from './pages/deportes/deportes-inicio/deportes-inicio';
 import { DeportesPlanComponent } from './pages/deportes/deportes-plan/deportes-plan';
 import { DeportesDetalleComponent } from './pages/deportes/deportes-detalle/deportes-detalle';
+import {ProfileComponent} from './pages/profile/profile-view/profile-view';
 
 export const routes: Routes = [
   { path: 'login', component: Login, title: 'SPORTS&DIET · Log In' },
@@ -21,6 +22,7 @@ export const routes: Routes = [
   { path: 'deportes', component: DeportesInicioComponent, title: 'SPORTS&DIET · Deportes' },
   { path: 'deportes/plan/:id', component: DeportesPlanComponent, title: 'SPORTS&DIET · Entrenamientos' },
   { path: 'deportes/guia/:id', component: DeportesDetalleComponent, title: 'SPORTS&DIET · Ejercicio' },
+  { path: 'profile', component: ProfileComponent, title: 'SPORTS&DIET · Perfil' },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: '**', redirectTo: 'home' },
 ];
