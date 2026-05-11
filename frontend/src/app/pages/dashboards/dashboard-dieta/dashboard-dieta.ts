@@ -35,7 +35,7 @@ export class DashboardDietaComponent implements OnInit, OnDestroy {
   private subscription?: Subscription;
   dietaData$!: Observable<any[]>;
 
-  userName = 'Usuario de ejemplo';
+  userName = 'Dashboard nutricional';
   caloriesGoal = 2500;
   caloriesAmount = 1850;
   waterAmount = '2.5L';
@@ -45,11 +45,11 @@ export class DashboardDietaComponent implements OnInit, OnDestroy {
 
   // Macro Progress (0 to 100)
   macroList = [
-    { id: 'protein', label: 'Proteína', amount: '120g', progress: 75 },
-    { id: 'fats', label: 'Grasas', amount: '45g', progress: 40 },
-    { id: 'carbs', label: 'Carbs', amount: '210g', progress: 60 },
-    { id: 'sodium', label: 'Sodio', amount: '1.2g', progress: 30 },
-    { id: 'sugar', label: 'Azúcar', amount: '20g', progress: 15 },
+    { id: 'protein', label: 'Proteína', amount: 120, total: 200, progress: 75 },
+    { id: 'fats', label: 'Grasas', amount: 45, total: 100, progress: 40 },
+    { id: 'carbs', label: 'Carbs', amount: 210, total: 300, progress: 60 },
+    { id: 'sodium', label: 'Sodio', amount: 1.2, total: 5, progress: 30 },
+    { id: 'sugar', label: 'Azúcar', amount: 20, total: 100, progress: 15 },
   ];
 
   // The "Action Items" Array for the @for loop

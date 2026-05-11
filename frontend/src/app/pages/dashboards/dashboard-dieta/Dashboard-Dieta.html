@@ -1,51 +1,72 @@
-<div id="dashboard-dieta">
-  <p class="text64" id="name">{{ userName }}</p>
-
-  <div class="rectangle-toggle" id="r0">
-    <div class="ellipse-toggle" (click)="toggleToDeporte()" style="cursor: pointer"></div>
-  </div>
-
-  <div class="rectangle-container" id="r1">
-    <div class="ellipse-container" id="e1">
-      <div class="ellipse" id="e2">
-        <p id="calories-goal">{{ caloriesGoal }}</p>
-        <p id="calories-amount">{{ caloriesAmount }}</p>
+<div class="dashboard-dieta">
+  <section class="left-container">
+    <h1 class="section-title">
+      {{ userName }}
+    </h1>
+    <div class="main-content-left">
+      <div class="left-graph">
+        <div
+          class="progress-circle"
+          [style.--current]="caloriesAmount"
+          [style.--max]="caloriesGoal"
+        >
+          <span class="progress-text-max">
+            {{ caloriesGoal }}
+          </span>
+          <span class="progress-text-current">
+            {{ caloriesAmount }}
+          </span>
+          <span class="calories-icon">🔥</span>
+        </div>
+        <div class="water-fiber">
+          <div class="water">
+            <h3>Hidratación</h3>
+            <p>{{ waterAmount }}</p>
+          </div>
+          <div class="fiber">
+            <h3>Fibra</h3>
+            <p>{{ fiberAmount }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="right-macros">
+        @for (macro of macroList; track macro.id) {
+          <div class="macro-item">
+            <div class="macro-title">
+              <span>{{ macro.label }} </span>
+            </div>
+            <div
+              class="macro-progress"
+              [style.--current]="macro.amount"
+              [style.--max]="macro.total"
+            >
+              <span>{{ macro.amount }}g / {{ macro.total }}g </span>
+              <div class="macro-progress-bar"></div>
+            </div>
+          </div>
+        }
       </div>
     </div>
+  </section>
 
-    <!-- Stats that don't have progress bars -->
-    <p class="text24" id="water-amount">{{ waterAmount }}</p>
-    <p class="text16" id="water-text">{{ waterText }}</p>
-    <p class="text24" id="fiber-amount">{{ fiberAmount }}</p>
-    <p class="text16" id="fiber-text">{{ fiberText }}</p>
-
-    <!-- Refactored Macro Section -->
-    @for (macro of macroList; track macro.id) {
-      <p class="text16" [id]="macro.id + '-amount'">{{ macro.amount }}</p>
-      <p class="text24" [id]="macro.id + '-text'">{{ macro.label }}</p>
-      <div [id]="macro.id + '-rectangle'" class="macro-track">
-        <div class="macro-fill" [style.width.%]="macro.progress"></div>
-      </div>
-    }
-  </div>
-
-  <!-- Meal/Recipe List -->
-  @for (item of dietItems; track item.id; let i = $index) {
-    <div
-      class="cross-horizontal"
-      [id]="'r' + (7 + i * 2)"
-      (click)="goToDietas()"
-      style="cursor: pointer"
-    ></div>
-    <div
-      class="cross-vertical"
-      [id]="'r' + (8 + i * 2)"
-      (click)="goToDietas()"
-      style="cursor: pointer"
-    ></div>
-    <p class="text20" [id]="'diet-text' + (i + 1)">{{ item.text }}</p>
-    <p class="text16" [id]="'diet-amount' + (i + 1)">{{ item.amount }}</p>
-  } @empty {
-    <p class="text16">No se encontraron comidas para hoy.</p>
-  }
+  <section class="right-container">
+    <div class="rectangle-toggle">
+      <div class="ellipse-toggle" (click)="toggleToDeporte()" style="cursor: pointer"></div>
+    </div>
+    <div class="main-content-right">
+      @for (item of dietItems; track item.id) {
+        <div class="diet-item">
+          <div class="diet-title">
+            <span>{{ item.text }}</span>
+          </div>
+          <div class="diet-value">
+            <span>{{ item.amount }}</span>
+          </div>
+          <div class="plus-sign" (click)="goToDietas()">
+            <img src="shared/images/plus-dietas.png" alt="" />
+          </div>
+        </div>
+      }
+    </div>
+  </section>
 </div>
