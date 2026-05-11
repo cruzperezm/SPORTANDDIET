@@ -31,3 +31,34 @@ h1 {
   height: 100%;
   text-align: center;
 }
+
+
+nav-group {
+  position: absolute;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  align-content: center;
+  transform: translateX(-50%);
+}
+
+.nav-pill {
+  text-decoration: none;
+  color: #333;
+  font-weight: 600;
+  padding: 6px 24px;
+  border-radius: 12px;
+  border: 2px solid #eee;
+  transition: all 0.2s ease;
+  height: 60%;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 20px;
+  width: auto;
+}
+
+.nav-pill:hover {
+  background-color: #e8f5ed;
+  color: #2ecc71;
+}

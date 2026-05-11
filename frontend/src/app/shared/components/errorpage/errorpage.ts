@@ -7,4 +7,13 @@ import { Router } from "@angular/router";
   styleUrls: ['./errorpage.css']
 })
 export class ErrorPageComponent {
+    constructor(private router: Router) {}
+
+    onDietasClick() {
+    this.router.navigate(['/dietas']);
+    }
+
+    onDeportesClick() {
+    this.router.navigate(['/deportes']);
+    }
 }
