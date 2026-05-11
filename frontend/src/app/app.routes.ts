@@ -38,4 +38,5 @@ export const routes: Routes = [
     component: DashboardDeporteComponent,
     title: 'SPORTS&DIET · Dashboard',
   },
+  {path: '**', loadComponent: () => import('./shared/components/errorpage/errorpage').then(m => m.ErrorPageComponent), title: 'SPORTS&DIET · Página no encontrada' }
 ];

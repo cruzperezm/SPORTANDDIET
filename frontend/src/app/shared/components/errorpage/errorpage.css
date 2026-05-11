@@ -4,7 +4,7 @@
 }
 
 html, body {
-  margin: 0;
+  margin: 30rem;
   height: 100%;
   font-family: 'Inter', sans-serif;
   color: #1A1A1A;
@@ -18,11 +18,14 @@ p {
 }
 
 h1 {
+  margin: 2rem;
   color: #1A1A1A;
   font-weight: 600;
 }
 #error-page {
+  min-height: 75vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100%;
