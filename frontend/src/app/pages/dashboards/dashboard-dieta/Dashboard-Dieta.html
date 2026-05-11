@@ -50,8 +50,8 @@
   </section>
 
   <section class="right-container">
-    <div class="rectangle-toggle">
-      <div class="ellipse-toggle" (click)="toggleToDeporte()" style="cursor: pointer"></div>
+    <div class="rectangle-toggle" (click)="toggleToDeporte()">
+      <div class="ellipse-toggle"></div>
     </div>
     <div class="main-content-right">
       @for (item of dietItems; track item.id) {

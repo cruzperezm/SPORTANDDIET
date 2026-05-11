@@ -60,6 +60,7 @@ h1 {
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
+  padding: 30px;
   gap: 10px;
 }
 
@@ -86,6 +87,7 @@ h1 {
   width: 100px;
   background-color: #10b981;
   border-radius: 50px;
+  cursor: pointer;
 }
 
 .ellipse-toggle {
@@ -226,6 +228,7 @@ h1 {
 .macro-progress {
   width: 70%;
   display: flex;
+  gap: 5px;
   flex-direction: column;
 }
 

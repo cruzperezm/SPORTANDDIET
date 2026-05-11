@@ -7,358 +7,193 @@
   --color-texto: #1f2937; /* Gris carbón para texto principal */
   --color-texto-suave: #4b5563; /* Gris medio para descripciones */
   --color-texto-color: #140700;
-  --sombra-suave: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --sombra-suave: 0 0 20px 0 rgba(0, 0, 0, 0.1), 0 0 20px 0 rgba(0, 0, 0, 0.05);
   --sombra-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
-#dashboard-deporte {
-  display: grid !important;
-  place-items: center !important;
-  min-height: 100vh !important;
-  transform: scale(0.5);
-  transform-origin: top left;
-  margin-left: 10vw;
+h1 {
+  font-size: 25px;
+  font-weight: bold;
 }
 
-#dashboard-deporte .text16 {
-  color: #140700;
-}
-#dashboard-deporte .text20 {
-  color: #4b5563;
-}
-#dashboard-deporte .text24 {
-  color: #4b5563;
-}
-#dashboard-deporte .text64 {
-  color: #1f2937;
-}
-
-#dashboard-deporte .rectangle-macros {
-  background-color: #d18f6b;
-}
-#dashboard-deporte .cross-horizontal {
-  background-color: #ea580c;
-}
-#dashboard-deporte .cross-vertical {
-  background-color: #ea580c;
-}
-
-#dashboard-deporte .rectangle-toggle {
-  background-color: #f97316;
-}
-#dashboard-deporte .ellipse-toggle {
-  background-color: #f0c1a8;
-}
-#dashboard-deporte .rectangle-container {
-  background-color: #f0c1a8;
-}
-#dashboard-deporte .ellipse-container {
-  background-color: #ea580c;
-}
-#dashboard-deporte .ellipse {
-  background-color: #fafafa;
-}
-
-html {
-    font-size: 0.65vw;
-    overflow-x: hidden;
-    overflow-y: visible;
-  }
-
-  body {
-    height: 100vh;
-    width: 100vw;
-    background-color: #fafafa;
-  }
-  body {
-    margin: 0;
-    font-family: sans-serif;
-    background-color: #fafafa;
-  }
-
-  #dashboard-deporte {
-    min-height: 145rem;
-    width: 100%;
-    background-color: #fafafa;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    text-align: center;
-  }
-
-  #dashboard-deporte .text16 {
-    position: absolute;
-    font-size: 1.6rem;
-    font-family: 'Inter', sans-serif;
-    color: #140700;
-  }
-  #dashboard-deporte .text20 {
-    position: absolute;
-    font-size: 2rem;
-    font-family: 'Inter', sans-serif;
-    color: #4b5563;
-  }
-  #dashboard-deporte .text24 {
-    position: absolute;
-    font-size: 2.4rem;
-    font-family: 'Inter', sans-serif;
-    color: #4b5563;
-  }
-  #dashboard-deporte .text64 {
-    position: absolute;
-    font-size: 6.4rem;
-    font-family: 'Inter', sans-serif;
-    font-weight: bold;
-    color: #1f2937;
-  }
-
-  #dashboard-deporte .rectangle-macros {
-    position: absolute;
-    height: 1.4rem;
-    width: 15.5rem;
-    background-color: #d18f6b;
-    border-radius: 90px;
-  }
-  #dashboard-deporte .cross-horizontal {
-    position: absolute;
-    height: 1.51685rem;
-    width: 5rem;
-    border-radius: 50px;
-    background-color: #ea580c;
-  }
-  #dashboard-deporte .cross-vertical {
-    position: absolute;
-    width: 1.51685rem;
-    height: 5rem;
-    border-radius: 50px;
-    background-color: #ea580c;
-  }
-
-  #dashboard-deporte .rectangle-toggle {
-    position: absolute;
-    height: 7.5rem;
-    width: 15rem;
-    top: 21.6rem;
-    left: 123.1rem;
-    border-radius: 70px;
-  }
-  #dashboard-deporte .ellipse-toggle {
-    position: absolute;
-    height: 6.75rem;
-    width: 6.75rem;
-    left: 0.4rem;
-    top: 0.35rem;
-    border-radius: 90px;
-  }
-  #dashboard-deporte .rectangle-container {
-    position: absolute;
-    height: 51.4rem;
-    width: 90rem;
-    top: 35.9rem;
-    left: 9.4rem;
-    background-color: #ffffff;
-    border-radius: 30px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    overflow-x: visible;
-    box-shadow: var(--sombra-suave);
-  }
-
-  .bars-container-wrapper .text16 {
-    position: absolute !important;
-    margin: 0;
-    padding: 0;
-    text-align: center;
-  }
-
-  /* Styling the bars to match IMG_0121 */
-  .bar-unit {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(0, 0, 0, 0.05);
-  }
-
-  /* Ensure other absolute elements inside the container stay in place */
-  #move-text,
-  #move-calories,
-  #exercise-text,
-  #exercise-calories,
-  #stand-text,
-  #stand-calories {
-    /* These keep their original IDs but will sit below the bar chart area */
-    pointer-events: none;
-  }
-  #name {
-    position: absolute;
-    top: 45%;
-    left: 10%;
-    font-size: 6.4rem;
-  }
-  #move-calories {
-    position: absolute;
-    top: 30rem;
-    left: 65.5rem;
-  }
-  #move-text {
-    position: absolute;
-    top: 30rem;
-    left: 12.6rem;
-  }
-  #exercise-calories {
-    position: absolute;
-    top: 36rem;
-    left: 65.5rem;
-  }
-  #exercise-text {
-    position: absolute;
-    top: 36rem;
-    left: 12.6rem;
-  }
-  #stand-calories {
-    position: absolute;
-    top: 42rem;
-    left: 65.5rem;
-  }
-  #stand-text {
-    position: absolute;
-    top: 42rem;
-    left: 12.6rem;
-  }
-
-  #r8,
-  #r10,
-  #r12,
-  #r14,
-  #r16 {
-    position: absolute;
-    left: 140rem;
-  }
-
-  #r8 {
-    top: 35.9rem;
-  }
-  #r10 {
-    top: 47.7rem;
-  }
-  #r12 {
-    top: 59.5rem;
-  }
-  #r14 {
-    top: 71.3rem;
-  }
-  #r16 {
-    top: 83.1rem;
-  }
-
-  #r7,
-  #r9,
-  #r11,
-  #r13,
-  #r15 {
-    position: absolute;
-    left: 138.25rem;
-  }
-  #r7 {
-    top: 37.7rem;
-  }
-  #r9 {
-    top: 49.5rem;
-  }
-  #r11 {
-    top: 61.29rem;
-  }
-  #r13 {
-    top: 73.09rem;
-  }
-  #r15 {
-    top: 84.89rem;
-  }
-
-  #train-amount1,
-  #train-amount2,
-  #train-amount3,
-  #train-amount4,
-  #train-amount5 {
-    position: absolute;
-    left: 130rem;
-  }
-  #train-amount1 {
-    top: 36rem;
-  }
-  #train-amount2 {
-    top: 47.8rem;
-  }
-  #train-amount3 {
-    top: 59.6rem;
-  }
-  #train-amount4 {
-    top: 71.4rem;
-  }
-  #train-amount5 {
-    top: 83.2rem;
-  }
-
-  #train-text1,
-  #train-text2,
-  #train-text3,
-  #train-text4,
-  #train-text5 {
-    position: absolute;
-    left: 110rem;
-    width: 14rem;
-  }
-  #train-text1 {
-    top: 35.3rem;
-  }
-  #train-text2 {
-    top: 47.1rem;
-  }
-  #train-text3 {
-    top: 58.9rem;
-  }
-  #train-text4 {
-    top: 70.7rem;
-  }
-  #train-text5 {
-    top: 82.5rem;
-  }
-
-.bars-container-wrapper {
+.dashboard-deporte {
+  margin: 50px auto;
   display: flex;
-  justify-content: space-around;
-  align-items: flex-end;
-  height: 15rem;
-  width: 90%;
-  margin: 8rem auto 0 auto;
-  position: relative;
-  z-index: 5;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  gap: 40px;
 }
 
-.bar-container {
+.left-container {
+  height: auto;
+  width: 60%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  flex-direction: column;
+}
+
+.main-content-left,
+.main-content-right {
+  min-height: 400px;
+  padding: 20px;
+  width: 100%;
+  border-radius: 25px;
+  box-shadow: var(--sombra-suave);
+  background-color: var(--color-fondo);
+}
+
+.main-content-right {
+  height: auto;
+  flex-grow: 1;
+  max-height: 600px;
+  overflow-y: auto;
+  scrollbar-arrow-color: transparent;
+  scrollbar-width: thin;
+  scrollbar-color: #10b9818c transparent;
+}
+
+.main-content-left {
+  height: auto;
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  padding: 30px;
+  gap: 10px;
+}
+
+.section-title {
+  height: 50px;
+  margin: 0;
+}
+
+.right-container {
+  height: auto;
+  width: 30%;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  flex-direction: column;
+}
+
+.rectangle-toggle {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+  min-height: 50px;
+  width: 100px;
+  background-color: #f97316;
+  border-radius: 50px;
+  cursor: pointer;
+}
+
+.ellipse-toggle {
+  border-radius: 90px;
+  height: 40px;
+  width: 40px;
+  background-color: #f0c1a8;
+  z-index: 10;
+  margin-left: 5px;
+}
+
+.training-item {
+  display: flex;
+  min-height: 45px;
+  flex-direction: row;
+  gap: 10px;
+  margin: 20px 10px;
+  padding-bottom: 10px;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: 12px;
+  border-bottom: 1px solid #76878236;
+}
+
+.training-title {
+  width: 50%;
+  text-wrap: pretty;
+}
+
+.plus-sign {
+  min-height: 20px;
+  width: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.plus-sign img {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+
+.top-graph {
+  min-height: 300px;
+  width: 70%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  gap: 10px;
+}
+
+.bar-element {
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100%;
-  justify-content: flex-end;
-  flex: 1;
-  position: absolute;
-  transform: translateX(-50%);
 }
 
-.bar-unit {
-  width: 2.4rem;
-  background-color: #d18f6b;
-  border-radius: 1rem;
-  transition: height 0.5s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(0, 0, 0, 0.05);
-}
-.bar-container .text16 {
-  position: absolute;
-  top: 15.5rem;
+.bar-element h3 {
+  font-size: 25px;
   font-weight: bold;
-  color: #140700;
-  white-space: nowrap;
+  margin-bottom: 0;
+  margin-top: 10px;
+}
+
+.bar-element p {
   margin: 0;
-  padding: 0;
+  font-size: 15px;
+  color: #f0c1a8;
+}
+
+.day-bar {
+  --progress: calc((var(--current) / 100) * 100%);
+  height: 100%;
+  width: 20px;
+  border-radius: 12px;
+  background: linear-gradient(to top, #f97316 var(--progress), #f0c1a8 var(--progress));
+}
+
+.bottom-metrics {
+  display: flex;
+  flex-direction: column;
+  width: 75%;
+}
+
+.activity-item {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  gap: 10px;
+  border-radius: 20px;
+  box-shadow: var(--sombra-suave);
+}
+
+.activity-title {
+  width: fit-content;
+  align-self: center;
+  font-weight: bold;
+}
+
+.activity-progress {
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
 }
