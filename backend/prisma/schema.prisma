@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  output   = "../src/generated/client"
 }
 
 datasource db {
@@ -13,6 +14,10 @@ model User {
   createdAt  DateTime    @default(now())
   password   String?
   googleId   String?     @unique
+
+  pronouns   String?        //NUEVO: Para la pestaña "Mi Cuenta"
+  allergies  Allergies[]    //NUEVO: Reutilizo el enum para las Preferencias
+
   biometrics Biometrics?
   dashboards Dashboard[]
 }
