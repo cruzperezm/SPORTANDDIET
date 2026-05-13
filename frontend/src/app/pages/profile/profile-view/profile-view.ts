@@ -46,7 +46,39 @@ export class ProfileViewComponent implements OnInit {
     this.initForms();
   }
 
-  ngOnInit(): void {}
+
+  ngOnInit(): void {
+    this.loadUserProfile();
+  }
+
+  loadUserProfile() {
+    this.profileService.getProfile().subscribe({
+      next: (data: any) => {
+        this.accountForm.patchValue({
+          username: data.username,
+          email: data.email,
+          pronouns: data.pronouns
+        });
+
+        this.preferencesForm.patchValue({
+          allergens: data.allergies || []
+        });
+
+        if (data.biometrics) {
+          this.biometricsForm.patchValue({
+            age: data.biometrics.age,
+            height: data.biometrics.height,
+            weight: data.biometrics.c_weight,
+            targetWeight: data.biometrics.d_weight,
+            trackingWeeks: data.biometrics.weeks
+          });
+        }
+      },
+      error: (err) => {
+        console.error("Error al cargar datos iniciales", err);
+      }
+    });
+  }
 
   saveProfile() {
     if (this.accountForm.invalid || this.biometricsForm.invalid || this.preferencesForm.invalid) {
