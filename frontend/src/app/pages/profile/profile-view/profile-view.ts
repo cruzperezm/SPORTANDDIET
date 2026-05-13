@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
+import { ProfileService } from '../../../services/profile.service';
 
 export function emailMatchValidator(group: AbstractControl): ValidationErrors | null {
   const email = group.get('email')?.value;
@@ -30,7 +31,7 @@ export function emailMatchValidator(group: AbstractControl): ValidationErrors | 
   templateUrl: './profile-view.html',
   styleUrls: ['./profile-view.css'],
 })
-export class ProfileComponent implements OnInit {
+export class ProfileViewComponent implements OnInit {
   public user = {
     username: '',
     email: '',
@@ -41,11 +42,40 @@ export class ProfileComponent implements OnInit {
   public biometricsForm!: FormGroup;
   public preferencesForm!: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private profileService: ProfileService) {
     this.initForms();
   }
 
   ngOnInit(): void {}
+
+  saveProfile() {
+    if (this.accountForm.invalid || this.biometricsForm.invalid || this.preferencesForm.invalid) {
+      alert('Por favor, corrige los errores del formulario antes de guardar.');
+      this.accountForm.markAllAsTouched();
+      this.biometricsForm.markAllAsTouched();
+      this.preferencesForm.markAllAsTouched();
+      return;
+    }
+
+    const profileData = {
+      ...this.accountForm.value,
+      ...this.biometricsForm.value,
+      ...this.preferencesForm.value
+    };
+
+    delete profileData.confirmEmail;
+
+    this.profileService.updateProfile(profileData).subscribe({
+      next: (response) => {
+        console.log('¡Perfil actualizado con éxito!', response);
+        alert('Cambios guardados correctamente');
+      },
+      error: (err) => {
+        console.error('Error al guardar el perfil:', err);
+        alert('Hubo un error al guardar los cambios');
+      }
+    });
+  }
 
   private initForms() {
     this.accountForm = this.fb.group(
@@ -57,7 +87,6 @@ export class ProfileComponent implements OnInit {
       },
       { validators: emailMatchValidator },
     );
-
 
     this.biometricsForm = this.fb.group({
       age: [null, [Validators.required, Validators.min(14), Validators.max(99)]],
@@ -73,13 +102,8 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-
-  saveChanges() {
-    console.log(this.accountForm.value);
-  }
-
   isDirty(): boolean {
-    return this.accountForm?.dirty || this.biometricsForm?.dirty;
+    return this.accountForm?.dirty || this.biometricsForm?.dirty || this.preferencesForm?.dirty;
   }
 
   get emailCtrl() {
