@@ -57,6 +57,7 @@ export class ProfileViewComponent implements OnInit {
         this.accountForm.patchValue({
           username: data.username,
           email: data.email,
+          confirmEmail: data.email,
           pronouns: data.pronouns
         });
 

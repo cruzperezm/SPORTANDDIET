@@ -5,14 +5,16 @@
     <div class="card-header">
       <div class="user-info-header">
         <div class="avatar-wrapper">
-          <img [src]="user.photoUrl || 'assets/img/default-avatar.png'" alt="Foto">
+          <img [src]="user.photoUrl || 'assets/img/default-avatar.png'"
+               (error)="$any($event.target).src = 'https://cdn-icons-png.flaticon.com/512/149/149071.png'"
+               alt="Foto">
           <button class="edit-photo-icon">
             <mat-icon>edit</mat-icon>
           </button>
         </div>
         <div class="user-text">
-          <h2>{{ user.username || 'Your name' }}</h2>
-          <p>{{ user.email || 'yourname@gmail.com' }}</p>
+          <h2>{{ accountForm.get('username')?.value || 'Usuario' }}</h2>
+          <p>{{ accountForm.get('email')?.value || 'sin-correo@ejemplo.com' }}</p>
         </div>
       </div>
     </div>
