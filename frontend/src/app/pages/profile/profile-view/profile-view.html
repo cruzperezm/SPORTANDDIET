@@ -52,10 +52,10 @@
               <div class="input-group full-width">
                 <label>Confirmar Correo</label>
                 <input type="email" formControlName="confirmEmail" placeholder="Repite tu correo"
-                       [class.invalid-input]="(confirmEmailCtrl?.invalid || form?.hasError('emailMismatch')) && confirmEmailCtrl?.touched">
+                       [class.invalid-input]="(confirmEmailCtrl?.invalid || form.hasError('emailMismatch')) && confirmEmailCtrl?.touched">
                 <div class="error-text" *ngIf="confirmEmailCtrl?.touched">
                   <span *ngIf="confirmEmailCtrl?.hasError('required')">Debes confirmar el correo.</span>
-                  <span *ngIf="form?.hasError('emailMismatch') && !confirmEmailCtrl?.hasError('required')">Los correos no coinciden.</span>
+                  <span *ngIf="form.hasError('emailMismatch') && !confirmEmailCtrl?.hasError('required')">Los correos no coinciden.</span>
                 </div>
               </div>
 

@@ -13,6 +13,8 @@ model User {
   createdAt  DateTime    @default(now())
   password   String?
   googleId   String?     @unique
+  allergies  Allergies[]
+  pronouns   String?
   biometrics Biometrics?
   dashboards Dashboard[]
 }
@@ -30,12 +32,11 @@ model Biometrics {
   weeks    Int
   owner    User   @relation(fields: [ownerId], references: [id])
 
-  // --- NUEVOS CAMPOS AÑADIDOS ---
   imc            Float?
   kcalObjetivo   Int?
-  macroProteinas Int?     // En gramos
-  macroGrasas    Int?     // En gramos
-  macroCarbs     Int?     // En gramos
+  macroProteinas Int?
+  macroGrasas    Int?
+  macroCarbs     Int?
 
   createdAt      DateTime @default(now())
 }
@@ -60,9 +61,9 @@ model Recipe {
   instructions    String
   ingredients     String[]
   macros          String[]
-  diet            Diet?          @relation(fields: [dietId], references: [id])
-  dashboardDiet   DashboardDiet? @relation(fields: [dashboardDietId], references: [id])
   dashboardDietId Int?
+  dashboardDiet   DashboardDiet? @relation(fields: [dashboardDietId], references: [id])
+  diet            Diet?          @relation(fields: [dietId], references: [id])
 }
 
 model ExercisePlan {
@@ -80,11 +81,11 @@ model Exercise {
   image          String
   difficulty     String
   level          Level
-  filters        FilterExercise[]
   muscles        MuscleGroups[]
   gif            String
   stats          Int[]
   duration       Int
+  filters        FilterExercise[]
   exercisePlan   ExercisePlan?    @relation(fields: [exercisePlanId], references: [id])
 }
 
@@ -94,10 +95,10 @@ model DashboardDiet {
   calorias_totales  Int
   macros1           Int
   macros2           Int
-  recetas           Recipe[]
   createdAt         DateTime    @default(now())
   updatedAt         DateTime    @default(now())
   dashboards        Dashboard[]
+  recetas           Recipe[]
 }
 
 model DashboardSport {
@@ -112,12 +113,12 @@ model DashboardSport {
 
 model Dashboard {
   id               Int            @id @default(autoincrement())
-  user             User           @relation(fields: [userId], references: [id])
   userId           Int
-  dieta            DashboardDiet  @relation(fields: [dashboardDietId], references: [id])
   dashboardDietId  Int
-  deporte          DashboardSport @relation(fields: [dashboardSportId], references: [id])
   dashboardSportId Int
+  dieta            DashboardDiet  @relation(fields: [dashboardDietId], references: [id])
+  deporte          DashboardSport @relation(fields: [dashboardSportId], references: [id])
+  user             User           @relation(fields: [userId], references: [id])
 }
 
 enum Allergies {

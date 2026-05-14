@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const prisma = require("../config/prisma");
+const { calculateNutrition } = require("../utils/nutrition.js");
 
 const { OAuth2Client } = require("google-auth-library");
 
@@ -37,7 +38,17 @@ const addBio = async (
   weeks,
   owner,
 ) => {
-  return await prisma.biometrics.create({
+  // Calculate nutrition metrics
+  const calculatedMetrics = calculateNutrition({
+    peso: c_weight,
+    altura: height,
+    edad: age,
+    sexo: (genre?.toLowerCase() === 'f') ? 'F' : 'M',
+    act: activity
+  });
+
+  // Create biometrics with calculated metrics
+  const biometrics = await prisma.biometrics.create({
     data: {
       genre,
       age,
@@ -48,8 +59,34 @@ const addBio = async (
       d_weight,
       weeks,
       ownerId: owner,
+      ...calculatedMetrics
     },
   });
+
+  // Initialize dashboard for new users
+  const existingDashboard = await prisma.dashboard.findFirst({ where: { userId: owner } });
+  if (!existingDashboard) {
+    const diet = await prisma.dashboardDiet.create({
+      data: {
+        calorias_totales: 0,
+        calorias_objetivo: calculatedMetrics.kcalObjetivo,
+        macros1: [
+          { nombre: 'Proteínas', valor: 0, progreso: 0, objetivo: calculatedMetrics.macroProteinas },
+          { nombre: 'Grasas', valor: 0, progreso: 0, objetivo: calculatedMetrics.macroGrasas },
+          { nombre: 'Carbohidratos', valor: 0, progreso: 0, objetivo: calculatedMetrics.macroCarbs }
+        ],
+        macros2: []
+      }
+    });
+
+    const sport = await prisma.dashboardSport.create({ data: { actividades: 0, semana: weeks, ejercicios: 0 } });
+
+    await prisma.dashboard.create({
+      data: { userId: owner, dashboardDietId: diet.id, dashboardSportId: sport.id }
+    });
+  }
+
+  return biometrics;
 };
 
 const login = async (email, password) => {
