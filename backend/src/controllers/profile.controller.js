@@ -2,7 +2,7 @@ const prisma = require('../config/prisma');
 
 const getProfile = async (req, res) => {
   try {
-    const userId = 1;
+    const userId = parseInt(req.params.id);
     const user = await prisma.user.findUnique({
       where: { id: userId },
       include: { biometrics: true }
@@ -17,7 +17,7 @@ const getProfile = async (req, res) => {
 
 const updateProfile = async (req, res) => {
   try {
-    const userId = 1;
+    const userId = parseInt(req.params.id);
     const { username, pronouns, allergens, age, height, weight, targetWeight, trackingWeeks, activityLevel, email} = req.body;
 
     const updatedUser = await prisma.user.update({
