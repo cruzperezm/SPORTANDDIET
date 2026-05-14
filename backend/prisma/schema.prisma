@@ -29,6 +29,15 @@ model Biometrics {
   goal     String
   weeks    Int
   owner    User   @relation(fields: [ownerId], references: [id])
+
+  // --- NUEVOS CAMPOS AÑADIDOS ---
+  imc            Float?
+  kcalObjetivo   Int?
+  macroProteinas Int?     // En gramos
+  macroGrasas    Int?     // En gramos
+  macroCarbs     Int?     // En gramos
+
+  createdAt      DateTime @default(now())
 }
 
 model Diet {
