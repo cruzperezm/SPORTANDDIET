@@ -1,30 +1,17 @@
 const prisma = require("../config/prisma");
 
 class DashboardService {
-  /**
-   * Get diet dashboard data
-   */
   static async getDietaDashboard(userId) {
     try {
-      const dashboard = await prisma.user.findFirst({
-        where: { userId: userId },
-        select: {
-          userId: true,
-        },
+      // La búsqueda correcta es a través del modelo Dashboard
+      const dashboard = await prisma.dashboard.findFirst({
+        where: { userId: parseInt(userId) },
         include: {
+          user: true,
           dieta: {
-            select: {
-              id: true,
-              calorias_objetivo: true,
-              calorias_totales: true,
-              macros1: true,
-              macros2: true,
-              recetas: true,
-              createdAt: true,
-              updatedAt: true,
-            },
-          },
-        },
+            include: { recetas: true }
+          }
+        }
       });
 
       if (!dashboard || !dashboard.dieta) {
@@ -32,39 +19,22 @@ class DashboardService {
       }
 
       return {
-        usuario: {
-          id: userId,
-          nombre: `Usuario ${userId.slice(0, 8)}`,
-        },
-        dieta: dashboard.dieta,
+        usuario: { id: userId, nombre: dashboard.user.username || `Usuario` },
+        dieta: dashboard.dieta
       };
     } catch (error) {
       throw new Error(`Error fetching diet dashboard: ${error.message}`);
     }
   }
 
-  /**
-   * Get sport dashboard data
-   */
   static async getDeporteDashboard(userId) {
     try {
       const dashboard = await prisma.dashboard.findFirst({
-        where: { userId },
-        select: {
-          userId: true,
-        },
+        where: { userId: parseInt(userId) },
         include: {
-          deporte: {
-            select: {
-              id: true,
-              actividades: true,
-              semana: true,
-              ejercicios: true,
-              createdAt: true,
-              updatedAt: true,
-            },
-          },
-        },
+          user: true,
+          deporte: true
+        }
       });
 
       if (!dashboard || !dashboard.deporte) {
@@ -72,15 +42,13 @@ class DashboardService {
       }
 
       return {
-        usuario: {
-          id: userId,
-          nombre: `Usuario ${userId.slice(0, 8)}`,
-        },
-        actividades: dashboard.deporte.actividades || [],
-        deporte: {
-          semana: dashboard.deporte.semana || [],
-          ejercicios: dashboard.deporte.ejercicios || [],
-        },
+        usuario: { id: userId, nombre: dashboard.user.username || `Usuario` },
+        actividades: [
+          { nombre: 'Moverse', valor: `${dashboard.deporte.actividades} kcal` },
+          { nombre: 'Ejercicio', valor: `${dashboard.deporte.ejercicios} min` },
+          { nombre: 'De Pie', valor: `0 hr` }
+        ],
+        deporte: { semana: [], ejercicios: [] }
       };
     } catch (error) {
       throw new Error(`Error fetching sport dashboard: ${error.message}`);
@@ -111,5 +79,4 @@ class DashboardService {
     }
   }
 }
-
 module.exports = DashboardService;

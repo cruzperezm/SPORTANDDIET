@@ -27,44 +27,41 @@ const register = async (email, password, username) => {
   });
 };
 
-const addBio = async (
-  genre,
-  age,
-  height,
-  goal,
-  activity,
-  c_weight,
-  d_weight,
-  weeks,
-  owner,
-) => {
-  // Calculate nutrition metrics
+const addBio = async (genre, age, height, goal, activity, c_weight, d_weight, weeks, owner) => {
+  const parsedOwner = parseInt(owner);
+
+  // 1. Calcular métricas forzando tipos numéricos correctos (evita los NaN)
   const calculatedMetrics = calculateNutrition({
-    peso: c_weight,
-    altura: height,
-    edad: age,
-    sexo: (genre?.toLowerCase() === 'f') ? 'F' : 'M',
+    peso: parseFloat(c_weight),
+    altura: parseInt(height),
+    edad: parseInt(age),
+    sexo: (genre?.toLowerCase() === 'f' || genre?.toLowerCase() === 'mujer') ? 'F' : 'M',
     act: activity
   });
 
-  // Create biometrics with calculated metrics
-  const biometrics = await prisma.biometrics.create({
-    data: {
-      genre,
-      age,
-      height,
-      goal,
-      activity,
-      c_weight,
-      d_weight,
-      weeks,
-      ownerId: owner,
+  // 2. Guardar Biometría usando Upsert para no duplicar datos
+  const biometrics = await prisma.biometrics.upsert({
+    where: { ownerId: parsedOwner },
+    update: {
+      genre, age: parseInt(age), height: parseInt(height), goal, activity,
+      c_weight: Math.round(parseFloat(c_weight)),
+      d_weight: Math.round(parseFloat(d_weight)),
+      weeks: parseInt(weeks),
       ...calculatedMetrics
     },
+    create: {
+      genre, age: parseInt(age), height: parseInt(height), goal, activity,
+      c_weight: Math.round(parseFloat(c_weight)),
+      d_weight: Math.round(parseFloat(d_weight)),
+      weeks: parseInt(weeks),
+      ownerId: parsedOwner,
+      ...calculatedMetrics
+    }
   });
 
-  // Initialize dashboard for new users
-  const existingDashboard = await prisma.dashboard.findFirst({ where: { userId: owner } });
+  // 3. Crear el Dashboard inicial con los nuevos JSON
+  const existingDashboard = await prisma.dashboard.findFirst({ where: { userId: parsedOwner } });
+
   if (!existingDashboard) {
     const diet = await prisma.dashboardDiet.create({
       data: {
@@ -75,14 +72,16 @@ const addBio = async (
           { nombre: 'Grasas', valor: 0, progreso: 0, objetivo: calculatedMetrics.macroGrasas },
           { nombre: 'Carbohidratos', valor: 0, progreso: 0, objetivo: calculatedMetrics.macroCarbs }
         ],
-        macros2: []
+        macros2: [] // Formato JSON válido
       }
     });
 
-    const sport = await prisma.dashboardSport.create({ data: { actividades: 0, semana: weeks, ejercicios: 0 } });
+    const sport = await prisma.dashboardSport.create({
+      data: { actividades: 0, semana: parseInt(weeks), ejercicios: 0 }
+    });
 
     await prisma.dashboard.create({
-      data: { userId: owner, dashboardDietId: diet.id, dashboardSportId: sport.id }
+      data: { userId: parsedOwner, dashboardDietId: diet.id, dashboardSportId: sport.id }
     });
   }
 
