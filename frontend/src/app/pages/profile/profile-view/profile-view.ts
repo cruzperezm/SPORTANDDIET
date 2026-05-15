@@ -9,6 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { ProfileService } from '../../../services/profile.service';
 import { ChangeDetectorRef } from '@angular/core';
+import { AuthService } from '../../../services/auth.service';
 
 export function emailMatchValidator(group: AbstractControl): ValidationErrors | null {
   const email = group.get('email')?.value;
@@ -45,7 +46,7 @@ export class ProfileViewComponent implements OnInit {
   public photoPreview: string | ArrayBuffer | null = null;
   public selectedImageFile: File | null = null;
 
-  constructor(private fb: FormBuilder, private profileService: ProfileService, private cdr: ChangeDetectorRef) {
+  constructor(private fb: FormBuilder, private profileService: ProfileService, private cdr: ChangeDetectorRef, private authService: AuthService) {
     this.initForms();
   }
 
@@ -60,6 +61,7 @@ export class ProfileViewComponent implements OnInit {
         this.user.username = data.username;
         this.user.email = data.email;
         this.user.photoUrl = data.photoUrl;
+        this.authService.updateUserProfile(data);
 
         this.accountForm.patchValue({
           username: data.username,
@@ -126,6 +128,7 @@ export class ProfileViewComponent implements OnInit {
       next: (response) => {
         console.log('¡Perfil actualizado con éxito!', response);
         alert('Cambios guardados correctamente');
+        this.authService.updateUserProfile(profileData);
       },
       error: (err) => {
         console.error('Error al guardar el perfil:', err);

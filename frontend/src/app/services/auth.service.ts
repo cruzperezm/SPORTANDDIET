@@ -16,6 +16,13 @@ export class AuthService {
     return !!localStorage.getItem('token');
   }
 
+  private userProfileSubject = new BehaviorSubject<any>(null);
+  userProfile$ = this.userProfileSubject.asObservable();
+
+  updateUserProfile(profile: any) {
+    this.userProfileSubject.next(profile);
+  }
+
   register(user: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/register`, user);
   }

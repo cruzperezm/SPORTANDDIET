@@ -17,7 +17,7 @@
       @if (isLoggedIn$ | async) {
         <div class="profile-menu-container">
           <img
-            src="/shared/images/profile-icon.svg"
+            [src]="(userProfile$ | async)?.photoUrl || '/shared/images/profile-icon.svg'"
             class="profile-icon"
             (click)="goToDashboard()"
             alt="Profile Icon"
