@@ -57,6 +57,12 @@ export class Login implements AfterViewInit {
         this.isLoading = false;
 
         this.ngZone.run(() => {
+          // --- AQUÍ GUARDAMOS EL ID EN EL NAVEGADOR ---
+          if (res.user && res.user.id) {
+            localStorage.setItem('userId', res.user.id);
+            // localStorage.setItem('token', res.token); // Descomenta si usáis tokens de seguridad
+          }
+
           // LA MAGIA ESTÁ AQUÍ: Evaluamos qué necesita el usuario
           if (res.needsOnboarding) {
             console.log('El usuario necesita completar sus datos biométricos');
@@ -88,8 +94,13 @@ export class Login implements AfterViewInit {
         console.log('Logged in!');
         this.isLoading = false;
 
-        // Mismo control que en Google
         const userId = res.user.id;
+
+        // --- AQUÍ GUARDAMOS EL ID EN EL NAVEGADOR ---
+        localStorage.setItem('userId', userId);
+        // localStorage.setItem('token', res.token); // Descomenta si usáis tokens de seguridad
+
+        // Mismo control que en Google
         if (res.needsOnboarding) {
           this.router.navigate(['/bio'], {
             queryParams: { userId: userId },
@@ -111,5 +122,10 @@ export class Login implements AfterViewInit {
     });
   }
 
-  logout() {}
+  logout() {
+    // Ya que estamos, dejamos preparada la función de logout para que borre el llavero
+    localStorage.removeItem('userId');
+    // localStorage.removeItem('token');
+    this.router.navigate(['/login']);
+  }
 }

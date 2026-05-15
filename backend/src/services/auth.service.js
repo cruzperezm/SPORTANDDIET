@@ -63,7 +63,7 @@ const login = async (email, password) => {
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) throw new AuthError("The password is incorrect");
 
-  const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
+  const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET || "secreto_de_emergencia_123", {
     expiresIn: "1h",
   });
 
@@ -103,7 +103,7 @@ const googleAuth = async (idToken) => {
       });
     }
 
-    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET || "secreto_de_emergencia_123", {
       expiresIn: "1h",
     });
 
