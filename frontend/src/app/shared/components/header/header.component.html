@@ -22,7 +22,12 @@
             (click)="goToDashboard()"
             alt="Profile Icon"
           />
-          <button class="logout-button" (click)="onLogout()">Log Out</button>
+
+          <div class="dropdown-actions">
+            <button class="profile-button" routerLink="/profile">Perfil</button>
+            <button class="logout-button" (click)="onLogout()">Log Out</button>
+          </div>
+
         </div>
       } @else {
         <a routerLink="/login" class="login-button">Iniciar Sesión</a>
