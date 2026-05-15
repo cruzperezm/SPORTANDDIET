@@ -5,11 +5,13 @@
     <div class="card-header">
       <div class="user-info-header">
         <div class="avatar-wrapper">
-          <img [src]="user.photoUrl || 'assets/img/default-avatar.png'"
-               (error)="$any($event.target).src = 'https://cdn-icons-png.flaticon.com/512/149/149071.png'"
-               alt="Foto">
-          <button class="edit-photo-icon">
-            <mat-icon>edit</mat-icon>
+          <img [src]="photoPreview || user.photoUrl || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'"
+               alt="Foto de perfil">
+
+          <input type="file" #fileInput (change)="onFileSelected($event)" accept="image/*" style="display: none;">
+
+          <button type="button" class="edit-photo-icon" title="Cambiar foto" (click)="fileInput.click()">
+            <mat-icon>+</mat-icon>
           </button>
         </div>
         <div class="user-text">

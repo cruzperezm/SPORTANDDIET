@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { ProfileService } from '../../../services/profile.service';
+import { ChangeDetectorRef } from '@angular/core';
 
 export function emailMatchValidator(group: AbstractControl): ValidationErrors | null {
   const email = group.get('email')?.value;
@@ -41,8 +42,10 @@ export class ProfileViewComponent implements OnInit {
   public accountForm!: FormGroup;
   public biometricsForm!: FormGroup;
   public preferencesForm!: FormGroup;
+  public photoPreview: string | ArrayBuffer | null = null;
+  public selectedImageFile: File | null = null;
 
-  constructor(private fb: FormBuilder, private profileService: ProfileService) {
+  constructor(private fb: FormBuilder, private profileService: ProfileService, private cdr: ChangeDetectorRef) {
     this.initForms();
   }
 
@@ -54,6 +57,10 @@ export class ProfileViewComponent implements OnInit {
   loadUserProfile() {
     this.profileService.getProfile().subscribe({
       next: (data: any) => {
+        this.user.username = data.username;
+        this.user.email = data.email;
+        this.user.photoUrl = data.photoUrl;
+
         this.accountForm.patchValue({
           username: data.username,
           email: data.email,
@@ -62,6 +69,7 @@ export class ProfileViewComponent implements OnInit {
         });
 
         this.preferencesForm.patchValue({
+          activityLevel: data.biometrics?.activity || 'MODERATE',
           allergens: data.allergies || []
         });
 
@@ -81,6 +89,21 @@ export class ProfileViewComponent implements OnInit {
     });
   }
 
+  onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+
+    if (file) {
+      this.selectedImageFile = file;
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        this.photoPreview = e.target?.result as string;
+        this.cdr.detectChanges();
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
   saveProfile() {
     if (this.accountForm.invalid || this.biometricsForm.invalid || this.preferencesForm.invalid) {
       alert('Por favor, corrige los errores del formulario antes de guardar.');
@@ -93,7 +116,8 @@ export class ProfileViewComponent implements OnInit {
     const profileData = {
       ...this.accountForm.value,
       ...this.biometricsForm.value,
-      ...this.preferencesForm.value
+      ...this.preferencesForm.value,
+      photoUrl: this.photoPreview || this.user.photoUrl
     };
 
     delete profileData.confirmEmail;
