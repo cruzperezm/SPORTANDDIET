@@ -1,74 +1,131 @@
 const prisma = require("../config/prisma");
 
-// Función auxiliar: Comprueba si una fecha guardada coincide con "hoy"
+// --- FUNCIONES AUXILIARES ---
 const isToday = (date) => {
   if (!date) return false;
   const today = new Date();
-  return (
-      date.getDate() === today.getDate() &&
+  return date.getDate() === today.getDate() &&
       date.getMonth() === today.getMonth() &&
-      date.getFullYear() === today.getFullYear()
-  );
+      date.getFullYear() === today.getFullYear();
 };
 
-// Función auxiliar: Mezcla un array y extrae 'n' elementos
-const getRandomItems = (arr, n) => {
-  const shuffled = [...arr].sort(() => 0.5 - Math.random());
-  return shuffled.slice(0, n);
+const parseMacro = (str) => parseInt(str?.replace(/\D/g, '')) || 0;
+
+// ALGORITMO: Elige 5 recetas ajustadas a los macros
+const generateDailyDiet = (target, favorites, allRecipes) => {
+  // Aseguramos tener de dónde sacar cada momento. Si no hay en favoritos, usamos el global.
+  const getPool = (moment) => {
+    const favs = favorites.filter(r => r.moment === moment);
+    return favs.length > 0 ? favs : allRecipes.filter(r => r.moment === moment);
+  };
+
+  const poolDesayuno = getPool('DESAYUNO');
+  const poolAlmuerzo = getPool('ALMUERZO');
+  const poolCena = getPool('CENA');
+  const poolCualquiera = favorites.length >= 5 ? favorites : allRecipes;
+
+  let bestCombo = [];
+  let minDiff = Infinity;
+
+  // Generamos 50 combinaciones al azar y evaluamos cuál se acerca más a los requerimientos
+  for (let i = 0; i < 50; i++) {
+    const combo = new Set();
+
+    // Obligatorio: 1 de cada
+    if(poolDesayuno.length) combo.add(poolDesayuno[Math.floor(Math.random() * poolDesayuno.length)]);
+    if(poolAlmuerzo.length) combo.add(poolAlmuerzo[Math.floor(Math.random() * poolAlmuerzo.length)]);
+    if(poolCena.length) combo.add(poolCena[Math.floor(Math.random() * poolCena.length)]);
+
+    // 2 Extras
+    let attempts = 0;
+    while (combo.size < 5 && attempts < 20) {
+      combo.add(poolCualquiera[Math.floor(Math.random() * poolCualquiera.length)]);
+      attempts++;
+    }
+
+    const currentCombo = Array.from(combo).filter(Boolean);
+    if (currentCombo.length < 5) continue;
+
+    // Calcular desviación de macros
+    let kcal = 0, p = 0, f = 0, c = 0;
+    currentCombo.forEach(r => {
+      kcal += r.calories;
+      p += parseMacro(r.macros[0]);
+      f += parseMacro(r.macros[1]);
+      c += parseMacro(r.macros[2]);
+    });
+
+    const diff = Math.abs(kcal - target.calories_goal) +
+        Math.abs(p - target.protein) * 4 +
+        Math.abs(f - target.fats) * 9 +
+        Math.abs(c - target.carbs) * 4;
+
+    if (diff < minDiff) {
+      minDiff = diff;
+      bestCombo = currentCombo;
+    }
+  }
+  return bestCombo;
+};
+
+// ALGORITMO: Elige 5 ejercicios aleatorios de favoritos o globales
+const generateDailySport = (favorites, allExercises) => {
+  const pool = favorites.length >= 5 ? favorites : allExercises;
+  const combo = new Set();
+  let attempts = 0;
+
+  while (combo.size < 5 && attempts < 50 && pool.length > 0) {
+    combo.add(pool[Math.floor(Math.random() * pool.length)]);
+    attempts++;
+  }
+  return Array.from(combo).filter(Boolean);
 };
 
 class DashboardService {
+
   static async getDietaDashboard(userId) {
-    try {
-      // 1. Buscamos el dashboard con los "Me gusta" (recetas) y el plan diario (DailyRecipes)
-      const dashboard = await prisma.dashboard.findFirst({
-        where: { userId: parseInt(userId) },
-        include: {
-          user: true,
-          dieta: {
-            include: {
-              recetas: true, // El catálogo de "Me gusta" global del usuario
-              DailyRecipes: {
-                include: { Recipe: true } // El plan calculado para el día
-              }
-            }
+    const dashboard = await prisma.dashboard.findFirst({
+      where: { userId: parseInt(userId) },
+      include: {
+        user: true,
+        dieta: {
+          include: {
+            recetas: true, // Catálogo de "Me Gusta"
+            DailyRecipes: { include: { Recipe: true } } // Plan actual
           }
         }
+      }
+    });
+
+    if (!dashboard || !dashboard.dieta) throw new Error("Dashboard de dieta no encontrado");
+
+    let dailyPlan = dashboard.dieta.DailyRecipes;
+
+    // LÓGICA DE DÍA: ¿Es día nuevo o no hay plan?
+    if (!dailyPlan || !isToday(dailyPlan.date)) {
+      const allRecipes = await prisma.recipe.findMany();
+      const newPlan = generateDailyDiet(dashboard.dieta, dashboard.dieta.recetas, allRecipes);
+
+      // Usamos SET para sobreescribir el array de recetas de ayer por las de hoy
+      dailyPlan = await prisma.dailyRecipes.upsert({
+        where: { dashboardDietId: dashboard.dieta.id },
+        update: {
+          date: new Date(),
+          Recipe: { set: newPlan.map(r => ({ id: r.id })) }
+        },
+        create: {
+          dashboardDietId: dashboard.dieta.id,
+          date: new Date(),
+          Recipe: { connect: newPlan.map(r => ({ id: r.id })) }
+        },
+        include: { Recipe: true }
       });
+    }
 
-      if (!dashboard || !dashboard.dieta) {
-        throw new Error(`Diet dashboard not found for user: ${userId}`);
-      }
-
-      let dailyPlan = dashboard.dieta.DailyRecipes;
-
-      // 2. LÓGICA DE DÍA: ¿Es la primera vez que entra hoy o no hay plan previo?
-      if (!dailyPlan || !isToday(dailyPlan.date)) {
-        // Extraemos sus recetas favoritas
-        const favorites = dashboard.dieta.recetas || [];
-
-        // Seleccionamos hasta 5 recetas aleatorias de sus "Me gusta"
-        const selectedRecipes = getRandomItems(favorites, 5);
-
-        // Actualizamos o creamos la tabla DailyRecipes con la fecha de HOY
-        dailyPlan = await prisma.dailyRecipes.upsert({
-          where: { dashboardDietId: dashboard.dieta.id },
-          update: {
-            date: new Date(), // Seteamos la fecha a hoy
-            Recipe: { set: selectedRecipes.map(r => ({ id: r.id })) } // Sustituimos por el nuevo conjunto
-          },
-          create: {
-            dashboardDietId: dashboard.dieta.id,
-            date: new Date(),
-            Recipe: { connect: selectedRecipes.map(r => ({ id: r.id })) }
-          },
-          include: { Recipe: true } // Devolvemos el resultado actualizado
-        });
-      }
-
-      // 3. Empaquetamos la respuesta adaptada para Angular
-      const dietaAdaptada = {
-        ...dashboard.dieta,
+    // Empaquetado manteniendo estructura del frontend
+    return {
+      usuario: { id: userId, nombre: dashboard.user.username },
+      dieta: {
         calorias_objetivo: dashboard.dieta.calories_goal,
         calorias_totales: dashboard.dieta.calories_total,
         macros1: [
@@ -77,101 +134,79 @@ class DashboardService {
           { nombre: 'Carbohidratos', valor: 0, progreso: 0, objetivo: dashboard.dieta.carbs }
         ],
         macros2: [],
-        // Enviamos específicamente las 5 recetas correspondientes a HOY
-        recetas_del_dia: dailyPlan.Recipe
-      };
-
-      return {
-        usuario: { id: userId, nombre: dashboard.user.username || `Usuario` },
-        dieta: dietaAdaptada
-      };
-    } catch (error) {
-      throw new Error(`Error fetching diet dashboard: ${error.message}`);
-    }
+        recetas: dailyPlan.Recipe // Devuelve el plan de HOY
+      }
+    };
   }
 
   static async getDeporteDashboard(userId) {
-    try {
-      // 1. Buscamos el dashboard con los "Me gusta" (Exercise) y el plan diario (DailyExercises)
-      const dashboard = await prisma.dashboard.findFirst({
-        where: { userId: parseInt(userId) },
-        include: {
-          user: true,
-          deporte: {
-            include: {
-              Exercise: true, // El catálogo de "Me gusta" de ejercicios
-              DailyExercises: {
-                include: { Exercise: true } // El plan calculado para el día
-              }
-            }
+    const dashboard = await prisma.dashboard.findFirst({
+      where: { userId: parseInt(userId) },
+      include: {
+        user: true,
+        deporte: {
+          include: {
+            Exercise: true, // "Me Gusta"
+            DailyExercises: { include: { Exercise: true } } // Plan actual
           }
         }
-      });
-
-      if (!dashboard || !dashboard.deporte) {
-        throw new Error(`Sport dashboard not found for user: ${userId}`);
       }
-
-      let dailyPlan = dashboard.deporte.DailyExercises;
-
-      // 2. LÓGICA DE DÍA: ¿Es un día nuevo o no existe plan previo?
-      if (!dailyPlan || !isToday(dailyPlan.date)) {
-        const favorites = dashboard.deporte.Exercise || [];
-
-        // Seleccionamos hasta 5 ejercicios aleatorios
-        const selectedExercises = getRandomItems(favorites, 5);
-
-        dailyPlan = await prisma.dailyExercises.upsert({
-          where: { dashboardSportId: dashboard.deporte.id },
-          update: {
-            date: new Date(),
-            Exercise: { set: selectedExercises.map(e => ({ id: e.id })) }
-          },
-          create: {
-            dashboardSportId: dashboard.deporte.id,
-            date: new Date(),
-            Exercise: { connect: selectedExercises.map(e => ({ id: e.id })) }
-          },
-          include: { Exercise: true }
-        });
-      }
-
-      // 3. Empaquetamos la respuesta adaptada para Angular
-      return {
-        usuario: { id: userId, nombre: dashboard.user.username || `Usuario` },
-        actividades: [
-          { nombre: 'Moverse', valor: `${dashboard.deporte.calories || 0} kcal` },
-          { nombre: 'Ejercicio', valor: `${dashboard.deporte.time || 0} min` },
-          { nombre: 'De Pie', valor: `0 hr` }
-        ],
-        deporte: {
-          semana: dashboard.deporte.week || [],
-          // Enviamos específicamente los 5 ejercicios correspondientes a HOY
-          ejercicios_del_dia: dailyPlan.Exercise
-        }
-      };
-    } catch (error) {
-      throw new Error(`Error fetching sport dashboard: ${error.message}`);
-    }
-  }
-  static async addFavoriteRecipe(userId, recipeId) {
-    const dashboard = await prisma.dashboard.findFirst({
-      where: { userId: parseInt(userId) }
     });
 
-    if (!dashboard) throw new Error("Dashboard no encontrado");
+    if (!dashboard || !dashboard.deporte) throw new Error("Dashboard de deporte no encontrado");
 
-    // Añade la receta a la lista global (NO al plan diario, para que funcione como "Me gusta")
-    return await prisma.dashboardDiet.update({
-      where: { id: dashboard.dashboardDietId },
-      data: {
-        recetas: {
-          connect: { id: parseInt(recipeId) }
-        }
+    let dailyPlan = dashboard.deporte.DailyExercises;
+
+    // LÓGICA DE DÍA
+    if (!dailyPlan || !isToday(dailyPlan.date)) {
+      const allExercises = await prisma.exercise.findMany();
+      const newPlan = generateDailySport(dashboard.deporte.Exercise, allExercises);
+
+      dailyPlan = await prisma.dailyExercises.upsert({
+        where: { dashboardSportId: dashboard.deporte.id },
+        update: {
+          date: new Date(),
+          Exercise: { set: newPlan.map(e => ({ id: e.id })) }
+        },
+        create: {
+          dashboardSportId: dashboard.deporte.id,
+          date: new Date(),
+          Exercise: { connect: newPlan.map(e => ({ id: e.id })) }
+        },
+        include: { Exercise: true }
+      });
+    }
+
+    return {
+      usuario: { id: userId, nombre: dashboard.user.username },
+      actividades: [
+        { nombre: 'Moverse', valor: `${dashboard.deporte.calories || 0} kcal` },
+        { nombre: 'Ejercicio', valor: `${dashboard.deporte.time || 0} min` },
+        { nombre: 'De Pie', valor: `0 hr` }
+      ],
+      deporte: {
+        semana: dashboard.deporte.week || [],
+        ejercicios: dailyPlan.Exercise // Devuelve el plan de HOY
       }
+    };
+  }
+
+  // --- GESTIÓN DE FAVORITOS (Añadir al catálogo del usuario) ---
+  static async addFavoriteRecipe(userId, recipeId) {
+    const d = await prisma.dashboard.findFirst({ where: { userId: parseInt(userId) } });
+    return await prisma.dashboardDiet.update({
+      where: { id: d.dashboardDietId },
+      data: { recetas: { connect: { id: parseInt(recipeId) } } } // Añade al array global
+    });
+  }
+
+  static async addFavoriteExercise(userId, exerciseId) {
+    const d = await prisma.dashboard.findFirst({ where: { userId: parseInt(userId) } });
+    return await prisma.dashboardSport.update({
+      where: { id: d.dashboardSportId },
+      data: { Exercise: { connect: { id: parseInt(exerciseId) } } } // Añade al array global
     });
   }
 }
-
 
 module.exports = DashboardService;

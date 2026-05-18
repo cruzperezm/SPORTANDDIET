@@ -55,11 +55,27 @@ exports.upsertDashboard = async (req, res) => {
 exports.addFavoriteRecipe = async (req, res) => {
   try {
     const userId = req.user.userId;
-    const { recipeId } = req.body;
+    const recipeId = req.body.recipeId;
 
-    const data = await DashboardService.addFavoriteRecipe(userId, recipeId);
-    res.status(200).json({ message: "Receta añadida a tus Me Gusta", data });
+    if (!recipeId) return res.status(400).json({ error: "Falta el ID de la receta" });
+
+    await DashboardService.addFavoriteRecipe(userId, recipeId);
+    res.status(200).json({ message: "Receta añadida a tus Favoritos" });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(500).json({ error: error.message });
+  }
+};
+
+exports.addFavoriteExercise = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const exerciseId = req.body.exerciseId;
+
+    if (!exerciseId) return res.status(400).json({ error: "Falta el ID del ejercicio" });
+
+    await DashboardService.addFavoriteExercise(userId, exerciseId);
+    res.status(200).json({ message: "Ejercicio añadido a tus Favoritos" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 };
