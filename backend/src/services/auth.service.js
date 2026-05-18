@@ -30,7 +30,7 @@ const register = async (email, password, username) => {
 const addBio = async (genre, age, height, goal, activity, c_weight, d_weight, weeks, owner) => {
   const parsedOwner = parseInt(owner);
 
-  // 1. Calcular métricas forzando tipos numéricos correctos
+  // 1. Calcular métricas
   const calculatedMetrics = calculateNutrition({
     peso: parseFloat(c_weight),
     altura: parseInt(height),
@@ -41,7 +41,7 @@ const addBio = async (genre, age, height, goal, activity, c_weight, d_weight, we
 
   // 2. Guardar Biometría usando Upsert
   const biometrics = await prisma.biometrics.upsert({
-    where: {ownerId: parsedOwner},
+    where: { ownerId: parsedOwner },
     update: {
       genre, age: parseInt(age), height: parseInt(height), goal, activity,
       c_weight: Math.round(parseFloat(c_weight)),
@@ -59,10 +59,11 @@ const addBio = async (genre, age, height, goal, activity, c_weight, d_weight, we
     }
   });
 
-  const existingDashboard = await prisma.dashboard.findFirst({where: {userId: parsedOwner}});
+  // 3. Crear los Dashboards directamente (Sin la tabla puente "Dashboard")
+  const existingDiet = await prisma.dashboardDiet.findUnique({ where: { userId: parsedOwner } });
 
-  if (!existingDashboard) {
-    const diet = await prisma.dashboardDiet.create({
+  if (!existingDiet) {
+    await prisma.dashboardDiet.create({
       data: {
         userId: parsedOwner,
         calories_total: 0,
@@ -74,17 +75,13 @@ const addBio = async (genre, age, height, goal, activity, c_weight, d_weight, we
       }
     });
 
-    const sport = await prisma.dashboardSport.create({
+    await prisma.dashboardSport.create({
       data: {
         userId: parsedOwner,
         week: [],
         calories: 0,
         time: 0
       }
-    });
-
-    await prisma.dashboard.create({
-      data: {userId: parsedOwner, dashboardDietId: diet.id, dashboardSportId: sport.id}
     });
   }
 

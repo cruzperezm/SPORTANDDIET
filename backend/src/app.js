@@ -25,7 +25,7 @@ app.use("/api/auth", authRoutes);
 app.use("/search", searchRoutes);
 app.use("/diets", dietRoutes);
 app.use("/exercisePlans", exercisePlanRoutes);
-app.use("/dashboard", dashboardRoutes);
+app.use("/api/dashboard", dashboardRoutes);
 
 app.use(function (err, req, res, next) {
   // Log the error to your terminal so you can see it

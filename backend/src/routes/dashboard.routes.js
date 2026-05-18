@@ -5,11 +5,7 @@ const authenticateToken = require("../middleware/auth.middleware");
 
 // GET dashboard endpoints
 router.get("/dieta", authenticateToken, dashboardController.getDietaDashboard);
-router.get(
-  "/deporte",
-  authenticateToken,
-  dashboardController.getDeporteDashboard,
-);
+router.get("/deporte", authenticateToken, dashboardController.getDeporteDashboard);
 
 // POST upsert endpoint
 router.post("/upsert", authenticateToken, dashboardController.upsertDashboard);

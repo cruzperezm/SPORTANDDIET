@@ -11,9 +11,7 @@ const isToday = (date) => {
 
 const parseMacro = (str) => parseInt(str?.replace(/\D/g, '')) || 0;
 
-// ALGORITMO: Elige 5 recetas ajustadas a los macros
 const generateDailyDiet = (target, favorites, allRecipes) => {
-  // Aseguramos tener de dónde sacar cada momento. Si no hay en favoritos, usamos el global.
   const getPool = (moment) => {
     const favs = favorites.filter(r => r.moment === moment);
     return favs.length > 0 ? favs : allRecipes.filter(r => r.moment === moment);
@@ -27,16 +25,13 @@ const generateDailyDiet = (target, favorites, allRecipes) => {
   let bestCombo = [];
   let minDiff = Infinity;
 
-  // Generamos 50 combinaciones al azar y evaluamos cuál se acerca más a los requerimientos
   for (let i = 0; i < 50; i++) {
     const combo = new Set();
 
-    // Obligatorio: 1 de cada
     if(poolDesayuno.length) combo.add(poolDesayuno[Math.floor(Math.random() * poolDesayuno.length)]);
     if(poolAlmuerzo.length) combo.add(poolAlmuerzo[Math.floor(Math.random() * poolAlmuerzo.length)]);
     if(poolCena.length) combo.add(poolCena[Math.floor(Math.random() * poolCena.length)]);
 
-    // 2 Extras
     let attempts = 0;
     while (combo.size < 5 && attempts < 20) {
       combo.add(poolCualquiera[Math.floor(Math.random() * poolCualquiera.length)]);
@@ -46,7 +41,6 @@ const generateDailyDiet = (target, favorites, allRecipes) => {
     const currentCombo = Array.from(combo).filter(Boolean);
     if (currentCombo.length < 5) continue;
 
-    // Calcular desviación de macros
     let kcal = 0, p = 0, f = 0, c = 0;
     currentCombo.forEach(r => {
       kcal += r.calories;
@@ -68,7 +62,6 @@ const generateDailyDiet = (target, favorites, allRecipes) => {
   return bestCombo;
 };
 
-// ALGORITMO: Elige 5 ejercicios aleatorios de favoritos o globales
 const generateDailySport = (favorites, allExercises) => {
   const pool = favorites.length >= 5 ? favorites : allExercises;
   const combo = new Set();
@@ -84,37 +77,32 @@ const generateDailySport = (favorites, allExercises) => {
 class DashboardService {
 
   static async getDietaDashboard(userId) {
-    const dashboard = await prisma.dashboard.findFirst({
+    // Buscamos directamente en DashboardDiet
+    const dashboardDiet = await prisma.dashboardDiet.findUnique({
       where: { userId: parseInt(userId) },
       include: {
-        user: true,
-        dieta: {
-          include: {
-            recetas: true, // Catálogo de "Me Gusta"
-            DailyRecipes: { include: { Recipe: true } } // Plan actual
-          }
-        }
+        User: true,
+        recetas: true, // Catálogo de "Me Gusta"
+        DailyRecipes: { include: { Recipe: true } } // Plan actual
       }
     });
 
-    if (!dashboard || !dashboard.dieta) throw new Error("Dashboard de dieta no encontrado");
+    if (!dashboardDiet) throw new Error("Dashboard de dieta no encontrado");
 
-    let dailyPlan = dashboard.dieta.DailyRecipes;
+    let dailyPlan = dashboardDiet.DailyRecipes;
 
-    // LÓGICA DE DÍA: ¿Es día nuevo o no hay plan?
     if (!dailyPlan || !isToday(dailyPlan.date)) {
       const allRecipes = await prisma.recipe.findMany();
-      const newPlan = generateDailyDiet(dashboard.dieta, dashboard.dieta.recetas, allRecipes);
+      const newPlan = generateDailyDiet(dashboardDiet, dashboardDiet.recetas, allRecipes);
 
-      // Usamos SET para sobreescribir el array de recetas de ayer por las de hoy
       dailyPlan = await prisma.dailyRecipes.upsert({
-        where: { dashboardDietId: dashboard.dieta.id },
+        where: { dashboardDietId: dashboardDiet.id },
         update: {
           date: new Date(),
           Recipe: { set: newPlan.map(r => ({ id: r.id })) }
         },
         create: {
-          dashboardDietId: dashboard.dieta.id,
+          dashboardDietId: dashboardDiet.id,
           date: new Date(),
           Recipe: { connect: newPlan.map(r => ({ id: r.id })) }
         },
@@ -122,54 +110,49 @@ class DashboardService {
       });
     }
 
-    // Empaquetado manteniendo estructura del frontend
     return {
-      usuario: { id: userId, nombre: dashboard.user.username },
+      usuario: { id: userId, nombre: dashboardDiet.User?.username || "Usuario" },
       dieta: {
-        calorias_objetivo: dashboard.dieta.calories_goal,
-        calorias_totales: dashboard.dieta.calories_total,
+        calorias_objetivo: dashboardDiet.calories_goal,
+        calorias_totales: dashboardDiet.calories_total,
         macros1: [
-          { nombre: 'Proteínas', valor: 0, progreso: 0, objetivo: dashboard.dieta.protein },
-          { nombre: 'Grasas', valor: 0, progreso: 0, objetivo: dashboard.dieta.fats },
-          { nombre: 'Carbohidratos', valor: 0, progreso: 0, objetivo: dashboard.dieta.carbs }
+          { nombre: 'Proteínas', valor: 0, progreso: 0, objetivo: dashboardDiet.protein },
+          { nombre: 'Grasas', valor: 0, progreso: 0, objetivo: dashboardDiet.fats },
+          { nombre: 'Carbohidratos', valor: 0, progreso: 0, objetivo: dashboardDiet.carbs }
         ],
         macros2: [],
-        recetas: dailyPlan.Recipe // Devuelve el plan de HOY
+        recetas: dailyPlan.Recipe
       }
     };
   }
 
   static async getDeporteDashboard(userId) {
-    const dashboard = await prisma.dashboard.findFirst({
+    // Buscamos directamente en DashboardSport
+    const dashboardSport = await prisma.dashboardSport.findUnique({
       where: { userId: parseInt(userId) },
       include: {
-        user: true,
-        deporte: {
-          include: {
-            Exercise: true, // "Me Gusta"
-            DailyExercises: { include: { Exercise: true } } // Plan actual
-          }
-        }
+        User: true,
+        Exercise: true, // "Me Gusta"
+        DailyExercises: { include: { Exercise: true } } // Plan actual
       }
     });
 
-    if (!dashboard || !dashboard.deporte) throw new Error("Dashboard de deporte no encontrado");
+    if (!dashboardSport) throw new Error("Dashboard de deporte no encontrado");
 
-    let dailyPlan = dashboard.deporte.DailyExercises;
+    let dailyPlan = dashboardSport.DailyExercises;
 
-    // LÓGICA DE DÍA
     if (!dailyPlan || !isToday(dailyPlan.date)) {
       const allExercises = await prisma.exercise.findMany();
-      const newPlan = generateDailySport(dashboard.deporte.Exercise, allExercises);
+      const newPlan = generateDailySport(dashboardSport.Exercise, allExercises);
 
       dailyPlan = await prisma.dailyExercises.upsert({
-        where: { dashboardSportId: dashboard.deporte.id },
+        where: { dashboardSportId: dashboardSport.id },
         update: {
           date: new Date(),
           Exercise: { set: newPlan.map(e => ({ id: e.id })) }
         },
         create: {
-          dashboardSportId: dashboard.deporte.id,
+          dashboardSportId: dashboardSport.id,
           date: new Date(),
           Exercise: { connect: newPlan.map(e => ({ id: e.id })) }
         },
@@ -178,33 +161,34 @@ class DashboardService {
     }
 
     return {
-      usuario: { id: userId, nombre: dashboard.user.username },
+      usuario: { id: userId, nombre: dashboardSport.User?.username || "Usuario" },
       actividades: [
-        { nombre: 'Moverse', valor: `${dashboard.deporte.calories || 0} kcal` },
-        { nombre: 'Ejercicio', valor: `${dashboard.deporte.time || 0} min` },
+        { nombre: 'Moverse', valor: `${dashboardSport.calories || 0} kcal` },
+        { nombre: 'Ejercicio', valor: `${dashboardSport.time || 0} min` },
         { nombre: 'De Pie', valor: `0 hr` }
       ],
       deporte: {
-        semana: dashboard.deporte.week || [],
-        ejercicios: dailyPlan.Exercise // Devuelve el plan de HOY
+        semana: dashboardSport.week || [],
+        ejercicios: dailyPlan.Exercise
       }
     };
   }
 
-  // --- GESTIÓN DE FAVORITOS (Añadir al catálogo del usuario) ---
   static async addFavoriteRecipe(userId, recipeId) {
-    const d = await prisma.dashboard.findFirst({ where: { userId: parseInt(userId) } });
+    const diet = await prisma.dashboardDiet.findUnique({ where: { userId: parseInt(userId) } });
+    if(!diet) throw new Error("Dashboard de dieta no encontrado");
     return await prisma.dashboardDiet.update({
-      where: { id: d.dashboardDietId },
-      data: { recetas: { connect: { id: parseInt(recipeId) } } } // Añade al array global
+      where: { id: diet.id },
+      data: { recetas: { connect: { id: parseInt(recipeId) } } }
     });
   }
 
   static async addFavoriteExercise(userId, exerciseId) {
-    const d = await prisma.dashboard.findFirst({ where: { userId: parseInt(userId) } });
+    const sport = await prisma.dashboardSport.findUnique({ where: { userId: parseInt(userId) } });
+    if(!sport) throw new Error("Dashboard de deporte no encontrado");
     return await prisma.dashboardSport.update({
-      where: { id: d.dashboardSportId },
-      data: { Exercise: { connect: { id: parseInt(exerciseId) } } } // Añade al array global
+      where: { id: sport.id },
+      data: { Exercise: { connect: { id: parseInt(exerciseId) } } }
     });
   }
 }
