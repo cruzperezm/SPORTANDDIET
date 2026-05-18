@@ -78,6 +78,11 @@ h1 {
   flex-direction: column;
 }
 
+@keyframes toggle-animation{
+  from { justify-content: end;}
+  to { justify-content: center;}
+}
+
 .rectangle-toggle {
   display: flex;
   flex-direction: row;
@@ -89,6 +94,9 @@ h1 {
   border-radius: 50px;
   cursor: pointer;
 }
+.rectangle-toggle:active {
+  animation: toggle-animation 0.3s forwards;
+}
 
 .ellipse-toggle {
   border-radius: 90px;
@@ -97,6 +105,47 @@ h1 {
   background-color: #a8f0d8;
   z-index: 10;
   margin-right: 5px;
+  align-items: center;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
+
+.dieta-icon {
+  font-size: 20px;
+  color: #10b981;
+}
+
+.toggles {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+  gap: 20px;
+}
+.dieta-toggle {
+  height: 50px;
+  width: 100px;
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  padding: 6px 24px 2px;
+  width: auto;
+  cursor: pointer;
+  background-color: #10b981;
+  color: #fff;
+}
+.add {
+  font-size: 15px;
+  margin: 1px 2px 2px;
+}
+
+.apple {
+  font-size: 20px;
+  color: #fff;
 }
 
 .diet-item {
@@ -117,19 +166,6 @@ h1 {
   text-wrap: pretty;
 }
 
-.plus-sign {
-  min-height: 20px;
-  width: 10%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.plus-sign img {
-  width: 30px;
-  height: 30px;
-  cursor: pointer;
-}
 
 .left-graph {
   width: 50%;

@@ -61,4 +61,5 @@ nav-group {
 .nav-pill:hover {
   background-color: #e8f5ed;
   color: #2ecc71;
+  cursor: pointer;
 }

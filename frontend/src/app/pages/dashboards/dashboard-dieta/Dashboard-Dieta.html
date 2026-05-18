@@ -50,8 +50,15 @@
   </section>
 
   <section class="right-container">
+    <div class="toggles">
     <div class="rectangle-toggle" (click)="toggleToDeporte()">
-      <div class="ellipse-toggle"></div>
+      <div class="ellipse-toggle">
+        <fa-icon [icon]="faApple" style="color: rgb(16 185 129)"></fa-icon>
+      </div>
+    </div>
+    <div class="dieta-toggle" (click)="goToDietas()">
+      <p class="add">Añadir</p>
+    </div>
     </div>
     <div class="main-content-right">
       @for (item of dietItems; track item.id) {
@@ -61,9 +68,6 @@
           </div>
           <div class="diet-value">
             <span>{{ item.amount }}</span>
-          </div>
-          <div class="plus-sign" (click)="goToDietas()">
-            <img src="shared/images/plus-dietas.png" alt="" />
           </div>
         </div>
       }

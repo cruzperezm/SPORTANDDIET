@@ -5,6 +5,8 @@ import { Observable, Subscription, interval } from 'rxjs';
 import { switchMap, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { DashboardService } from '../../../services/dashboard.service';
+import {faPersonRunning} from "@fortawesome/free-solid-svg-icons/faPersonRunning";
+import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 
 interface SportData {
   usuario: { nombre: string };
@@ -19,6 +21,7 @@ interface SportData {
   selector: 'app-dashboard-deporte',
   templateUrl: './Dashboard-Deporte.html',
   styleUrls: ['./Dashboard-Deporte.css'],
+  imports: [FontAwesomeModule],
 })
 export class DashboardDeporteComponent implements OnInit, OnDestroy {
   private http = inject(HttpClient);
@@ -28,6 +31,7 @@ export class DashboardDeporteComponent implements OnInit, OnDestroy {
   private subscription?: Subscription;
 
   userName = 'Dashboard de actividad';
+  faRunning = faPersonRunning;
 
   // Activity Ring Data
   dailyActivities = [

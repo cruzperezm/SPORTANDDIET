@@ -5,6 +5,8 @@ import { Observable, Subscription, interval } from 'rxjs';
 import { switchMap, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { DashboardService } from '../../../services/dashboard.service';
+import {faAppleWhole} from "@fortawesome/free-solid-svg-icons/faAppleWhole";
+import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 
 interface MacroItem {
   nombre: string;
@@ -27,6 +29,7 @@ interface DietData {
   selector: 'app-dashboard-dieta',
   templateUrl: './Dashboard-Dieta.html',
   styleUrls: ['./Dashboard-Dieta.css'],
+  imports: [FontAwesomeModule],
 })
 export class DashboardDietaComponent implements OnInit, OnDestroy {
   private router = inject(Router);
@@ -42,6 +45,7 @@ export class DashboardDietaComponent implements OnInit, OnDestroy {
   waterText = 'Hidratación';
   fiberAmount = '25g';
   fiberText = 'Fibra';
+  faApple = faAppleWhole;
 
   // Macro Progress (0 to 100)
   macroList = [

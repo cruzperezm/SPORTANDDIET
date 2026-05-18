@@ -28,8 +28,15 @@
     </div>
   </section>
   <section class="right-container">
+    <div class="toggles">
     <div class="rectangle-toggle" (click)="toggleToDieta()">
-      <div class="ellipse-toggle"></div>
+      <div class="ellipse-toggle">
+        <fa-icon [icon]="faRunning" style="color: rgb(249 115 22)"></fa-icon>
+      </div>
+    </div>
+    <div class="deporte-toggle" (click)="goToDeporte()">
+      <p class="add">Añadir</p>
+    </div>
     </div>
     <div class="main-content-right">
       @for (item of trainingSessions; track item) {
@@ -39,9 +46,6 @@
           </div>
           <div class="training-value">
             <span>{{ item.amount }}</span>
-          </div>
-          <div class="plus-sign" (click)="goToDeporte()">
-            <img src="shared/images/plus-deporte.png" alt="" />
           </div>
         </div>
       }
