@@ -68,7 +68,11 @@
       </div>
 
       <div class="text-center mt-5">
-        <button class="btn-primario shadow-lg">Añadir al dashboard</button>
+        @if (!hasExercise){
+          <button class="btn-primario shadow-lg" (click)="guardar()">Añadir al dashboard</button>
+        } @else{
+          <button class="btn-primario shadow-lg" (click)="eliminar()">Eliminar del dashboard</button>
+        }
         <div class="mt-4">
           <span
             (click)="volver()"
