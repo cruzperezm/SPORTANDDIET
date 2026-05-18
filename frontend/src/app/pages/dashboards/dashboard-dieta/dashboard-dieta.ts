@@ -17,9 +17,11 @@ interface DietData {
   dieta: {
     calorias_objetivo: number;
     calorias_totales: number;
-    macros1: MacroItem[];
-    macros2: MacroItem[];
-    recetas: MacroItem[];
+    protein: number;
+    fats: number;
+    carbs: number;
+    water: number;
+    recetas: any[];
   };
 }
 

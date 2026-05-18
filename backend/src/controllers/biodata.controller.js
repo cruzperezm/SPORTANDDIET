@@ -27,25 +27,31 @@ const saveBiodata = async (req, res) => {
             create: { height, activity: req.body.act, age, c_weight, d_weight, genre: req.body.gender, goal: req.body.goal, weeks, ...calculatedMetrics, ownerId }
         });
 
-        const existingDashboard = await prisma.dashboard.findFirst({ where: { userId: ownerId } });
-        if (!existingDashboard) {
-            const diet = await prisma.dashboardDiet.create({
+        // Apuntamos directamente a DashboardDiet, SIN usar la tabla 'Dashboard'
+        const existingDiet = await prisma.dashboardDiet.findUnique({ where: { userId: ownerId } });
+
+        if (!existingDiet) {
+            // Creamos la dieta usando exactamente las columnas de tu schema.prisma
+            await prisma.dashboardDiet.create({
                 data: {
-                    calorias_totales: 0,
-                    calorias_objetivo: calculatedMetrics.kcalObjetivo,
-                    macros1: [
-                        { nombre: 'Proteínas', valor: 0, progreso: 0, objetivo: calculatedMetrics.macroProteinas },
-                        { nombre: 'Grasas', valor: 0, progreso: 0, objetivo: calculatedMetrics.macroGrasas },
-                        { nombre: 'Carbohidratos', valor: 0, progreso: 0, objetivo: calculatedMetrics.macroCarbs }
-                    ],
-                    macros2: []
+                    userId: ownerId,
+                    calories_totales: 0,
+                    calories_goal: calculatedMetrics.kcalObjetivo || 2000,
+                    protein: calculatedMetrics.macroProteinas || 150,
+                    fats: calculatedMetrics.macroGrasas || 60,
+                    carbs: calculatedMetrics.macroCarbs || 200,
+                    water: 0
                 }
             });
 
-            const sport = await prisma.dashboardSport.create({ data: { actividades: 0, semana: weeks, ejercicios: 0 } });
-
-            await prisma.dashboard.create({
-                data: { userId: ownerId, dashboardDietId: diet.id, dashboardSportId: sport.id }
+            // Creamos el deporte
+            await prisma.dashboardSport.create({
+                data: {
+                    userId: ownerId,
+                    week: [],
+                    calories: 0,
+                    time: 0
+                }
             });
         }
 
