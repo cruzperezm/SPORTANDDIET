@@ -136,32 +136,75 @@
       <mat-tab label="Preferencias">
         <div class="tab-content">
           <form [formGroup]="preferencesForm">
-            <div class="form-grid">
+
+            <div class="preferences-layout">
+
               <div class="input-group full-width">
                 <label>Nivel de Actividad</label>
-                <mat-select formControlName="activityLevel" placeholder="Selecciona tu nivel">
-                  <mat-option value="NOTHING">Nada</mat-option>
-                  <mat-option value="LITTLE">Poca</mat-option>
-                  <mat-option value="MODERATE">Moderado</mat-option>
-                  <mat-option value="INTENSE">Intenso</mat-option>
-                </mat-select>
+                <mat-form-field appearance="fill">
+                  <mat-select formControlName="activityLevel" placeholder="Selecciona tu nivel">
+                    <mat-option value="NOTHING">Nada</mat-option>
+                    <mat-option value="LITTLE">Poca</mat-option>
+                    <mat-option value="MODERATE">Moderado</mat-option>
+                    <mat-option value="INTENSE">Intenso</mat-option>
+                  </mat-select>
+                </mat-form-field>
               </div>
 
               <div class="input-group full-width">
-                <label>Alérgenos / Restricciones</label>
-                <mat-select formControlName="allergens" multiple placeholder="Selecciona">
-                  <mat-option value="GLUTEN">Gluten</mat-option>
-                  <mat-option value="LACTOSE">Lactosa</mat-option>
-                  <mat-option value="VEGAN">Vegana</mat-option>
-                </mat-select>
+                <label>Alérgenos / Restricciones Alimenticias</label>
+                <mat-form-field appearance="fill">
+                  <mat-select formControlName="allergens" multiple placeholder="Selecciona">
+                    <mat-option value="huevos">Huevos</mat-option>
+                    <mat-option value="gluten">Gluten</mat-option>
+                    <mat-option value="lacteos">Lácteos</mat-option>
+                    <mat-option value="crustaceos">Crustáceos</mat-option>
+                    <mat-option value="pescado">Pescado</mat-option>
+                    <mat-option value="frutos_secos">Frutos Secos</mat-option>
+                    <mat-option value="cacahuete">Cacahuete</mat-option>
+                    <mat-option value="soja">Soja</mat-option>
+                    <mat-option value="sesamo">Sésamo</mat-option>
+                  </mat-select>
+                </mat-form-field>
               </div>
+
+              <div class="input-group full-width">
+                <label>Grupos Musculares de Interés</label>
+                <mat-form-field appearance="fill">
+                  <mat-select formControlName="muscleGroups" multiple placeholder="Selecciona los músculos">
+                    <mat-option value="piernas">Piernas</mat-option>
+                    <mat-option value="cuadriceps">Cuádriceps</mat-option>
+                    <mat-option value="gemelos">Gemelos</mat-option>
+                    <mat-option value="espalda">Espalda</mat-option>
+                    <mat-option value="dorsales">Dorsales</mat-option>
+                    <mat-option value="pecho">Pecho</mat-option>
+                    <mat-option value="pectorales">Pectorales</mat-option>
+                    <mat-option value="gluteos">Glúteos</mat-option>
+                    <mat-option value="abdominales">Abdominales</mat-option>
+                    <mat-option value="cardio">Cardio</mat-option>
+                    <mat-option value="hombros">Hombros</mat-option>
+                    <mat-option value="espalda_alta">Espalda alta</mat-option>
+                    <mat-option value="biceps">Bíceps</mat-option>
+                    <mat-option value="brazos">Brazos</mat-option>
+                    <mat-option value="triceps">Tríceps</mat-option>
+                    <mat-option value="aductores">Aductores</mat-option>
+                    <mat-option value="deltoides">Deltoides</mat-option>
+                    <mat-option value="core">Core</mat-option>
+                    <mat-option value="isquiotibiales">Isquiotibiales</mat-option>
+                    <mat-option value="columna">Columna</mat-option>
+                    <mat-option value="cuello">Cuello</mat-option>
+                    <mat-option value="antebrazos">Antebrazos</mat-option>
+                    <mat-option value="trapecios">Trapecios</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
             </div>
+
           </form>
         </div>
       </mat-tab>
-
     </mat-tab-group>
-
     <div class="form-footer">
       <button mat-flat-button class="btn-save" (click)="saveProfile()">
         Save Change

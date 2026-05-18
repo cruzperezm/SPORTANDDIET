@@ -50,7 +50,6 @@ export class ProfileViewComponent implements OnInit {
     this.initForms();
   }
 
-
   ngOnInit(): void {
     this.loadUserProfile();
   }
@@ -61,7 +60,8 @@ export class ProfileViewComponent implements OnInit {
         this.user.username = data.username;
         this.user.email = data.email;
         this.user.photoUrl = data.photoUrl;
-        this.authService.updateUserProfile(data);
+
+        this.authService.setUserProfile(data);
 
         this.accountForm.patchValue({
           username: data.username,
@@ -72,7 +72,8 @@ export class ProfileViewComponent implements OnInit {
 
         this.preferencesForm.patchValue({
           activityLevel: data.biometrics?.activity || 'MODERATE',
-          allergens: data.allergies || []
+          allergens: data.allergies || [],
+          muscleGroups: data.muscleGroups || []
         });
 
         if (data.biometrics) {
@@ -125,15 +126,16 @@ export class ProfileViewComponent implements OnInit {
     delete profileData.confirmEmail;
 
     this.profileService.updateProfile(profileData).subscribe({
-      next: (response) => {
+      next: (response: any) => {
         console.log('¡Perfil actualizado con éxito!', response);
         alert('Cambios guardados correctamente');
-        this.authService.updateUserProfile(profileData);
+
+        this.authService.setUserProfile(response.user);
       },
       error: (err) => {
         console.error('Error al guardar el perfil:', err);
         alert('Hubo un error al guardar los cambios');
-      }
+      },
     });
   }
 
@@ -159,6 +161,7 @@ export class ProfileViewComponent implements OnInit {
     this.preferencesForm = this.fb.group({
       activityLevel: ['MODERATE', Validators.required],
       allergens: [[]],
+      muscleGroups: [[]],
     });
   }
 

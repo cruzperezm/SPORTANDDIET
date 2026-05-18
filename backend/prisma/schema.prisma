@@ -8,32 +8,39 @@ datasource db {
 }
 
 model User {
-  id         Int         @id @default(autoincrement())
-  email      String      @unique
-  username   String?
-  createdAt  DateTime    @default(now())
-  password   String?
-  googleId   String?     @unique
-  allergies  Allergies[]
-  photoUrl   String?
-  pronouns   String?
-  biometrics Biometrics?
-  dashboards Dashboard[]
+  id             Int             @id @default(autoincrement())
+  email          String          @unique
+  username       String?
+  createdAt      DateTime        @default(now())
+  password       String?
+  googleId       String?         @unique
+  allergies      Allergies[]
+  muscleGroups   MuscleGroups[]
+  photoUrl       String?
+  pronouns       String?
+  biometrics     Biometrics?
+  DashboardDiet  DashboardDiet?
+  DashboardSport DashboardSport?
 }
 
 model Biometrics {
-  id        Int      @id @default(autoincrement())
-  ownerId   Int      @unique
-  height    Int
-  activity  String
-  age       Int
-  c_weight  Int
-  d_weight  Int
-  genre     String
-  goal      String
-  weeks     Int
-  createdAt DateTime @default(now())
-  owner     User     @relation(fields: [ownerId], references: [id])
+  id             Int      @id @default(autoincrement())
+  ownerId        Int      @unique
+  height         Int
+  activity       String
+  age            Int
+  c_weight       Int
+  d_weight       Int
+  genre          String
+  goal           String
+  weeks          Int
+  createdAt      DateTime @default(now())
+  imc            Float?
+  kcalObjetivo   Int?
+  macroCarbs     Int?
+  macroGrasas    Int?
+  macroProteinas Int?
+  owner          User     @relation(fields: [ownerId], references: [id])
 }
 
 model Diet {
@@ -70,50 +77,57 @@ model ExercisePlan {
 }
 
 model Exercise {
-  id             Int              @id @default(autoincrement())
-  exercisePlanId Int?
-  name           String           @unique
-  image          String
-  difficulty     String
-  level          Level
-  muscles        MuscleGroups[]
-  gif            String
-  stats          Int[]
-  duration       Int
-  filters        FilterExercise[]
-  exercisePlan   ExercisePlan?    @relation(fields: [exercisePlanId], references: [id])
+  id               Int              @id @default(autoincrement())
+  exercisePlanId   Int?
+  name             String           @unique
+  image            String
+  difficulty       String
+  level            Level
+  muscles          MuscleGroups[]
+  gif              String
+  stats            Int[]
+  duration         Int
+  filters          FilterExercise[]
+  dashboardSportId Int?
+  DashboardSport   DashboardSport?  @relation(fields: [dashboardSportId], references: [id])
+  exercisePlan     ExercisePlan?    @relation(fields: [exercisePlanId], references: [id])
 }
 
 model DashboardDiet {
-  id                Int         @id @default(autoincrement())
-  createdAt         DateTime    @default(now())
-  updatedAt         DateTime    @default(now())
-  calorias_objetivo Int
-  calorias_totales  Int
-  macros1           Json
-  macros2           Json
-  dashboards        Dashboard[]
-  recetas           Recipe[]
+  id             Int      @id @default(autoincrement())
+  userId         Int      @unique
+  calories_goal  Int      @default(2500)
+  calories_total Int      @default(0)
+  protein        Int      @default(0)
+  fats           Int      @default(0)
+  carbs          Int      @default(0)
+  water          Int      @default(0)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @default(now())
+  User           User     @relation(fields: [userId], references: [id])
+  recetas        Recipe[]
 }
 
 model DashboardSport {
-  id          Int         @id @default(autoincrement())
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @default(now())
-  actividades Int
-  ejercicios  Int
-  semana      Int
-  dashboards  Dashboard[]
+  id        Int        @id @default(autoincrement())
+  userId    Int        @unique
+  week      Int[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @default(now())
+  Activity  Activity[]
+  User      User       @relation(fields: [userId], references: [id])
+  Exercise  Exercise[]
 }
 
-model Dashboard {
-  id               Int            @id @default(autoincrement())
-  userId           Int
-  dashboardDietId  Int
-  dashboardSportId Int
-  dieta            DashboardDiet  @relation(fields: [dashboardDietId], references: [id])
-  deporte          DashboardSport @relation(fields: [dashboardSportId], references: [id])
-  user             User           @relation(fields: [userId], references: [id])
+model Activity {
+  id               Int             @id @default(autoincrement())
+  title            String
+  duration         Int
+  progress         Int
+  objective        Int
+  unit             Unit
+  dashboardSportId Int?
+  DashboardSport   DashboardSport? @relation(fields: [dashboardSportId], references: [id])
 }
 
 enum Allergies {
@@ -189,4 +203,10 @@ enum MuscleGroups {
   Cuello
   Antebrazos
   Trapecios
+}
+
+enum Unit {
+  kcal
+  min
+  hour
 }
