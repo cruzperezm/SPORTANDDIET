@@ -51,3 +51,15 @@ exports.upsertDashboard = async (req, res) => {
     res.status(500).json({ error: error.message || "Server error" });
   }
 };
+
+exports.addFavoriteRecipe = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const { recipeId } = req.body;
+
+    const data = await DashboardService.addFavoriteRecipe(userId, recipeId);
+    res.status(200).json({ message: "Receta añadida a tus Me Gusta", data });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};

@@ -59,13 +59,12 @@ const addBio = async (genre, age, height, goal, activity, c_weight, d_weight, we
     }
   });
 
-  // 3. Crear el Dashboard inicial con las columnas separadas
   const existingDashboard = await prisma.dashboard.findFirst({ where: { userId: parsedOwner } });
 
   if (!existingDashboard) {
     const diet = await prisma.dashboardDiet.create({
       data: {
-        userId: parsedOwner, // <- Requisito obligatorio añadido
+        userId: parsedOwner,
         calories_total: 0,
         calories_goal: calculatedMetrics.kcalObjetivo,
         protein: calculatedMetrics.macroProteinas,
@@ -77,8 +76,10 @@ const addBio = async (genre, age, height, goal, activity, c_weight, d_weight, we
 
     const sport = await prisma.dashboardSport.create({
       data: {
-        userId: parsedOwner, // <- Requisito obligatorio añadido
-        week: []
+        userId: parsedOwner,
+        week: [],
+        calories: 0,
+        time: 0
       }
     });
 
@@ -87,8 +88,12 @@ const addBio = async (genre, age, height, goal, activity, c_weight, d_weight, we
     });
   }
 
+    await prisma.dashboard.create({
+      data: { userId: parsedOwner, dashboardDietId: diet.id, dashboardSportId: sport.id }
+    });
+  }
+
   return biometrics;
-};
 
 const login = async (email, password) => {
   const user = await prisma.user.findUnique({
