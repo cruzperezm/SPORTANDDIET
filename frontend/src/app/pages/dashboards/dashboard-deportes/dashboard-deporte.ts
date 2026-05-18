@@ -27,31 +27,23 @@ export class DashboardDeporteComponent implements OnInit, OnDestroy {
 
   private subscription?: Subscription;
 
-  userName = 'Usuario de ejemplo';
+  userName = 'Dashboard de actividad';
 
   // Activity Ring Data
-  moveText = 'Moverse';
-  moveCalories = '450 / 600 kcal';
-  exerciseText = 'Ejercicio';
-  exerciseCalories = '45 / 30 min';
-  standText = 'De Pie';
-  standCalories = '10 / 12 hr';
+  dailyActivities = [
+    { text: 'Moverse', progress: '450 / 600 kcal' },
+    { text: 'Ejercicio', progress: '45 / 30 min' },
+    { text: 'De Pie', progress: '10 / 12 hr' },
+  ];
 
   // Training List - Individual Variables
-  trainText1 = 'Carrera Matutina';
-  trainAmount1 = '5.2 km';
-
-  trainText2 = 'Entrenamiento Fuerza';
-  trainAmount2 = '45 min';
-
-  trainText3 = 'Sesión Yoga';
-  trainAmount3 = '20 min';
-
-  trainText4 = 'Ciclismo Urbano';
-  trainAmount4 = '12 km';
-
-  trainText5 = 'Estiramientos';
-  trainAmount5 = '10 min';
+  trainingSessions = [
+    { text: 'Carrera Matutina', amount: '5.2 km' },
+    { text: 'Entrenamiento Fuerza', amount: '45 min' },
+    { text: 'Sesión Yoga', amount: '20 min' },
+    { text: 'Ciclismo Urbano', amount: '12 km' },
+    { text: 'Estiramientos', amount: '10 min' },
+  ];
 
   // Don't forget the chart data since the @if and @for need it to render the bars!
   weekData = [
@@ -69,7 +61,7 @@ export class DashboardDeporteComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // Initial load
-    this.fetchDeporteData().subscribe((data) => {
+    /*this.fetchDeporteData().subscribe((data) => {
       if (data) this.updateData(data);
     });
 
@@ -89,7 +81,7 @@ export class DashboardDeporteComponent implements OnInit, OnDestroy {
           this.updateData(data);
           this.loading = false;
         }
-      });
+      });*/
   }
 
   ngOnDestroy() {
@@ -108,7 +100,7 @@ export class DashboardDeporteComponent implements OnInit, OnDestroy {
     this.router.navigate(['/deportes']);
   }
 
-  private updateData(data: SportData) {
+  /*private updateData(data: SportData) {
     this.userName = data.usuario.nombre;
 
     this.moveText = data.actividades[0]?.nombre || '';
@@ -127,5 +119,5 @@ export class DashboardDeporteComponent implements OnInit, OnDestroy {
       (this as any)[`trainAmount${i}`] = exercise?.valor || '';
     }
     this.loading = false;
-  }
+  }*/
 }
