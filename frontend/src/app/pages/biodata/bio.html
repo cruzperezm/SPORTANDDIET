@@ -4,7 +4,16 @@
     <form [formGroup]="bioForm" (ngSubmit)="saveData()" >
 
       @if (bioData==0){
-        <input formControlName="gender" name="genre" type="text" placeholder="Genero" required autofocus>
+        @if (gender?.invalid && (gender?.dirty || gender?.touched)){
+          @if (gender?.hasError('required')) {
+            <div id="error">Seleccione un género.</div>
+          }
+        }
+        <select formControlName="gender">
+        @for (gender of genders; track $index){
+          <option [value]="gender.valueOf()">{{gender.valueOf()}}</option>
+        }
+        </select>
 
         @if (age?.invalid && (age?.dirty || age?.touched)){
           @if (age?.hasError('required')) {

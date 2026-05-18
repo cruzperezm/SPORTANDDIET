@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { SportService } from '../../../services/deportes.service';
+import {defaultEquals} from '@angular/core/primitives/signals';
 
 @Component({
   selector: 'app-deportes-detalle',
@@ -64,7 +65,7 @@ export class DeportesDetalleComponent implements OnInit {
     if ( x != null){
       this.exList = JSON.parse(x);
     }
-    const elem = this.exList.find((val) => val.toString() == this.exercise.toString())
+    const elem = this.exList.find((val) => val.id === this.exercise.id)
     const i = this.exList.indexOf(elem);
     this.exList.splice(i, 1);
     localStorage.setItem("Deportes", JSON.stringify(this.exList));
@@ -76,7 +77,7 @@ export class DeportesDetalleComponent implements OnInit {
     if ( x != null){
       this.exList = JSON.parse(x);
     }
-    const elem = this.exList.find((val) => val.toString() == this.exercise.toString())
+    const elem = this.exList.find((val) => val.id === this.exercise.id)
     const i = this.exList.indexOf(elem);
     return i!=-1;
   }

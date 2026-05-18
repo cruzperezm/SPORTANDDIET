@@ -14,6 +14,10 @@ export class DietasDetalleComponent implements OnInit {
   recetaId: string | null = null;
   receta: any = null;
 
+  hasRecipe: boolean = false;
+
+  reList: any[] = [];
+
   constructor(
     private route: ActivatedRoute,
     private dietasService: DietService,
@@ -35,6 +39,7 @@ export class DietasDetalleComponent implements OnInit {
     this.dietasService.getRecipeById(id).subscribe({
       next: (data) => {
         this.receta = data;
+        this.hasRecipe = this.inList();
         this.cdr.detectChanges();
       },
       error: (err) => console.error('Error al cargar detalle:', err),
@@ -44,5 +49,37 @@ export class DietasDetalleComponent implements OnInit {
   volverAtras(event: Event) {
     event.preventDefault();
     this.location.back();
+  }
+
+  guardar(){
+    const x = localStorage.getItem("Dietas");
+    if ( x != null){
+      this.reList = JSON.parse(x);
+    }
+    this.reList.push(this.receta);
+    localStorage.setItem("Dietas", JSON.stringify(this.reList));
+    this.hasRecipe = true;
+  }
+
+  eliminar(){
+    const x = localStorage.getItem("Dietas");
+    if ( x != null){
+      this.reList = JSON.parse(x);
+    }
+    const elem = this.reList.find((val) => val.id === this.receta.id)
+    const i = this.reList.indexOf(elem);
+    this.reList.splice(i, 1);
+    localStorage.setItem("Dietas", JSON.stringify(this.reList));
+    this.hasRecipe = false;
+  }
+
+  inList() {
+    const x = localStorage.getItem("Dietas");
+    if ( x != null){
+      this.reList = JSON.parse(x);
+    }
+    const elem = this.reList.find((val) => val.id === this.receta.id)
+    const i = this.reList.indexOf(elem);
+    return i!=-1;
   }
 }

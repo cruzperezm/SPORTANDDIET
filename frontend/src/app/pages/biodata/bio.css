@@ -34,6 +34,15 @@ input {
   border-radius: 12px;
 }
 
+select {
+  padding: 15px;
+  margin-bottom: 40px;
+  width: 100%;
+  border: none;
+  display: block;
+  border-radius: 12px;
+}
+
 label {
   padding: 15px;
   margin-bottom: 40px;
@@ -47,6 +56,14 @@ input:focus {
 }
 
 input.ng-touched.ng-invalid {
+  outline: 2px solid red;
+}
+
+select:focus {
+  outline: 2px solid #2ecc71;
+}
+
+select.ng-touched.ng-invalid {
   outline: 2px solid red;
 }
 
