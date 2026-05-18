@@ -64,7 +64,7 @@ const login = async (email, password) => {
   if (!isMatch) throw new AuthError("The password is incorrect");
 
   const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
-    expiresIn: "1h",
+    expiresIn: "4Weeks",
   });
 
   const needsOnboarding = !user.biometrics;

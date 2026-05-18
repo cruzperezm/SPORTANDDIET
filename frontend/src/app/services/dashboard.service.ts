@@ -1,7 +1,41 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+interface Exercise {
+  name: string;
+  image: string;
+  duration: number;
+}
 
+interface Day {
+  dia: string;
+  valor: number;
+}
+export interface SportData {
+  userId: number;
+  week: Day[];
+  updatedAt: Date;
+  calories: number;
+  time: number;
+  exercises: Exercise[];
+}
+
+interface Recipe {
+  name: string;
+  image: string;
+  calories: number;
+}
+
+export interface DietData {
+  calories_total: number;
+  calories_goal: number;
+  protein: number;
+  fats: number;
+  carbs: number;
+  water: number;
+  updatedAt: Date;
+  recipes: Array<Recipe>;
+}
 @Injectable({
   providedIn: 'root',
 })

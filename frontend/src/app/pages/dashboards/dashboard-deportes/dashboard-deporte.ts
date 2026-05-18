@@ -1,33 +1,33 @@
-import { Component, OnInit, inject, OnDestroy } from '@angular/core';
+import { Component, OnInit, inject, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Observable, Subscription, interval } from 'rxjs';
-import { switchMap, catchError } from 'rxjs/operators';
-import { of } from 'rxjs';
-import { DashboardService } from '../../../services/dashboard.service';
-
-interface SportData {
-  usuario: { nombre: string };
-  actividades: Array<{ nombre: string; valor: string }>;
-  deporte: {
-    semana: Array<{ dia: string; valor: number }>;
-    ejercicios: Array<{ nombre: string; valor: string }>;
-  };
-}
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { DashboardService, SportData } from '../../../services/dashboard.service';
 
 @Component({
   selector: 'app-dashboard-deporte',
   templateUrl: './Dashboard-Deporte.html',
   styleUrls: ['./Dashboard-Deporte.css'],
+  imports: [FontAwesomeModule],
 })
-export class DashboardDeporteComponent implements OnInit, OnDestroy {
+export class DashboardDeporteComponent implements OnInit {
   private http = inject(HttpClient);
   private router = inject(Router);
   private dashboardService = inject(DashboardService);
+  private cdr = inject(ChangeDetectorRef);
 
-  private subscription?: Subscription;
+  declare deporteData: SportData;
 
-  userName = 'Dashboard de actividad';
+  dashboardTitle = 'Dashboard de actividad';
+
+  /*Tareas pendientes:
+  - Si tenemos actividades (ya están creadas en la BD) se necesita un botón para
+  añadir una nueva actividad que muestre un formulario en overlay
+  - Si usamos las actividades y los ejercicios asignados en el día para calcular
+  el porcentaje hay que ver cómo se harían los cálculos
+  - Establecer un total de ejercicio (y la unidad de medida: tiempo, kcal quemadas),
+  probablemente a partir de los objetivos del usuario
+  */
 
   // Activity Ring Data
   dailyActivities = [
@@ -45,47 +45,19 @@ export class DashboardDeporteComponent implements OnInit, OnDestroy {
     { text: 'Estiramientos', amount: '10 min' },
   ];
 
-  // Don't forget the chart data since the @if and @for need it to render the bars!
-  weekData = [
-    { dia: 'L', valor: 45 },
-    { dia: 'M', valor: 30 },
-    { dia: 'X', valor: 60 },
-    { dia: 'J', valor: 25 },
-    { dia: 'V', valor: 50 },
-    { dia: 'S', valor: 80 },
-    { dia: 'D', valor: 40 },
-  ];
-
   loading = true;
   error = '';
 
   ngOnInit() {
-    // Initial load
-    /*this.fetchDeporteData().subscribe((data) => {
-      if (data) this.updateData(data);
+    this.dashboardService.getDeporteDashboard().subscribe({
+      next: (data) => {
+        this.deporteData = data;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Ha ocurrido un error al obtener la información del dashboard:', err);
+      },
     });
-
-    // Poll every 30 seconds
-    this.subscription = interval(30000)
-      .pipe(
-        switchMap(() => this.fetchDeporteData()),
-        catchError((err) => {
-          console.error('Error fetching deporte data:', err);
-          this.error = 'Failed to load dashboard';
-          this.loading = false;
-          return of(null);
-        }),
-      )
-      .subscribe((data) => {
-        if (data) {
-          this.updateData(data);
-          this.loading = false;
-        }
-      });*/
-  }
-
-  ngOnDestroy() {
-    this.subscription?.unsubscribe();
   }
 
   private fetchDeporteData() {

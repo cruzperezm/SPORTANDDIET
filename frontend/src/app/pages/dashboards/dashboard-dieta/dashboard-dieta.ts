@@ -1,26 +1,16 @@
-import { Component, OnInit, inject, OnDestroy } from '@angular/core';
+import { Component, OnInit, inject, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable, Subscription, interval } from 'rxjs';
 import { switchMap, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { DashboardService } from '../../../services/dashboard.service';
+import { DietData, SportData } from '../../../services/dashboard.service';
 
 interface MacroItem {
-  nombre: string;
-  valor: string | number;
-  progreso?: number;
-}
-
-interface DietData {
-  usuario: { nombre: string };
-  dieta: {
-    calorias_objetivo: number;
-    calorias_totales: number;
-    macros1: MacroItem[];
-    macros2: MacroItem[];
-    recetas: MacroItem[];
-  };
+  label: string;
+  value: number;
+  total: number;
 }
 
 @Component({
@@ -28,73 +18,46 @@ interface DietData {
   templateUrl: './Dashboard-Dieta.html',
   styleUrls: ['./Dashboard-Dieta.css'],
 })
-export class DashboardDietaComponent implements OnInit, OnDestroy {
+export class DashboardDietaComponent implements OnInit {
   private router = inject(Router);
   private dashboardService = inject(DashboardService);
+  private cdr = inject(ChangeDetectorRef);
 
-  private subscription?: Subscription;
-  dietaData$!: Observable<any[]>;
+  declare dietaData: DietData;
+  declare macroList: Array<MacroItem>;
 
-  userName = 'Dashboard nutricional';
-  caloriesGoal = 2500;
-  caloriesAmount = 1850;
-  waterAmount = '2.5L';
-  waterText = 'Hidratación';
-  fiberAmount = '25g';
-  fiberText = 'Fibra';
+  dashboardTitle = 'Dashboard nutricional';
 
-  // Macro Progress (0 to 100)
-  macroList = [
-    { id: 'protein', label: 'Proteína', amount: 120, total: 200, progress: 75 },
-    { id: 'fats', label: 'Grasas', amount: 45, total: 100, progress: 40 },
-    { id: 'carbs', label: 'Carbs', amount: 210, total: 300, progress: 60 },
-    { id: 'sodium', label: 'Sodio', amount: 1.2, total: 5, progress: 30 },
-    { id: 'sugar', label: 'Azúcar', amount: 20, total: 100, progress: 15 },
-  ];
-
-  // The "Action Items" Array for the @for loop
-  dietItems = [
-    { id: 1, text: 'Desayuno Saludable', amount: '450 kcal' },
-    { id: 2, text: 'Almuerzo Proteico', amount: '700 kcal' },
-    { id: 3, text: 'Snack Pre-Entreno', amount: '200 kcal' },
-    { id: 4, text: 'Cena Ligera', amount: '400 kcal' },
-    { id: 5, text: 'Suplementación', amount: '100 kcal' },
-  ];
+  /*
+  Tareas pendientes:
+  - Añadir el botón de "Añadir receta" en la parte de arriba de la lista de recetas
+  - Implementar lógica de recomendaciones de las recetas del día en la lista de la derecha
+  - Implementar botón que te lleve la página de tu plan personal, donde puedes ver tus recetas
+  y ejercicios siguiendo la estética de los planes de dieta y ejercicios pero que contenga
+  solo las recetas y ejercicios en tu plan, divididos por momento del dia o dificultad
+  - Arreglar el CSS de la cruz (que ahora es la imagen de la receta) 
+  - Añadir botones de + y - al valor del agua que actualice la BD cada vez que se pulse,
+  implementar función "updateWater()" o similar
+  */
 
   loading = true;
   error = '';
 
   ngOnInit() {
-    // Initial load
-    /*this.fetchDietaData().subscribe((data) => {
-      if (data) this.updateData(data);
+    this.dashboardService.getDietaDashboard().subscribe({
+      next: (data) => {
+        this.dietaData = data;
+        this.macroList = [
+          { label: 'Proteína', value: this.dietaData.protein, total: 150 },
+          { label: 'Grasas', value: this.dietaData.fats, total: 100 },
+          { label: 'Carbs', value: this.dietaData.carbs, total: 300 },
+        ];
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Ha ocurrido un error al obtener la información del dashboard:', err);
+      },
     });
-
-    // Poll every 30 seconds
-    this.subscription = interval(30000)
-      .pipe(
-        switchMap(() => this.fetchDietaData()),
-        catchError((err) => {
-          console.error('Error fetching dieta data:', err);
-          this.error = 'Failed to load dashboard';
-          this.loading = false;
-          return of(null);
-        }),
-      )
-      .subscribe((data) => {
-        if (data) {
-          this.updateData(data);
-          this.loading = false;
-        }
-      });*/
-  }
-
-  ngOnDestroy() {
-    this.subscription?.unsubscribe();
-  }
-
-  private fetchDietaData() {
-    return this.dashboardService.getDietaDashboard();
   }
 
   toggleToDeporte() {

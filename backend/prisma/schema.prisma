@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  output   = "../src/generated"
 }
 
 datasource db {
@@ -7,28 +8,40 @@ datasource db {
 }
 
 model User {
-  id         Int         @id @default(autoincrement())
-  email      String      @unique
-  username   String?
-  createdAt  DateTime    @default(now())
-  password   String?
-  googleId   String?     @unique
-  biometrics Biometrics?
-  dashboards Dashboard[]
+  id             Int             @id @default(autoincrement())
+  email          String          @unique
+  username       String?
+  createdAt      DateTime        @default(now())
+  password       String?
+  googleId       String?         @unique
+  allergies      Allergies[]
+  photoUrl       String?
+  pronouns       String?
+  muscleGroups   MuscleGroups[]
+  biometrics     Biometrics?
+  Dashboard      Dashboard[]
+  dashboardDiet  DashboardDiet?
+  dashboardSport DashboardSport?
 }
 
 model Biometrics {
-  id       Int    @id @default(autoincrement())
-  ownerId  Int    @unique
-  height   Int
-  activity String
-  age      Int
-  c_weight Int
-  d_weight Int
-  genre    String
-  goal     String
-  weeks    Int
-  owner    User   @relation(fields: [ownerId], references: [id])
+  id             Int      @id @default(autoincrement())
+  ownerId        Int      @unique
+  height         Int
+  activity       String
+  age            Int
+  c_weight       Int
+  d_weight       Int
+  genre          String
+  goal           String
+  weeks          Int
+  createdAt      DateTime @default(now())
+  imc            Float?
+  kcalObjetivo   Int?
+  macroCarbs     Int?
+  macroGrasas    Int?
+  macroProteinas Int?
+  owner          User     @relation(fields: [ownerId], references: [id])
 }
 
 model Diet {
@@ -51,9 +64,11 @@ model Recipe {
   instructions    String
   ingredients     String[]
   macros          String[]
-  diet            Diet?          @relation(fields: [dietId], references: [id])
-  dashboardDiet   DashboardDiet? @relation(fields: [dashboardDietId], references: [id])
   dashboardDietId Int?
+  dashboardDiet   DashboardDiet? @relation(fields: [dashboardDietId], references: [id])
+  diet            Diet?          @relation(fields: [dietId], references: [id])
+  dailyRecipes    DailyRecipes?  @relation(fields: [dailyRecipesId], references: [id])
+  dailyRecipesId  Int?
 }
 
 model ExercisePlan {
@@ -65,50 +80,85 @@ model ExercisePlan {
 }
 
 model Exercise {
-  id             Int              @id @default(autoincrement())
-  exercisePlanId Int?
-  name           String           @unique
-  image          String
-  difficulty     String
-  level          Level
-  filters        FilterExercise[]
-  muscles        MuscleGroups[]
-  gif            String
-  stats          Int[]
-  duration       Int
-  exercisePlan   ExercisePlan?    @relation(fields: [exercisePlanId], references: [id])
+  id               Int              @id @default(autoincrement())
+  exercisePlanId   Int?
+  name             String           @unique
+  image            String
+  difficulty       String
+  level            Level
+  muscles          MuscleGroups[]
+  gif              String
+  stats            Int[]
+  duration         Int
+  filters          FilterExercise[]
+  dashboardSportId Int?
+  dashboardSport   DashboardSport?  @relation(fields: [dashboardSportId], references: [id])
+  exercisePlan     ExercisePlan?    @relation(fields: [exercisePlanId], references: [id])
+  dailyExercises   DailyExercises?  @relation(fields: [dailyExercisesId], references: [id])
+  dailyExercisesId Int?
 }
 
 model DashboardDiet {
-  id                Int         @id @default(autoincrement())
-  calorias_objetivo Int
-  calorias_totales  Int
-  macros1           Int
-  macros2           Int
-  recetas           Recipe[]
-  createdAt         DateTime    @default(now())
-  updatedAt         DateTime    @default(now())
-  dashboards        Dashboard[]
+  id             Int            @id @default(autoincrement())
+  userId         Int            @unique
+  calories_goal  Int            @default(2500)
+  calories_total Int            @default(0)
+  protein        Int            @default(0)
+  fats           Int            @default(0)
+  carbs          Int            @default(0)
+  water          Int            @default(0)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @default(now())
+  Dashboard      Dashboard[]
+  user           User           @relation(fields: [userId], references: [id])
+  recipes        Recipe[]
+  dailyRecipes   DailyRecipes[]
 }
 
 model DashboardSport {
-  id          Int         @id @default(autoincrement())
-  actividades Int
-  semana      Int
-  ejercicios  Int
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @default(now())
-  dashboards  Dashboard[]
+  id             Int             @id @default(autoincrement())
+  userId         Int             @unique
+  week           Int[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @default(now())
+  calories       Int             @default(0)
+  time           Int             @default(0)
+  Dashboard      Dashboard[]
+  user           User            @relation(fields: [userId], references: [id])
+  exercises      Exercise[]
+  dailyExercises DailyExercises?
 }
 
 model Dashboard {
   id               Int            @id @default(autoincrement())
-  user             User           @relation(fields: [userId], references: [id])
   userId           Int
-  dieta            DashboardDiet  @relation(fields: [dashboardDietId], references: [id])
   dashboardDietId  Int
-  deporte          DashboardSport @relation(fields: [dashboardSportId], references: [id])
   dashboardSportId Int
+  DashboardDiet    DashboardDiet  @relation(fields: [dashboardDietId], references: [id])
+  DashboardSport   DashboardSport @relation(fields: [dashboardSportId], references: [id])
+  User             User           @relation(fields: [userId], references: [id])
+}
+
+model DailyRecipes {
+  id              Int           @id @default(autoincrement())
+  recipes         Recipe[]
+  dashboard       DashboardDiet @relation(fields: [dashboardDietId], references: [id])
+  date            DateTime      @default(now())
+  dashboardDietId Int           @unique
+}
+
+model DailyExercises {
+  id               Int            @id @default(autoincrement())
+  exercises        Exercise[]
+  dashboard        DashboardSport @relation(fields: [dashboardSportId], references: [id])
+  date             DateTime       @default(now())
+  dashboardSportId Int            @unique
+}
+
+enum Unit {
+  kcal
+  min
+  hour
 }
 
 enum Allergies {

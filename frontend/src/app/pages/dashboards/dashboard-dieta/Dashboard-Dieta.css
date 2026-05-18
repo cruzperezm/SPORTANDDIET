@@ -201,6 +201,12 @@ h1 {
   font-size: 25px;
 }
 
+.water p,
+.fiber p {
+  font-size: 20px;
+  text-align: center;
+}
+
 .right-macros {
   width: 40%;
   margin: 20px 0;

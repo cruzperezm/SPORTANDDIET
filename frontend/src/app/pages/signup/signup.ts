@@ -61,8 +61,11 @@ export class Signup implements AfterViewInit {
         this.ngZone.run(() => {
           // LA MAGIA ESTÁ AQUÍ: Evaluamos qué necesita el usuario
           if (res.needsOnboarding) {
+            const userId = res.user.id;
             console.log('El usuario necesita completar sus datos biométricos');
-            this.router.navigate(['/bio']); // Ruta a tu cuestionario
+            this.router.navigate(['/bio'], {
+              queryParams: { userId: userId },
+            });
           } else {
             console.log('El usuario ya tiene todo completo');
             this.router.navigate(['/']); // Ruta principal / Dashboard
@@ -82,15 +85,15 @@ export class Signup implements AfterViewInit {
   signup() {
     if (this.signUpForm.invalid) return;
 
-      this.isLoading = true;
-      this.errorMessage = '';
+    this.isLoading = true;
+    this.errorMessage = '';
 
     this.authService.register(this.signUpForm.value).subscribe({
       next: (response) => {
         console.log('Backend says:', response);
         this.isLoading = false;
 
-        const userId = response.id;
+        const userId = response.user.id;
         this.router.navigate(['/bio'], {
           queryParams: { userId: userId },
         });
