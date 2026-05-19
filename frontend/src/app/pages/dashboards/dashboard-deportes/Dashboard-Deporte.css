@@ -50,6 +50,10 @@ h1 {
 }
 
 .main-content-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
   height: auto;
   flex-grow: 1;
   max-height: 600px;
@@ -222,4 +226,30 @@ h1 {
 
 .new-activity:hover {
   background-color: #f97316;
+}
+
+.empty {
+  color: grey;
+  flex-grow: 1;
+  padding-top: 40px;
+}
+
+.view-full-plan {
+  background-color: white;
+  justify-self: flex-end;
+  padding: 10px;
+  border-radius: 20px;
+  border: 2px solid #ea580c;
+  color: #ea580c;
+  box-shadow: var(--sombra-suave);
+  transition: 0.3s;
+}
+
+.view-full-plan:hover {
+  background-color: #ea580c;
+  color: white;
+  box-shadow:
+    0 0 20px 0 #ea5a0c46,
+    0 0 20px 0 #ea5a0c46;
+  translate: translateY(-5px);
 }

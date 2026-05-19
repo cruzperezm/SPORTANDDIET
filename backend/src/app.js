@@ -5,6 +5,7 @@ var searchRoutes = require("./routes/search.routes");
 var dietRoutes = require("./routes/diet.routes");
 var exercisePlanRoutes = require("./routes/sport.routes");
 var dashboardRoutes = require("./routes/dashboard.routes");
+var planRoutes = require("./routes/plan.routes");
 
 var app = express();
 const PORT = 3000;
@@ -26,6 +27,7 @@ app.use("/search", searchRoutes);
 app.use("/diets", dietRoutes);
 app.use("/exercisePlans", exercisePlanRoutes);
 app.use("/dashboard", dashboardRoutes);
+app.use("/userPlan", planRoutes);
 
 app.use(function (err, req, res, next) {
   // Log the error to your terminal so you can see it

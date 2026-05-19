@@ -47,6 +47,10 @@ h1 {
 
 .main-content-right {
   height: auto;
+  display: flex;
+  justify-content: start;
+  flex-direction: column;
+  align-items: center;
   flex-grow: 1;
   max-height: 600px;
   overflow-y: auto;
@@ -249,4 +253,31 @@ h1 {
   width: 100%;
   background: linear-gradient(to right, #10b981 var(--progress), #a8f0d8 var(--progress));
   border-radius: 12px;
+}
+
+.empty {
+  color: grey;
+  flex-grow: 1;
+  padding-top: 40px;
+}
+
+.view-full-plan {
+  margin: 5px;
+  background-color: white;
+  justify-self: flex-end;
+  padding: 10px;
+  border-radius: 20px;
+  border: 2px solid #059669;
+  color: #059669;
+  box-shadow: var(--sombra-suave);
+  transition: 0.3s;
+}
+
+.view-full-plan:hover {
+  background-color: #059669;
+  color: white;
+  box-shadow:
+    0 0 20px 0 #05966836,
+    0 0 20px 0 #05966836;
+  translate: translateY(-5px);
 }

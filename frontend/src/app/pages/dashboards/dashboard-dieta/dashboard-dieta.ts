@@ -68,6 +68,10 @@ export class DashboardDietaComponent implements OnInit {
     this.router.navigate(['/dietas']);
   }
 
+  verPlanCompleto() {
+    this.router.navigate(['/personalPlan/dieta']);
+  }
+
   private updateData(data: DietData) {
     // 1. Guard clause: If data is missing, don't execute to avoid "cannot read property of undefined"
     /*if (!data || !data.dieta) {

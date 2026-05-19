@@ -72,6 +72,10 @@ export class DashboardDeporteComponent implements OnInit {
     this.router.navigate(['/deportes']);
   }
 
+  verPlanCompleto() {
+    this.router.navigate(['/personalPlan/deporte']);
+  }
+
   /*private updateData(data: SportData) {
     this.userName = data.usuario.nombre;
 

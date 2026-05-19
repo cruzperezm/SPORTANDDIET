@@ -63,7 +63,10 @@
               <span>{{ item.calories }}</span>
             </div>
           </div>
+        } @empty {
+          <div class="empty">No hay datos disponibles</div>
         }
+        <button (click)="verPlanCompleto()" class="view-full-plan">Ver todas tus recetas</button>
       </div>
     </section>
   </div>
