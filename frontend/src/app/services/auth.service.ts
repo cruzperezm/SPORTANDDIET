@@ -23,7 +23,14 @@ export class AuthService {
   }
 
   register(user: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/register`, user);
+    return this.http.post<any>(`${this.apiUrl}/register`, user).pipe(
+      tap((res) => {
+        if (res && res.token) {
+          localStorage.setItem('token', res.token);
+          this.loggedIn.next(true);
+        }
+      }),
+    );
   }
 
   bio(form: any): Observable<any> {
@@ -46,10 +53,6 @@ export class AuthService {
         this.loggedIn.next(true);
       }),
     );
-  }
-
-  getToken() {
-    return localStorage.getItem('token');
   }
 
   logout() {

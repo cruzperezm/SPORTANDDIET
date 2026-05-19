@@ -10,22 +10,48 @@ const isToday = (date) => {
 
 const parseMacro = (str) => parseInt(str?.replace(/\D/g, '')) || 0;
 
-const generateDailyDiet = (target, favorites, allRecipes) => {
+const hasAllergyConflict = (currentRecipes, userAllergies) => {
+  if (!userAllergies || userAllergies.length === 0) return false;
+  return currentRecipes.some(recipe =>
+      recipe.allergies && recipe.allergies.some(allergy => userAllergies.includes(allergy))
+  );
+};
+
+const needsMusclePrioritization = (currentExercises, userMuscleGroups) => {
+  if (!userMuscleGroups || userMuscleGroups.length === 0) return false;
+
+  const hasAnyMatch = currentExercises.some(ex =>
+      ex.muscles && ex.muscles.some(m => userMuscleGroups.includes(m))
+  );
+  return !hasAnyMatch;
+};
+
+const generateDailyDiet = (target, favorites, allRecipes, userAllergies) => {
   if (!allRecipes || allRecipes.length === 0) return [];
 
+  let safeRecipes = allRecipes;
+  let safeFavorites = favorites;
+
+  if (userAllergies && userAllergies.length > 0) {
+    safeRecipes = allRecipes.filter(r => !r.allergies || !r.allergies.some(a => userAllergies.includes(a)));
+    safeFavorites = favorites.filter(r => !r.allergies || !r.allergies.some(a => userAllergies.includes(a)));
+  }
+
+  if (safeRecipes.length === 0) safeRecipes = allRecipes;
+
   const getPool = (moment) => {
-    const favs = favorites.filter(r => r.moment === moment);
-    return favs.length > 0 ? favs : allRecipes.filter(r => r.moment === moment);
+    const favs = safeFavorites.filter(r => r.moment === moment);
+    return favs.length > 0 ? favs : safeRecipes.filter(r => r.moment === moment);
   };
 
   const poolDesayuno = getPool('DESAYUNO');
   const poolAlmuerzo = getPool('ALMUERZO');
   const poolCena = getPool('CENA');
-  const poolCualquiera = favorites.length >= 5 ? favorites : allRecipes;
+  const poolCualquiera = safeFavorites.length >= 5 ? safeFavorites : safeRecipes;
 
   let bestCombo = [];
   let minDiff = Infinity;
-  const targetSize = Math.min(5, allRecipes.length);
+  const targetSize = Math.min(5, safeRecipes.length);
 
   for (let i = 0; i < 50; i++) {
     const combo = new Set();
@@ -58,11 +84,11 @@ const generateDailyDiet = (target, favorites, allRecipes) => {
     }
   }
 
-  if (bestCombo.length === 0) bestCombo = allRecipes.slice(0, 5);
+  if (bestCombo.length === 0) bestCombo = safeRecipes.slice(0, 5);
   return bestCombo;
 };
 
-const generateDailySport = (targetLevel, favorites, allExercises) => {
+const generateDailySport = (targetLevel, favorites, allExercises, userMuscleGroups) => {
   if (!allExercises || allExercises.length === 0) return [];
 
   let poolGlobal = allExercises.filter(e => e.level === targetLevel);
@@ -75,14 +101,13 @@ const generateDailySport = (targetLevel, favorites, allExercises) => {
       const principiantes = allExercises.filter(e => e.level === 'PRINCIPIANTE');
       poolGlobal = [...poolGlobal, ...principiantes];
     }
-
     if (poolGlobal.length < 5) poolGlobal = allExercises;
   }
 
   const pool = favorites.length >= 5 ? favorites : [...favorites, ...poolGlobal];
 
   let bestCombo = [];
-  let maxVariety = -1;
+  let bestScore = -1;
   const targetSize = Math.min(5, pool.length);
 
   for (let i = 0; i < 50; i++) {
@@ -98,14 +123,25 @@ const generateDailySport = (targetLevel, favorites, allExercises) => {
     if (currentCombo.length < targetSize) continue;
 
     const uniqueMuscles = new Set();
+    let matchCount = 0;
+
     currentCombo.forEach(ex => {
       if (ex.muscles && Array.isArray(ex.muscles)) {
         ex.muscles.forEach(m => uniqueMuscles.add(m));
+
+        // Contamos cuántos ejercicios de este combo tocan los músculos favoritos del usuario
+        if (userMuscleGroups && userMuscleGroups.length > 0) {
+          if (ex.muscles.some(m => userMuscleGroups.includes(m))) {
+            matchCount++;
+          }
+        }
       }
     });
 
-    if (uniqueMuscles.size > maxVariety) {
-      maxVariety = uniqueMuscles.size;
+    const score = (matchCount * 10) + uniqueMuscles.size;
+
+    if (score > bestScore) {
+      bestScore = score;
       bestCombo = currentCombo;
     }
   }
@@ -125,10 +161,11 @@ class DashboardService {
     if (!dashboardDiet) throw new Error("Dashboard de dieta no encontrado");
 
     let dailyPlan = dashboardDiet.DailyRecipes;
+    const userAllergies = dashboardDiet.User?.allergies || [];
 
-    if (!dailyPlan || !isToday(dailyPlan.date)) {
+    if (!dailyPlan || !isToday(dailyPlan.date) || hasAllergyConflict(dailyPlan.Recipe, userAllergies)) {
       const allRecipes = await prisma.recipe.findMany();
-      const newPlan = generateDailyDiet(dashboardDiet, dashboardDiet.recetas, allRecipes);
+      const newPlan = generateDailyDiet(dashboardDiet, dashboardDiet.recetas, allRecipes, userAllergies);
 
       dailyPlan = await prisma.dailyRecipes.upsert({
         where: { dashboardDietId: dashboardDiet.id },
@@ -172,8 +209,9 @@ class DashboardService {
     if (!dashboardSport) throw new Error("Dashboard de deporte no encontrado");
 
     let dailyPlan = dashboardSport.DailyExercises;
+    const userMuscleGroups = dashboardSport.User?.muscleGroups || [];
 
-    if (!dailyPlan || !isToday(dailyPlan.date)) {
+    if (!dailyPlan || !isToday(dailyPlan.date) || needsMusclePrioritization(dailyPlan.Exercise, userMuscleGroups)) {
       const allExercises = await prisma.exercise.findMany();
 
       const activity = dashboardSport.User?.biometrics?.activity?.toLowerCase() || '';
@@ -189,7 +227,7 @@ class DashboardService {
         else if (targetLevel === 'INTERMEDIO') targetLevel = 'AVANZADOS';
       }
 
-      const newPlan = generateDailySport(targetLevel, dashboardSport.Exercise, allExercises);
+      const newPlan = generateDailySport(targetLevel, dashboardSport.Exercise, allExercises, userMuscleGroups);
 
       dailyPlan = await prisma.dailyExercises.upsert({
         where: { dashboardSportId: dashboardSport.id },

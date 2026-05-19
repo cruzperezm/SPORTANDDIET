@@ -1,17 +1,30 @@
 const authService = require("../services/auth.service");
+const jwt = require("jsonwebtoken");
 
 const registerUser = async (req, res) => {
   try {
     const { email, username, password } = req.body;
+
     if (!email || !password) {
       return res.status(400).json({ error: "Email and password are required" });
     }
+
     const registeredUser = await authService.register(
-      email,
-      password,
-      username,
+        email,
+        password,
+        username,
     );
-    res.status(201).json(registeredUser);
+
+    const token = jwt.sign({ userId: registeredUser.id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    res.status(201).json({
+      user: registeredUser,
+      token: token,
+      needsOnboarding: true
+    });
+
   } catch (error) {
     console.error("PRISMA ERROR:", error);
     res.status(400).json({ error: error.message });

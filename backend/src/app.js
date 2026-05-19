@@ -5,6 +5,7 @@ var searchRoutes = require("./routes/search.routes");
 var dietRoutes = require("./routes/diet.routes");
 var exercisePlanRoutes = require("./routes/sport.routes");
 var dashboardRoutes = require("./routes/dashboard.routes");
+var profileRoutes = require("./routes/profile.routes");
 
 var app = express();
 const PORT = 3000;
