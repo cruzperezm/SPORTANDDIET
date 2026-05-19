@@ -21,6 +21,10 @@ app.listen(PORT, (error) => {
 
 app.use(cors());
 app.use(express.json());
+app.use((req, res, next) => {
+  console.log(`[Frontend llama a]: ${req.method} ${req.url}`);
+  next();
+})
 app.use("/api/auth", authRoutes);
 app.use("/search", searchRoutes);
 app.use("/diets", dietRoutes);
