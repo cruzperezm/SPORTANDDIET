@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { DietService } from '../../../services/dietas.service';
+import { AuthService } from '../../../services/auth.service';
 import { BehaviorSubject, Observable, switchMap } from 'rxjs';
 
 @Component({
@@ -12,6 +13,7 @@ import { BehaviorSubject, Observable, switchMap } from 'rxjs';
   styleUrl: './dietas-plan.css',
 })
 export class DietasPlanComponent implements OnInit {
+
   readonly MOMENTOS = ['Desayuno', 'Almuerzo', 'Cena'] as const;
   readonly LISTA_ALERGENOS = [
     { valor: 'gluten', etiqueta: 'Sin Gluten' },
@@ -28,7 +30,6 @@ export class DietasPlanComponent implements OnInit {
   recipes$!: Record<string, Observable<any[]>>;
   filtros$!: Observable<string[]>;
 
-  // Variables de estado
   dieta: any = null;
   idDieta: string | null = null;
   filtrosActivos: string[] = [];
@@ -39,10 +40,43 @@ export class DietasPlanComponent implements OnInit {
     private dietaService: DietService,
     private location: Location,
     private cdr: ChangeDetectorRef,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
-    // Escuchamos cambios en la URL (importante para recargas con F5)
+    this.filtros$ = this.dietaService.filtrosActivos$;
+    this.dietaService.filtrosActivos$.subscribe(filters => {
+      this.filtrosActivos = filters;
+      this.cdr.detectChanges();
+    });
+
+    this.authService.userProfile$.subscribe({
+      next: (profile) => {
+        if (profile && profile.allergies && profile.allergies.length > 0) {
+          const mappedAllergies = profile.allergies.map((allergy: string) => {
+            const lower = allergy.toLowerCase();
+            return lower === 'dairy' ? 'lacteos' : lower;
+          });
+
+          if (this.filtrosActivos.length === 0) {
+            this.dietaService.setFiltros(mappedAllergies);
+          }
+        }
+      }
+    });
+
+    this.authService.userProfile$.subscribe({
+      next: (profile) => {
+        if (profile && profile.allergies) {
+          const mappedAllergies = profile.allergies.map((allergy: string) => {
+            const lower = allergy.toLowerCase();
+            return lower === 'dairy' ? 'lacteos' : lower;
+          });
+          this.dietaService.setFiltros(mappedAllergies);
+        }
+      }
+    });
+
     this.route.paramMap.subscribe((params) => {
       this.idDieta = params.get('id');
 
@@ -58,8 +92,12 @@ export class DietasPlanComponent implements OnInit {
         this.cargarDatos(this.idDieta);
       }
     });
+
     this.filtros$ = this.dietaService.filtrosActivos$;
-    this.filtrosActivos = this.dietaService.getFiltrosActuales();
+
+    this.dietaService.filtrosActivos$.subscribe(filters => {
+      this.filtrosActivos = filters;
+    });
   }
 
   cargarDatos(id: string) {
@@ -80,7 +118,6 @@ export class DietasPlanComponent implements OnInit {
         if (tags.length === 0) {
           return this.dietaService.getRecipesByMoment(id, momento);
         }
-
         return this.dietaService.filter(id, tags, momento);
       }),
     );

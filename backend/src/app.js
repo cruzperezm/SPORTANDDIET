@@ -20,15 +20,24 @@ app.listen(PORT, (error) => {
 });
 
 app.use(cors());
-app.use(express.json());
-app.use((req, res, next) => {
-  console.log(`[Frontend llama a]: ${req.method} ${req.url}`);
-  next();
-})
+// NUEVO
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
+
 app.use("/api/auth", authRoutes);
 app.use("/search", searchRoutes);
 app.use("/diets", dietRoutes);
 app.use("/exercisePlans", exercisePlanRoutes);
-app.use("/api/dashboard", dashboardRoutes);
+app.use("/dashboard", dashboardRoutes);
+app.use('/api', profileRoutes);
+
+app.use(function (err, req, res, next) {
+  console.error("Backend Error:", err.message);
+
+  res.status(err.status || 500).json({
+    message: err.message,
+    error: req.app.get("env") === "development" ? err : {},
+  });
+});
 
 module.exports = app;

@@ -5,14 +5,18 @@
     <div class="card-header">
       <div class="user-info-header">
         <div class="avatar-wrapper">
-          <img [src]="user.photoUrl || 'assets/img/default-avatar.png'" alt="Foto">
-          <button class="edit-photo-icon">
-            <mat-icon>edit</mat-icon>
+          <img [src]="photoPreview || user.photoUrl || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'"
+               alt="Foto de perfil">
+
+          <input type="file" #fileInput (change)="onFileSelected($event)" accept="image/*" style="display: none;">
+
+          <button type="button" class="edit-photo-icon" title="Cambiar foto" (click)="fileInput.click()">
+            <mat-icon>+</mat-icon>
           </button>
         </div>
         <div class="user-text">
-          <h2>{{ user.username || 'Your name' }}</h2>
-          <p>{{ user.email || 'yourname@gmail.com' }}</p>
+          <h2>{{ accountForm.get('username')?.value || 'Usuario' }}</h2>
+          <p>{{ accountForm.get('email')?.value || 'sin-correo@ejemplo.com' }}</p>
         </div>
       </div>
     </div>
@@ -132,34 +136,79 @@
       <mat-tab label="Preferencias">
         <div class="tab-content">
           <form [formGroup]="preferencesForm">
-            <div class="form-grid">
+
+            <div class="preferences-layout">
+
               <div class="input-group full-width">
                 <label>Nivel de Actividad</label>
-                <mat-select formControlName="activityLevel" placeholder="Selecciona tu nivel">
-                  <mat-option value="NOTHING">Nada</mat-option>
-                  <mat-option value="LITTLE">Poca</mat-option>
-                  <mat-option value="MODERATE">Moderado</mat-option>
-                  <mat-option value="INTENSE">Intenso</mat-option>
-                </mat-select>
+                <mat-form-field appearance="fill">
+                  <mat-select formControlName="activityLevel" placeholder="Selecciona tu nivel">
+                    <mat-option value="NOTHING">Nada</mat-option>
+                    <mat-option value="LITTLE">Poca</mat-option>
+                    <mat-option value="MODERATE">Moderado</mat-option>
+                    <mat-option value="INTENSE">Intenso</mat-option>
+                  </mat-select>
+                </mat-form-field>
               </div>
 
               <div class="input-group full-width">
-                <label>Alérgenos / Restricciones</label>
-                <mat-select formControlName="allergens" multiple placeholder="Selecciona">
-                  <mat-option value="GLUTEN">Gluten</mat-option>
-                  <mat-option value="LACTOSE">Lactosa</mat-option>
-                  <mat-option value="VEGAN">Vegana</mat-option>
-                </mat-select>
+                <label>Alérgenos / Restricciones Alimenticias</label>
+                <mat-form-field appearance="fill">
+                  <mat-select formControlName="allergens" multiple placeholder="Selecciona">
+                    <mat-option value="huevos">Huevos</mat-option>
+                    <mat-option value="gluten">Gluten</mat-option>
+                    <mat-option value="lacteos">Lácteos</mat-option>
+                    <mat-option value="crustaceos">Crustáceos</mat-option>
+                    <mat-option value="pescado">Pescado</mat-option>
+                    <mat-option value="frutos_secos">Frutos Secos</mat-option>
+                    <mat-option value="cacahuete">Cacahuete</mat-option>
+                    <mat-option value="soja">Soja</mat-option>
+                    <mat-option value="sesamo">Sésamo</mat-option>
+                  </mat-select>
+                </mat-form-field>
               </div>
+
+              <div class="input-group full-width">
+                <label>Grupos Musculares de Interés</label>
+                <mat-form-field appearance="fill">
+                  <mat-select formControlName="muscleGroups" multiple placeholder="Selecciona los músculos">
+                    <mat-option value="Piernas">Piernas</mat-option>
+                    <mat-option value="Cuadriceps">Cuádriceps</mat-option>
+                    <mat-option value="Gemelos">Gemelos</mat-option>
+                    <mat-option value="Espalda">Espalda</mat-option>
+                    <mat-option value="Dorsales">Dorsales</mat-option>
+                    <mat-option value="Pecho">Pecho</mat-option>
+                    <mat-option value="Pectorales">Pectorales</mat-option>
+                    <mat-option value="Gluteos">Glúteos</mat-option>
+                    <mat-option value="Abdominales">Abdominales</mat-option>
+                    <mat-option value="Cardio">Cardio</mat-option>
+                    <mat-option value="Hombros">Hombros</mat-option>
+                    <mat-option value="Espalda_alta">Espalda alta</mat-option>
+                    <mat-option value="Biceps">Bíceps</mat-option>
+                    <mat-option value="Brazos">Brazos</mat-option>
+                    <mat-option value="Triceps">Tríceps</mat-option>
+                    <mat-option value="Aductores">Aductores</mat-option>
+                    <mat-option value="Deltoides">Deltoides</mat-option>
+                    <mat-option value="Core">Core</mat-option>
+                    <mat-option value="Isquiotibiales">Isquiotibiales</mat-option>
+                    <mat-option value="Columna">Columna</mat-option>
+                    <mat-option value="Cuello">Cuello</mat-option>
+                    <mat-option value="Antebrazos">Antebrazos</mat-option>
+                    <mat-option value="Trapecios">Trapecios</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
             </div>
+
           </form>
         </div>
       </mat-tab>
-
     </mat-tab-group>
-
     <div class="form-footer">
-      <button mat-flat-button class="btn-save">Guardar</button>
+      <button mat-flat-button class="btn-save" (click)="saveProfile()">
+        Save Change
+      </button>
     </div>
 
   </div>

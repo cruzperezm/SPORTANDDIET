@@ -16,6 +16,7 @@ export class HeaderComponent {
   private router = inject(Router);
 
   isLoggedIn$ = this.authService.isLoggedIn$;
+  userProfile$ = this.authService.userProfile$;
 
   goToDashboard() {
     this.router.navigate(['/dashboard/dieta']);
