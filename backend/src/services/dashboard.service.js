@@ -1,5 +1,6 @@
 const prisma = require("../config/prisma");
 
+// --- FUNCIONES AUXILIARES GLOBALES ---
 const isToday = (date) => {
   if (!date) return false;
   const today = new Date();
@@ -10,6 +11,9 @@ const isToday = (date) => {
 
 const parseMacro = (str) => parseInt(str?.replace(/\D/g, '')) || 0;
 
+// ==========================================
+// 🍏 ALGORITMO DE DIETA (Ya funcionando)
+// ==========================================
 const generateDailyDiet = (target, favorites, allRecipes) => {
   if (!allRecipes || allRecipes.length === 0) return [];
 
@@ -62,28 +66,75 @@ const generateDailyDiet = (target, favorites, allRecipes) => {
   return bestCombo;
 };
 
-const generateDailySport = (favorites, allExercises) => {
+// ==========================================
+// 🏋️‍♂️ ALGORITMO DE DEPORTE (Nuevo y Adaptativo)
+// ==========================================
+const generateDailySport = (targetLevel, favorites, allExercises) => {
   if (!allExercises || allExercises.length === 0) return [];
-  const pool = favorites.length >= 5 ? favorites : allExercises;
-  const combo = new Set();
-  let attempts = 0;
-  const targetSize = Math.min(5, pool.length);
 
-  while (combo.size < targetSize && attempts < 50) {
-    combo.add(pool[Math.floor(Math.random() * pool.length)]);
-    attempts++;
+  // 1. Filtramos estrictamente el catálogo global según el nivel del usuario
+  let poolGlobal = allExercises.filter(e => e.level === targetLevel);
+
+  // 2. FALLBACK ESCALONADO: Si no hay 5 ejercicios de su nivel, bajamos de forma inteligente
+  if (poolGlobal.length < 5) {
+    if (targetLevel === 'AVANZADOS') {
+      // Si quiere avanzados pero no hay 5 en la BBDD, rellenamos con intermedios (NO con principiantes)
+      const intermedios = allExercises.filter(e => e.level === 'INTERMEDIO');
+      poolGlobal = [...poolGlobal, ...intermedios];
+    } else if (targetLevel === 'INTERMEDIO') {
+      // Si faltan intermedios, rellenamos con principiantes
+      const principiantes = allExercises.filter(e => e.level === 'PRINCIPIANTE');
+      poolGlobal = [...poolGlobal, ...principiantes];
+    }
+
+    // Si la base de datos es minúscula y aun así no llega a 5, juntamos todo
+    if (poolGlobal.length < 5) poolGlobal = allExercises;
   }
 
-  let finalPlan = Array.from(combo).filter(Boolean);
-  if (finalPlan.length === 0) finalPlan = allExercises.slice(0, 5);
-  return finalPlan;
+  // Juntamos los "Me gusta" (que siempre tienen prioridad)
+  const pool = favorites.length >= 5 ? favorites : [...favorites, ...poolGlobal];
+
+  let bestCombo = [];
+  let maxVariety = -1;
+  const targetSize = Math.min(5, pool.length);
+
+  // Generamos combinaciones buscando la mayor variedad muscular posible
+  for (let i = 0; i < 50; i++) {
+    const combo = new Set();
+    let attempts = 0;
+
+    while (combo.size < targetSize && attempts < 50) {
+      combo.add(pool[Math.floor(Math.random() * pool.length)]);
+      attempts++;
+    }
+
+    const currentCombo = Array.from(combo).filter(Boolean);
+    if (currentCombo.length < targetSize) continue;
+
+    const uniqueMuscles = new Set();
+    currentCombo.forEach(ex => {
+      if (ex.muscles && Array.isArray(ex.muscles)) {
+        ex.muscles.forEach(m => uniqueMuscles.add(m));
+      }
+    });
+
+    if (uniqueMuscles.size > maxVariety) {
+      maxVariety = uniqueMuscles.size;
+      bestCombo = currentCombo;
+    }
+  }
+
+  if (bestCombo.length === 0) bestCombo = poolGlobal.slice(0, 5);
+  return bestCombo;
 };
 
+
+// ==========================================
+// 🚀 CLASE PRINCIPAL DEL SERVICIO
+// ==========================================
 class DashboardService {
 
   static async getDietaDashboard(userId) {
-    console.log(`\n=== INICIANDO DASHBOARD DIETA PARA USUARIO: ${userId} ===`);
-
     const dashboardDiet = await prisma.dashboardDiet.findUnique({
       where: { userId: parseInt(userId) },
       include: { User: true, recetas: true, DailyRecipes: { include: { Recipe: true } } }
@@ -94,17 +145,8 @@ class DashboardService {
     let dailyPlan = dashboardDiet.DailyRecipes;
 
     if (!dailyPlan || !isToday(dailyPlan.date)) {
-      console.log("-> Generando nuevo plan de dieta...");
-
       const allRecipes = await prisma.recipe.findMany();
-      console.log(`-> Recetas encontradas en la BBDD global: ${allRecipes.length}`);
-
-      if (allRecipes.length === 0) {
-        console.log("¡ALERTA ROJA! La base de datos devolvió 0 recetas. Revisa tu archivo .env");
-      }
-
       const newPlan = generateDailyDiet(dashboardDiet, dashboardDiet.recetas, allRecipes);
-      console.log(`-> El algoritmo seleccionó ${newPlan.length} recetas:`, newPlan.map(r => r.name));
 
       dailyPlan = await prisma.dailyRecipes.upsert({
         where: { dashboardDietId: dashboardDiet.id },
@@ -119,13 +161,8 @@ class DashboardService {
         },
         include: { Recipe: true }
       });
-
-      console.log(`-> Guardado en BBDD exitoso. Recetas enlazadas: ${dailyPlan.Recipe.length}`);
-    } else {
-      console.log("-> El plan de hoy ya existía, cargando desde BBDD.");
     }
 
-    // Devolvemos el objeto limpio, sin macros1 ni macros2
     return {
       usuario: { id: userId, nombre: dashboardDiet.User?.username || "Usuario" },
       dieta: {
@@ -135,7 +172,7 @@ class DashboardService {
         fats: dashboardDiet.fats,
         carbs: dashboardDiet.carbs,
         water: dashboardDiet.water,
-        recetas: dailyPlan.Recipe // Estas son las 5 recetas calculadas de hoy
+        recetas: dailyPlan.Recipe
       }
     };
   }
@@ -145,7 +182,11 @@ class DashboardService {
 
     const dashboardSport = await prisma.dashboardSport.findUnique({
       where: { userId: parseInt(userId) },
-      include: { User: true, Exercise: true, DailyExercises: { include: { Exercise: true } } }
+      include: {
+        User: { include: { biometrics: true } },
+        Exercise: true,
+        DailyExercises: { include: { Exercise: true } }
+      }
     });
 
     if (!dashboardSport) throw new Error("Dashboard de deporte no encontrado");
@@ -154,10 +195,31 @@ class DashboardService {
 
     if (!dailyPlan || !isToday(dailyPlan.date)) {
       const allExercises = await prisma.exercise.findMany();
-      console.log(`-> Ejercicios encontrados en la BBDD global: ${allExercises.length}`);
 
-      const newPlan = generateDailySport(dashboardSport.Exercise, allExercises);
-      console.log(`-> El algoritmo seleccionó ${newPlan.length} ejercicios.`);
+      // 1. Lectura de las intenciones reales del usuario (Actividad y Objetivo)
+      const activity = dashboardSport.User?.biometrics?.activity?.toLowerCase() || '';
+      const goal = dashboardSport.User?.biometrics?.goal?.toLowerCase() || '';
+
+      console.log(`-> Análisis de usuario | Actividad: [${activity}] | Objetivo: [${goal}]`);
+
+      let targetLevel = 'PRINCIPIANTE';
+
+      // Asignación base por actividad diaria
+      if (activity.includes('moderado') || activity.includes('ligero')) targetLevel = 'INTERMEDIO';
+      if (activity.includes('activo') || activity.includes('fuerte') || activity.includes('diari')) targetLevel = 'AVANZADOS';
+
+      // 2. POTENCIADOR DE OBJETIVO: Si el usuario busca hipertrofia o peso, subimos la exigencia
+      if (goal.includes('volumen') || goal.includes('musculo') || goal.includes('peso') || goal.includes('fuerza') || goal.includes('subir')) {
+        if (targetLevel === 'PRINCIPIANTE') targetLevel = 'INTERMEDIO';
+        else if (targetLevel === 'INTERMEDIO') targetLevel = 'AVANZADOS';
+      }
+
+      console.log(`-> Nivel de entrenamiento asignado: ${targetLevel}`);
+
+      // 3. Calculamos el plan deportivo con la nueva lógica
+      const newPlan = generateDailySport(targetLevel, dashboardSport.Exercise, allExercises);
+
+      console.log(`-> Ejercicios guardados para hoy:`, newPlan.map(e => `${e.name} (${e.level})`));
 
       dailyPlan = await prisma.dailyExercises.upsert({
         where: { dashboardSportId: dashboardSport.id },
@@ -172,6 +234,8 @@ class DashboardService {
         },
         include: { Exercise: true }
       });
+    } else {
+      console.log(`-> El plan deportivo ya existía, cargando desde BBDD.`);
     }
 
     return {

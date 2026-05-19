@@ -35,4 +35,14 @@ export class DashboardService {
       { headers },
     );
   }
+
+  addFavoriteExercise(exerciseId: number): Observable<any> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.post(
+      'http://localhost:3000/api/dashboard/deporte/favorito',
+      { exerciseId },
+      { headers },
+    );
+  }
 }
