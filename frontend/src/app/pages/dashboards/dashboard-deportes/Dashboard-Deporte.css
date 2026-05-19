@@ -38,7 +38,7 @@ h1 {
 .main-content-left,
 .main-content-right {
   min-height: 400px;
-  padding: 20px;
+  padding: 30px;
   width: 100%;
   border-radius: 25px;
   box-shadow: var(--sombra-suave);
@@ -88,9 +88,6 @@ h1 {
   gap: 20px;
 }
 
-
-
-
 .rectangle-toggle {
   background-color: #f97316;
   display: flex;
@@ -107,8 +104,9 @@ h1 {
   from { transform:translateX(0);}
   to { transform:translateX(48px);}
 }
-.ellipse-toggle:active {
-  animation: toggle-animation 0.3s ease-in forwards;
+
+.ellipse-toggle:active{
+  animation: toggle-animation 0.1s linear forwards;
 }
 
 .ellipse-toggle {
