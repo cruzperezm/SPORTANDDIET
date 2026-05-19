@@ -59,7 +59,7 @@ const addBio = async (genre, age, height, goal, activity, c_weight, d_weight, we
     }
   });
 
-  // 3. Crear los Dashboards directamente (Sin la tabla puente "Dashboard")
+  // 3. Crear los Dashboards
   const existingDiet = await prisma.dashboardDiet.findUnique({ where: { userId: parsedOwner } });
 
   if (!existingDiet) {

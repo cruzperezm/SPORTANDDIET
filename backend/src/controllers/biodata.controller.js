@@ -4,9 +4,6 @@ const saveBiodata = async (req, res) => {
     try {
         const ownerId = parseInt(req.body.id) || req.user?.id;
         if (!ownerId) return res.status(400).json({ message: "ID de usuario faltante." });
-
-        // En lugar de repetir toda la lógica de Prisma aquí,
-        // delegamos el trabajo al servicio que ya está corregido.
         const biometrics = await authService.addBio(
             req.body.gender,
             req.body.age,
@@ -18,7 +15,6 @@ const saveBiodata = async (req, res) => {
             req.body.nWeeks,
             ownerId
         );
-
         res.status(200).json(biometrics);
     } catch (error) {
         console.error("Error al guardar biometría:", error);

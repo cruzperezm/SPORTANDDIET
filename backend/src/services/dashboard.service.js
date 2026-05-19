@@ -1,6 +1,5 @@
 const prisma = require("../config/prisma");
 
-// --- FUNCIONES AUXILIARES GLOBALES ---
 const isToday = (date) => {
   if (!date) return false;
   const today = new Date();
@@ -11,9 +10,6 @@ const isToday = (date) => {
 
 const parseMacro = (str) => parseInt(str?.replace(/\D/g, '')) || 0;
 
-// ==========================================
-// 🍏 ALGORITMO DE DIETA (Ya funcionando)
-// ==========================================
 const generateDailyDiet = (target, favorites, allRecipes) => {
   if (!allRecipes || allRecipes.length === 0) return [];
 
@@ -66,39 +62,29 @@ const generateDailyDiet = (target, favorites, allRecipes) => {
   return bestCombo;
 };
 
-// ==========================================
-// 🏋️‍♂️ ALGORITMO DE DEPORTE (Nuevo y Adaptativo)
-// ==========================================
 const generateDailySport = (targetLevel, favorites, allExercises) => {
   if (!allExercises || allExercises.length === 0) return [];
 
-  // 1. Filtramos estrictamente el catálogo global según el nivel del usuario
   let poolGlobal = allExercises.filter(e => e.level === targetLevel);
 
-  // 2. FALLBACK ESCALONADO: Si no hay 5 ejercicios de su nivel, bajamos de forma inteligente
   if (poolGlobal.length < 5) {
     if (targetLevel === 'AVANZADOS') {
-      // Si quiere avanzados pero no hay 5 en la BBDD, rellenamos con intermedios (NO con principiantes)
       const intermedios = allExercises.filter(e => e.level === 'INTERMEDIO');
       poolGlobal = [...poolGlobal, ...intermedios];
     } else if (targetLevel === 'INTERMEDIO') {
-      // Si faltan intermedios, rellenamos con principiantes
       const principiantes = allExercises.filter(e => e.level === 'PRINCIPIANTE');
       poolGlobal = [...poolGlobal, ...principiantes];
     }
 
-    // Si la base de datos es minúscula y aun así no llega a 5, juntamos todo
     if (poolGlobal.length < 5) poolGlobal = allExercises;
   }
 
-  // Juntamos los "Me gusta" (que siempre tienen prioridad)
   const pool = favorites.length >= 5 ? favorites : [...favorites, ...poolGlobal];
 
   let bestCombo = [];
   let maxVariety = -1;
   const targetSize = Math.min(5, pool.length);
 
-  // Generamos combinaciones buscando la mayor variedad muscular posible
   for (let i = 0; i < 50; i++) {
     const combo = new Set();
     let attempts = 0;
@@ -128,10 +114,6 @@ const generateDailySport = (targetLevel, favorites, allExercises) => {
   return bestCombo;
 };
 
-
-// ==========================================
-// 🚀 CLASE PRINCIPAL DEL SERVICIO
-// ==========================================
 class DashboardService {
 
   static async getDietaDashboard(userId) {
@@ -178,8 +160,6 @@ class DashboardService {
   }
 
   static async getDeporteDashboard(userId) {
-    console.log(`\n=== INICIANDO DASHBOARD DEPORTE PARA USUARIO: ${userId} ===`);
-
     const dashboardSport = await prisma.dashboardSport.findUnique({
       where: { userId: parseInt(userId) },
       include: {
@@ -196,30 +176,20 @@ class DashboardService {
     if (!dailyPlan || !isToday(dailyPlan.date)) {
       const allExercises = await prisma.exercise.findMany();
 
-      // 1. Lectura de las intenciones reales del usuario (Actividad y Objetivo)
       const activity = dashboardSport.User?.biometrics?.activity?.toLowerCase() || '';
       const goal = dashboardSport.User?.biometrics?.goal?.toLowerCase() || '';
 
-      console.log(`-> Análisis de usuario | Actividad: [${activity}] | Objetivo: [${goal}]`);
-
       let targetLevel = 'PRINCIPIANTE';
 
-      // Asignación base por actividad diaria
       if (activity.includes('moderado') || activity.includes('ligero')) targetLevel = 'INTERMEDIO';
       if (activity.includes('activo') || activity.includes('fuerte') || activity.includes('diari')) targetLevel = 'AVANZADOS';
 
-      // 2. POTENCIADOR DE OBJETIVO: Si el usuario busca hipertrofia o peso, subimos la exigencia
       if (goal.includes('volumen') || goal.includes('musculo') || goal.includes('peso') || goal.includes('fuerza') || goal.includes('subir')) {
         if (targetLevel === 'PRINCIPIANTE') targetLevel = 'INTERMEDIO';
         else if (targetLevel === 'INTERMEDIO') targetLevel = 'AVANZADOS';
       }
 
-      console.log(`-> Nivel de entrenamiento asignado: ${targetLevel}`);
-
-      // 3. Calculamos el plan deportivo con la nueva lógica
       const newPlan = generateDailySport(targetLevel, dashboardSport.Exercise, allExercises);
-
-      console.log(`-> Ejercicios guardados para hoy:`, newPlan.map(e => `${e.name} (${e.level})`));
 
       dailyPlan = await prisma.dailyExercises.upsert({
         where: { dashboardSportId: dashboardSport.id },
@@ -234,8 +204,6 @@ class DashboardService {
         },
         include: { Exercise: true }
       });
-    } else {
-      console.log(`-> El plan deportivo ya existía, cargando desde BBDD.`);
     }
 
     return {

@@ -37,29 +37,23 @@ export class DashboardDietaComponent implements OnInit, OnDestroy {
   dietItems: DietItem[] = [];
 
   ngOnInit() {
-    // 💥 CONEXIÓN REAL AL BACKEND: Esto dispara el flujo de cálculo diario
+    // Cálculo diario
     this.subscription = this.dashboardService.getDietaDashboard().subscribe({
       next: (data: any) => {
         console.log('¡Datos recibidos del backend con éxito!', data);
         if (!data) return;
-
-        // 1. Mapeamos información general de cabecera y el gráfico circular
         this.userName = data.usuario?.nombre
           ? `Dashboard de ${data.usuario.nombre}`
           : 'Dashboard nutricional';
         this.caloriesGoal = data.dieta?.calorias_objetivo || 2000;
         this.caloriesAmount = data.dieta?.calorias_totales || 0;
         this.waterAmount = `${data.dieta?.water || 0} L`;
-        this.fiberAmount = '25 g'; // Meta de fibra estándar recomendada
-
-        // 2. Mapeamos los objetivos numéricos reales de la BBDD a tu bucle @for (macroList)
+        this.fiberAmount = '25 g';
         this.macroList = [
           { id: 1, label: 'Proteínas', amount: 0, total: data.dieta?.protein || 0 },
           { id: 2, label: 'Grasas', amount: 0, total: data.dieta?.fats || 0 },
           { id: 3, label: 'Carbohidratos', amount: 0, total: data.dieta?.carbs || 0 },
         ];
-
-        // 3. Mapeamos las 5 recetas calculadas para el día actual al bucle @for (dietItems)
         const recetasCalculadas = data.dieta?.recetas || [];
         this.dietItems = recetasCalculadas.map((r: any, index: number) => ({
           id: r.id || index,
@@ -81,7 +75,6 @@ export class DashboardDietaComponent implements OnInit, OnDestroy {
     this.router.navigate(['/dashboard/dieta']);
   }
 
-  // Lógica del botón "+" para guardar la sugerencia en tu lista global de "Me gusta"
   addToDashboard(recipeId: number) {
     this.dashboardService.addFavoriteRecipe(recipeId).subscribe({
       next: (res: any) => {

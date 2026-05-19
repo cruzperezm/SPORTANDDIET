@@ -1,9 +1,5 @@
 const DashboardService = require("../services/dashboard.service");
 
-/**
- * GET /api/dashboard/dieta
- * Retrieve diet dashboard data
- */
 exports.getDietaDashboard = async (req, res) => {
   try {
     const userId = req.user.userId;
@@ -16,10 +12,6 @@ exports.getDietaDashboard = async (req, res) => {
   }
 };
 
-/**
- * GET /api/dashboard/deporte
- * Retrieve sport dashboard data
- */
 exports.getDeporteDashboard = async (req, res) => {
   try {
     const userId = req.user.userId;
@@ -31,10 +23,6 @@ exports.getDeporteDashboard = async (req, res) => {
   }
 };
 
-/**
- * POST /api/dashboard/upsert
- * Create or update dashboard data
- */
 exports.upsertDashboard = async (req, res) => {
   try {
     const userId = req.user.userId;

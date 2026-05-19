@@ -31,14 +31,4 @@ app.use("/diets", dietRoutes);
 app.use("/exercisePlans", exercisePlanRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 
-app.use(function (err, req, res, next) {
-  // Log the error to your terminal so you can see it
-  console.error("Backend Error:", err.message);
-
-  res.status(err.status || 500).json({
-    message: err.message,
-    error: req.app.get("env") === "development" ? err : {},
-  });
-});
-
 module.exports = app;
