@@ -78,42 +78,36 @@ h1 {
   flex-direction: column;
 }
 
-@keyframes toggle-animation{
-  from { justify-content: end;}
-  to { justify-content: center;}
-}
-
 .rectangle-toggle {
+  background-color: #10b981;
   display: flex;
   flex-direction: row;
   justify-content: end;
   align-items: center;
   min-height: 50px;
   width: 100px;
-  background-color: #10b981;
   border-radius: 50px;
   cursor: pointer;
 }
-.rectangle-toggle:active {
-  animation: toggle-animation 0.3s forwards;
-}
 
+@keyframes toggle-animation{
+  from { transform:translateX(0);}
+  to { transform:translateX(-48px);}
+}
+.ellipse-toggle:active {
+  animation: toggle-animation 0.3s ease-in forwards;
+}
 .ellipse-toggle {
+  background-color: #a8f0d8;
   border-radius: 90px;
   height: 40px;
   width: 40px;
-  background-color: #a8f0d8;
   z-index: 10;
   margin-right: 5px;
   align-items: center;
   text-align: center;
   display: flex;
   justify-content: center;
-}
-
-.dieta-icon {
-  font-size: 20px;
-  color: #10b981;
 }
 
 .toggles {
@@ -143,10 +137,6 @@ h1 {
   margin: 1px 2px 2px;
 }
 
-.apple {
-  font-size: 20px;
-  color: #fff;
-}
 
 .diet-item {
   display: flex;
