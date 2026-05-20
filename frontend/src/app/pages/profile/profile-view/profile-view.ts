@@ -1,6 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
+import {
+  ReactiveFormsModule,
+  FormBuilder,
+  FormGroup,
+  Validators,
+  AbstractControl,
+  ValidationErrors,
+} from '@angular/forms';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -46,7 +53,12 @@ export class ProfileViewComponent implements OnInit {
   public photoPreview: string | ArrayBuffer | null = null;
   public selectedImageFile: File | null = null;
 
-  constructor(private fb: FormBuilder, private profileService: ProfileService, private cdr: ChangeDetectorRef, private authService: AuthService) {
+  constructor(
+    private fb: FormBuilder,
+    private profileService: ProfileService,
+    private cdr: ChangeDetectorRef,
+    private authService: AuthService,
+  ) {
     this.initForms();
   }
 
@@ -67,13 +79,13 @@ export class ProfileViewComponent implements OnInit {
           username: data.username,
           email: data.email,
           confirmEmail: data.email,
-          pronouns: data.pronouns
+          pronouns: data.pronouns,
         });
 
         this.preferencesForm.patchValue({
           activityLevel: data.biometrics?.activity || 'MODERATE',
           allergens: data.allergies || [],
-          muscleGroups: data.muscleGroups || []
+          muscleGroups: data.muscleGroups || [],
         });
 
         if (data.biometrics) {
@@ -82,13 +94,13 @@ export class ProfileViewComponent implements OnInit {
             height: data.biometrics.height,
             weight: data.biometrics.c_weight,
             targetWeight: data.biometrics.d_weight,
-            trackingWeeks: data.biometrics.weeks
+            trackingWeeks: data.biometrics.weeks,
           });
         }
       },
       error: (err) => {
-        console.error("Error al cargar datos iniciales", err);
-      }
+        console.error('Error al cargar datos iniciales', err);
+      },
     });
   }
 
@@ -120,7 +132,7 @@ export class ProfileViewComponent implements OnInit {
       ...this.accountForm.value,
       ...this.biometricsForm.value,
       ...this.preferencesForm.value,
-      photoUrl: this.photoPreview || this.user.photoUrl
+      photoUrl: this.photoPreview || this.user.photoUrl,
     };
 
     delete profileData.confirmEmail;
@@ -155,7 +167,7 @@ export class ProfileViewComponent implements OnInit {
       height: [null, [Validators.required, Validators.min(100), Validators.max(250)]],
       weight: [null, [Validators.required, Validators.min(30), Validators.max(300)]],
       targetWeight: [null, [Validators.required, Validators.min(30), Validators.max(300)]],
-      trackingWeeks: [null, [Validators.required, Validators.min(1), Validators.max(52)]]
+      trackingWeeks: [null, [Validators.required, Validators.min(1), Validators.max(52)]],
     });
 
     this.preferencesForm = this.fb.group({
