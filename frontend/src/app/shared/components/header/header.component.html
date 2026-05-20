@@ -2,7 +2,7 @@
   <nav class="nav-container" role="navigation">
     <div class="logo-group">
       <a routerLink="" class="logo-link">
-        <img src="/shared/images/home.svg" alt="Home" class="logo-image" />
+        <img src="/assets/img/home-header-footer/home.svg" alt="Home" class="logo-image" />
       </a>
     </div>
 
@@ -17,7 +17,7 @@
       @if (isLoggedIn$ | async) {
         <div class="profile-menu-container">
           <img
-            [src]="(userProfile$ | async)?.photoUrl || '/shared/images/profile-icon.svg'"
+            src="/assets/img/home-header-footer/profile-icon.svg"
             class="profile-icon"
             (click)="goToDashboard()"
             alt="Profile Icon"
@@ -27,7 +27,6 @@
             <button class="profile-button" routerLink="/profile">Perfil</button>
             <button class="logout-button" (click)="onLogout()">Log Out</button>
           </div>
-
         </div>
       } @else {
         <a routerLink="/login" class="login-button">Iniciar Sesión</a>
