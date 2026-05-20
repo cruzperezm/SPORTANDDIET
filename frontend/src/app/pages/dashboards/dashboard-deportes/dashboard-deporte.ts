@@ -20,31 +20,6 @@ export class DashboardDeporteComponent implements OnInit {
 
   dashboardTitle = 'Dashboard de actividad';
 
-  /*Tareas pendientes:
-  - Si tenemos actividades (ya están creadas en la BD) se necesita un botón para
-  añadir una nueva actividad que muestre un formulario en overlay
-  - Si usamos las actividades y los ejercicios asignados en el día para calcular
-  el porcentaje hay que ver cómo se harían los cálculos
-  - Establecer un total de ejercicio (y la unidad de medida: tiempo, kcal quemadas),
-  probablemente a partir de los objetivos del usuario
-  */
-
-  // Activity Ring Data
-  dailyActivities = [
-    { text: 'Moverse', progress: '450 / 600 kcal' },
-    { text: 'Ejercicio', progress: '45 / 30 min' },
-    { text: 'De Pie', progress: '10 / 12 hr' },
-  ];
-
-  // Training List - Individual Variables
-  trainingSessions = [
-    { text: 'Carrera Matutina', amount: '5.2 km' },
-    { text: 'Entrenamiento Fuerza', amount: '45 min' },
-    { text: 'Sesión Yoga', amount: '20 min' },
-    { text: 'Ciclismo Urbano', amount: '12 km' },
-    { text: 'Estiramientos', amount: '10 min' },
-  ];
-
   loading = true;
   error = '';
 
