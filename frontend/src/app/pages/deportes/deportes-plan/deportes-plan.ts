@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { SportService } from '../../../services/deportes.service';
+import { AuthService } from '../../../services/auth.service';
 import { Observable, switchMap } from 'rxjs';
 
 @Component({
@@ -59,8 +60,24 @@ export class DeportesPlanComponent implements OnInit {
     private deporteService: SportService,
     private location: Location,
     private cdr: ChangeDetectorRef,
+    private authService: AuthService
   ) {}
+
   ngOnInit() {
+    this.filtros$ = this.deporteService.filtrosActivos$;
+    this.deporteService.filtrosActivos$.subscribe((filters) => {
+      this.filtrosActivos = filters;
+      this.cdr.detectChanges();
+    });
+
+    this.authService.userProfile$.subscribe({
+      next: (profile) => {
+        if (profile && profile.muscleGroups) {
+          this.deporteService.setFiltros(profile.muscleGroups);
+        }
+      }
+    });
+
     this.route.paramMap.subscribe((params) => {
       this.idPlan = params.get('id');
 
@@ -76,8 +93,6 @@ export class DeportesPlanComponent implements OnInit {
         this.cargarDatos(this.idPlan);
       }
     });
-    this.filtros$ = this.deporteService.filtrosActivos$;
-    this.filtrosActivos = this.deporteService.getFiltrosActuales();
   }
 
   cargarDatos(id: string) {
@@ -105,11 +120,14 @@ export class DeportesPlanComponent implements OnInit {
   }
 
   toggleFiltro(tipo: string) {
-    if (tipo === 'todos') this.filtrosActivos = [];
-    else {
-      this.filtrosActivos.includes(tipo)
-        ? (this.filtrosActivos = this.filtrosActivos.filter((f) => f !== tipo))
-        : this.filtrosActivos.push(tipo);
+    if (tipo === 'todos') {
+      this.filtrosActivos = [];
+    } else {
+      if (this.filtrosActivos.includes(tipo)) {
+        this.filtrosActivos = this.filtrosActivos.filter((f) => f !== tipo);
+      } else {
+        this.filtrosActivos.push(tipo);
+      }
     }
     this.deporteService.setFiltros(this.filtrosActivos);
   }

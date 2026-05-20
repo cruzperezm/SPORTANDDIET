@@ -7,17 +7,30 @@ export class AuthService {
   private apiUrl = 'http://localhost:3000/api/auth';
 
   private loggedIn = new BehaviorSubject<boolean>(this.hasToken());
-
   isLoggedIn$ = this.loggedIn.asObservable();
 
+  private userProfileSubject = new BehaviorSubject<any>(null);
+  public userProfile$ = this.userProfileSubject.asObservable();
+
   constructor(private http: HttpClient) {}
+
+  public setUserProfile(profile: any) {
+    this.userProfileSubject.next(profile);
+  }
 
   private hasToken(): boolean {
     return !!localStorage.getItem('token');
   }
 
   register(user: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/register`, user);
+    return this.http.post<any>(`${this.apiUrl}/register`, user).pipe(
+      tap((res) => {
+        if (res && res.token) {
+          localStorage.setItem('token', res.token);
+          this.loggedIn.next(true);
+        }
+      }),
+    );
   }
 
   bio(form: any): Observable<any> {
@@ -26,30 +39,25 @@ export class AuthService {
 
   login(credentials: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/login`, credentials).pipe(
-      tap(res => {
+      tap((res) => {
         localStorage.setItem('token', res.token);
         this.loggedIn.next(true);
-      })
+      }),
     );
   }
 
-  // NUEVO MÉTODO AÑADIDO
   googleAuth(idToken: string): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/google`, { idToken }).pipe(
-      tap(res => {
-        // Guardamos el token y actualizamos el estado, igual que en el login normal
+      tap((res) => {
         localStorage.setItem('token', res.token);
         this.loggedIn.next(true);
-      })
+      }),
     );
-  }
-
-  getToken() {
-    return localStorage.getItem('token');
   }
 
   logout() {
     localStorage.removeItem('token');
     this.loggedIn.next(false);
+    this.userProfileSubject.next(null);
   }
 }

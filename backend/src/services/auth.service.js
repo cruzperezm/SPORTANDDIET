@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const prisma = require("../config/prisma");
+const { calculateNutrition } = require("../utils/nutrition.js");
 
 const { OAuth2Client } = require("google-auth-library");
 
@@ -26,30 +27,65 @@ const register = async (email, password, username) => {
   });
 };
 
-const addBio = async (
-  genre,
-  age,
-  height,
-  goal,
-  activity,
-  c_weight,
-  d_weight,
-  weeks,
-  owner,
-) => {
-  return await prisma.biometrics.create({
-    data: {
-      genre,
-      age,
-      height,
-      goal,
-      activity,
-      c_weight,
-      d_weight,
-      weeks,
-      ownerId: owner,
-    },
+const addBio = async (genre, age, height, goal, activity, c_weight, d_weight, weeks, owner) => {
+  const parsedOwner = parseInt(owner);
+
+  // 1. Calcular métricas
+  const calculatedMetrics = calculateNutrition({
+    peso: parseFloat(c_weight),
+    altura: parseInt(height),
+    edad: parseInt(age),
+    sexo: (genre?.toLowerCase() === 'f' || genre?.toLowerCase() === 'mujer') ? 'F' : 'M',
+    act: activity
   });
+
+  // 2. Guardar Biometría usando Upsert
+  const biometrics = await prisma.biometrics.upsert({
+    where: { ownerId: parsedOwner },
+    update: {
+      genre, age: parseInt(age), height: parseInt(height), goal, activity,
+      c_weight: Math.round(parseFloat(c_weight)),
+      d_weight: Math.round(parseFloat(d_weight)),
+      weeks: parseInt(weeks),
+      ...calculatedMetrics
+    },
+    create: {
+      genre, age: parseInt(age), height: parseInt(height), goal, activity,
+      c_weight: Math.round(parseFloat(c_weight)),
+      d_weight: Math.round(parseFloat(d_weight)),
+      weeks: parseInt(weeks),
+      ownerId: parsedOwner,
+      ...calculatedMetrics
+    }
+  });
+
+  // 3. Crear los Dashboards
+  const existingDiet = await prisma.dashboardDiet.findUnique({ where: { userId: parsedOwner } });
+
+  if (!existingDiet) {
+    await prisma.dashboardDiet.create({
+      data: {
+        userId: parsedOwner,
+        calories_total: 0,
+        calories_goal: calculatedMetrics.kcalObjetivo || 2000,
+        protein: calculatedMetrics.macroProteinas || 150,
+        fats: calculatedMetrics.macroGrasas || 60,
+        carbs: calculatedMetrics.macroCarbs || 200,
+        water: 0
+      }
+    });
+
+    await prisma.dashboardSport.create({
+      data: {
+        userId: parsedOwner,
+        week: [],
+        calories: 0,
+        time: 0
+      }
+    });
+  }
+
+  return biometrics;
 };
 
 const login = async (email, password) => {
@@ -63,8 +99,13 @@ const login = async (email, password) => {
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) throw new AuthError("The password is incorrect");
 
+<<<<<<< HEAD
   const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
     expiresIn: "4Weeks",
+=======
+  const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET || "secreto_de_emergencia_123", {
+    expiresIn: "1h",
+>>>>>>> 76a3e2173581a63f40ed1b070491d8001722ddb3
   });
 
   const needsOnboarding = !user.biometrics;
@@ -103,7 +144,7 @@ const googleAuth = async (idToken) => {
       });
     }
 
-    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET || "secreto_de_emergencia_123", {
       expiresIn: "1h",
     });
 

@@ -1,5 +1,5 @@
-import { Injectable, inject } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 interface Exercise {
   name: string;
@@ -40,18 +40,43 @@ export interface DietData {
   providedIn: 'root',
 })
 export class DashboardService {
-  private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:3000';
+  constructor(private http: HttpClient) {}
 
   getDietaDashboard(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/dashboard/dieta`);
+    // 1. Recuperamos el token donde lo guardes al hacer login (suele ser en localStorage)
+    const token = localStorage.getItem('token'); // <-- Ajusta esto si tu variable se llama diferente
+
+    // 2. Creamos las cabeceras con el token
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    // 3. Hacemos la petición enviando las cabeceras
+    return this.http.get('http://localhost:3000/api/dashboard/dieta', { headers });
   }
 
   getDeporteDashboard(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/dashboard/deporte`);
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get('http://localhost:3000/api/dashboard/deporte', { headers });
   }
 
-  upsertDashboard(dashboardData: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/dashboard/upsert`, dashboardData);
+  // Y asegúrate de hacer lo mismo para los métodos de "Añadir a Favoritos"
+  addFavoriteRecipe(recipeId: number): Observable<any> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.post(
+      'http://localhost:3000/api/dashboard/dieta/favorito',
+      { recipeId },
+      { headers },
+    );
+  }
+
+  addFavoriteExercise(exerciseId: number): Observable<any> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.post(
+      'http://localhost:3000/api/dashboard/deporte/favorito',
+      { exerciseId },
+      { headers },
+    );
   }
 }

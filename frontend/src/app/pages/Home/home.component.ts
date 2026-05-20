@@ -14,8 +14,8 @@ export class HomeComponent implements AfterViewInit {
 
   // Añade aquí todos los videos que quieras reproducir en orden
   videos: string[] = [
-    '/shared/videos/video-title-1.mp4',
-    '/shared/videos/video-title-2.mp4' // <- Cambia esto por la ruta real de tu segundo video
+    '/assets/videos/video-title-1.mp4',
+    '/assets/videos/video-title-2.mp4'
   ];
 
   currentVideoIndex: number = 0;

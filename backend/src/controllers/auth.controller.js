@@ -1,20 +1,30 @@
 const authService = require("../services/auth.service");
+const jwt = require("jsonwebtoken");
 
 const registerUser = async (req, res) => {
   try {
     const { email, username, password } = req.body;
-    console.log("Request received (register)");
 
     if (!email || !password) {
       return res.status(400).json({ error: "Email and password are required" });
     }
 
     const registeredUser = await authService.register(
-      email,
-      password,
-      username,
+        email,
+        password,
+        username,
     );
-    res.status(201).json(registeredUser);
+
+    const token = jwt.sign({ userId: registeredUser.id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    res.status(201).json({
+      user: registeredUser,
+      token: token,
+      needsOnboarding: true
+    });
+
   } catch (error) {
     console.error("PRISMA ERROR:", error);
     res.status(400).json({ error: error.message });
@@ -24,8 +34,6 @@ const registerUser = async (req, res) => {
 const userBioData = async (req, res) => {
   try {
     const { gender, age, height, goal, act, cKg, dKg, nWeeks, id } = req.body;
-    console.log("Request received (bio)");
-
     if (
       !gender ||
       !age ||
@@ -39,7 +47,6 @@ const userBioData = async (req, res) => {
     ) {
       return res.status(400).json({ error: "Biodata is required!" });
     }
-
     const bioData = await authService.addBio(
       gender,
       age,
@@ -61,8 +68,6 @@ const userBioData = async (req, res) => {
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    console.log("Request received (login)");
-
     const loggedUser = await authService.login(email, password);
     res.status(201).json(loggedUser);
   } catch (error) {
@@ -78,8 +83,6 @@ const login = async (req, res) => {
 const googleLogin = async (req, res) => {
   try {
     const { idToken } = req.body;
-    console.log("Request received (Google Auth)");
-
     if (!idToken) {
       return res
         .status(400)

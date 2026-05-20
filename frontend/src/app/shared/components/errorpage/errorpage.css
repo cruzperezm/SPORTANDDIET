@@ -1,0 +1,30 @@
+* {
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  height: 100%;
+  font-family: 'Inter', sans-serif;
+  color: #1A1A1A;
+  background-color: #F5F5F7;
+}
+
+p {
+  font-size: 1.2rem;
+  line-height: 1.7;
+  color: #555555;
+}
+
+h1 {
+  color: #1A1A1A;
+  font-weight: 600;
+}
+#error-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+}

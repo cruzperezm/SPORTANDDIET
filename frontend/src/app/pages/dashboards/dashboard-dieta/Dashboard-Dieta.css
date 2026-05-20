@@ -121,7 +121,7 @@ h1 {
   text-wrap: pretty;
 }
 
-.plus-sign {
+.diet-img {
   min-height: 20px;
   width: 10%;
   display: flex;
@@ -129,7 +129,7 @@ h1 {
   align-items: center;
 }
 
-.plus-sign img {
+.diet-img img {
   width: 30px;
   height: 30px;
   cursor: pointer;

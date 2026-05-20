@@ -29,22 +29,6 @@ export class DashboardDeporteComponent implements OnInit {
   probablemente a partir de los objetivos del usuario
   */
 
-  // Activity Ring Data
-  dailyActivities = [
-    { text: 'Moverse', progress: '450 / 600 kcal' },
-    { text: 'Ejercicio', progress: '45 / 30 min' },
-    { text: 'De Pie', progress: '10 / 12 hr' },
-  ];
-
-  // Training List - Individual Variables
-  trainingSessions = [
-    { text: 'Carrera Matutina', amount: '5.2 km' },
-    { text: 'Entrenamiento Fuerza', amount: '45 min' },
-    { text: 'Sesión Yoga', amount: '20 min' },
-    { text: 'Ciclismo Urbano', amount: '12 km' },
-    { text: 'Estiramientos', amount: '10 min' },
-  ];
-
   loading = true;
   error = '';
 
@@ -65,11 +49,17 @@ export class DashboardDeporteComponent implements OnInit {
   }
 
   toggleToDieta() {
-    this.router.navigate(['/dashboard/dieta']);
+    this.router.navigate(['/dieta']);
   }
 
-  goToDeporte() {
-    this.router.navigate(['/deportes']);
+  // Enlazamos el botón "+" a los "Me Gusta"
+  addToDashboard(exerciseId: number) {
+    this.dashboardService.addFavoriteExercise(exerciseId).subscribe({
+      next: (res: any) => {
+        console.log('Ejercicio añadido a tus favoritos globales', res);
+      },
+      error: (err) => console.error('Error al añadir a favoritos', err),
+    });
   }
 
   verPlanCompleto() {

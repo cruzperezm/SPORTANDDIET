@@ -6,6 +6,7 @@ var dietRoutes = require("./routes/diet.routes");
 var exercisePlanRoutes = require("./routes/sport.routes");
 var dashboardRoutes = require("./routes/dashboard.routes");
 var planRoutes = require("./routes/plan.routes");
+var profileRoutes = require("./routes/profile.routes");
 
 var app = express();
 const PORT = 3000;
@@ -21,16 +22,19 @@ app.listen(PORT, (error) => {
 });
 
 app.use(cors());
-app.use(express.json());
+// NUEVO
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ limit: "50mb", extended: true }));
+
 app.use("/api/auth", authRoutes);
 app.use("/search", searchRoutes);
 app.use("/diets", dietRoutes);
 app.use("/exercisePlans", exercisePlanRoutes);
 app.use("/dashboard", dashboardRoutes);
 app.use("/userPlan", planRoutes);
+app.use("/api", profileRoutes);
 
 app.use(function (err, req, res, next) {
-  // Log the error to your terminal so you can see it
   console.error("Backend Error:", err.message);
 
   res.status(err.status || 500).json({

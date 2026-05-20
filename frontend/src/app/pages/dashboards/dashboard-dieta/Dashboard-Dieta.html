@@ -53,8 +53,8 @@
       <div class="main-content-right">
         @for (item of dietaData.recipes; track item.name) {
           <div class="diet-item">
-            <div class="plus-sign" (click)="goToDietas()">
-              <img src="shared/images/plus-dietas.png" alt="" />
+            <div class="diet-img">
+              <img [src]="item.image" alt="" />
             </div>
             <div class="diet-title">
               <span>{{ item.name }}</span>

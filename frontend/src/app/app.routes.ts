@@ -13,6 +13,7 @@ import { DeportesPlanComponent } from './pages/deportes/deportes-plan/deportes-p
 import { DeportesDetalleComponent } from './pages/deportes/deportes-detalle/deportes-detalle';
 import { PersonalPlanDeporte } from './pages/personal-plan-deporte/personal-plan-deporte';
 import { PersonalPlanDieta } from './pages/personal-plan-dieta/personal-plan-dieta';
+import { ProfileViewComponent } from './pages/profile/profile-view/profile-view';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent, title: 'SPORTS&DIET · Home' },
@@ -50,4 +51,5 @@ export const routes: Routes = [
     component: PersonalPlanDieta,
     title: 'SPORTS&DIET · Plan Personal - Recetas',
   },
+  { path: 'profile', component: ProfileViewComponent, title: 'SPORTS&DIET · Perfil' },
 ];
