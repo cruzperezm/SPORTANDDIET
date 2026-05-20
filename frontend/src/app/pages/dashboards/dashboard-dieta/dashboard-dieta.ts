@@ -1,5 +1,5 @@
 import { Component, OnInit, inject, OnDestroy, ChangeDetectorRef } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { DashboardService } from '../../../services/dashboard.service';
 import { DietData } from '../../../services/dashboard.service';
 
@@ -13,8 +13,10 @@ interface MacroItem {
   selector: 'app-dashboard-dieta',
   templateUrl: './Dashboard-Dieta.html',
   styleUrls: ['./Dashboard-Dieta.css'],
+  imports: [RouterModule],
 })
 export class DashboardDietaComponent implements OnInit {
+  readonly MOMENTOS = ['Desayuno', 'Almuerzo', 'Cena'] as const;
   private router = inject(Router);
   private dashboardService = inject(DashboardService);
   private cdr = inject(ChangeDetectorRef);
@@ -58,10 +60,6 @@ export class DashboardDietaComponent implements OnInit {
 
   toggleToDeporte() {
     this.router.navigate(['/dashboard/deporte']);
-  }
-
-  toggleToDieta() {
-    this.router.navigate(['/dashboard/dieta']);
   }
 
   verPlanCompleto() {

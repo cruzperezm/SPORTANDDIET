@@ -1,15 +1,23 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-interface Exercise {
+export interface Exercise {
+  id: number;
   name: string;
   image: string;
   duration: number;
+  level: string;
 }
 
 interface Day {
   dia: string;
   valor: number;
+}
+
+interface SportDailyPlan {
+  id: number;
+  date: Date;
+  exercises: Exercise[];
 }
 export interface SportData {
   userId: number;
@@ -17,15 +25,22 @@ export interface SportData {
   updatedAt: Date;
   calories: number;
   time: number;
-  exercises: Exercise[];
+  dailyPlan: SportDailyPlan;
 }
 
-interface Recipe {
+export interface Recipe {
+  id: string;
   name: string;
   image: string;
   calories: number;
+  moment: string;
 }
 
+interface DietDailyPlan {
+  id: number;
+  date: Date;
+  recipes: Recipe[];
+}
 export interface DietData {
   calories_total: number;
   calories_goal: number;
@@ -34,7 +49,7 @@ export interface DietData {
   carbs: number;
   water: number;
   updatedAt: Date;
-  recipes: Array<Recipe>;
+  dailyPlan: DietDailyPlan;
 }
 @Injectable({
   providedIn: 'root',
@@ -42,41 +57,29 @@ export interface DietData {
 export class DashboardService {
   constructor(private http: HttpClient) {}
 
+  private apiUrl = 'http://localhost:3000';
+
   getDietaDashboard(): Observable<any> {
-    // 1. Recuperamos el token donde lo guardes al hacer login (suele ser en localStorage)
-    const token = localStorage.getItem('token'); // <-- Ajusta esto si tu variable se llama diferente
-
-    // 2. Creamos las cabeceras con el token
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-
-    // 3. Hacemos la petición enviando las cabeceras
-    return this.http.get('http://localhost:3000/api/dashboard/dieta', { headers });
+    return this.http.get(`${this.apiUrl}/dashboard/dieta`);
   }
 
   getDeporteDashboard(): Observable<any> {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.get('http://localhost:3000/api/dashboard/deporte', { headers });
+    return this.http.get(`${this.apiUrl}/dashboard/deporte`);
   }
 
-  // Y asegúrate de hacer lo mismo para los métodos de "Añadir a Favoritos"
+  upsertDashboard(dashboardData: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/dashboard/upsert`, dashboardData);
+  }
+
   addFavoriteRecipe(recipeId: number): Observable<any> {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.post(
-      'http://localhost:3000/api/dashboard/dieta/favorito',
-      { recipeId },
-      { headers },
-    );
+    let params = new HttpParams();
+    params = params.set('recipeId', recipeId);
+    return this.http.post(`${this.apiUrl}/dashboard/dieta/favorito`, { params });
   }
 
   addFavoriteExercise(exerciseId: number): Observable<any> {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.post(
-      'http://localhost:3000/api/dashboard/deporte/favorito',
-      { exerciseId },
-      { headers },
-    );
+    let params = new HttpParams();
+    params = params.set('exerciseId', exerciseId);
+    return this.http.post(`${this.apiUrl}/dashboard/deporte/favorito`, { params });
   }
 }

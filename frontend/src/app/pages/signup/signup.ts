@@ -63,10 +63,6 @@ export class Signup implements AfterViewInit {
           if (res.needsOnboarding) {
             const userId = res.user.id;
             console.log('El usuario necesita completar sus datos biométricos');
-<<<<<<< HEAD
-=======
-            const userId = res.user.id;
->>>>>>> 76a3e2173581a63f40ed1b070491d8001722ddb3
             this.router.navigate(['/bio'], {
               queryParams: { userId: userId },
             });

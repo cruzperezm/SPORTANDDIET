@@ -10,21 +10,24 @@ const registerUser = async (req, res) => {
     }
 
     const registeredUser = await authService.register(
-        email,
-        password,
-        username,
+      email,
+      password,
+      username,
     );
 
-    const token = jwt.sign({ userId: registeredUser.id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    const token = jwt.sign(
+      { userId: registeredUser.id },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "1Day",
+      },
+    );
 
     res.status(201).json({
       user: registeredUser,
       token: token,
-      needsOnboarding: true
+      needsOnboarding: true,
     });
-
   } catch (error) {
     console.error("PRISMA ERROR:", error);
     res.status(400).json({ error: error.message });

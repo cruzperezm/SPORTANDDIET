@@ -1,33 +1,36 @@
 import { Component, OnInit, inject, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { DashboardService, SportData } from '../../../services/dashboard.service';
+import { DashboardService, SportData, Exercise } from '../../../services/dashboard.service';
+
+interface DailyPlan {
+  Principiante: Exercise[];
+  Intermedio: Exercise[];
+  Avanzados: Exercise[];
+}
 
 @Component({
   selector: 'app-dashboard-deporte',
   templateUrl: './Dashboard-Deporte.html',
   styleUrls: ['./Dashboard-Deporte.css'],
-  imports: [FontAwesomeModule],
+  imports: [FontAwesomeModule, RouterModule],
 })
 export class DashboardDeporteComponent implements OnInit {
+  readonly NIVELES = ['Principiante', 'Intermedio', 'Avanzados'] as const;
   private http = inject(HttpClient);
   private router = inject(Router);
   private dashboardService = inject(DashboardService);
   private cdr = inject(ChangeDetectorRef);
 
   declare deporteData: SportData;
+  dailyPlanByLevel: DailyPlan = {
+    Principiante: [],
+    Intermedio: [],
+    Avanzados: [],
+  };
 
   dashboardTitle = 'Dashboard de actividad';
-
-  /*Tareas pendientes:
-  - Si tenemos actividades (ya están creadas en la BD) se necesita un botón para
-  añadir una nueva actividad que muestre un formulario en overlay
-  - Si usamos las actividades y los ejercicios asignados en el día para calcular
-  el porcentaje hay que ver cómo se harían los cálculos
-  - Establecer un total de ejercicio (y la unidad de medida: tiempo, kcal quemadas),
-  probablemente a partir de los objetivos del usuario
-  */
 
   loading = true;
   error = '';
@@ -36,6 +39,15 @@ export class DashboardDeporteComponent implements OnInit {
     this.dashboardService.getDeporteDashboard().subscribe({
       next: (data) => {
         this.deporteData = data;
+        console.log('Test', this.dailyPlanByLevel);
+        for (let level of this.NIVELES) {
+          for (let exercise of this.deporteData.dailyPlan.exercises) {
+            if (exercise.level === level.toUpperCase()) {
+              this.dailyPlanByLevel[level].push(exercise);
+            }
+          }
+        }
+
         this.cdr.detectChanges();
       },
       error: (err) => {
@@ -44,15 +56,10 @@ export class DashboardDeporteComponent implements OnInit {
     });
   }
 
-  private fetchDeporteData() {
-    return this.dashboardService.getDeporteDashboard();
-  }
-
   toggleToDieta() {
-    this.router.navigate(['/dieta']);
+    this.router.navigate(['/dashboard/dieta']);
   }
 
-  // Enlazamos el botón "+" a los "Me Gusta"
   addToDashboard(exerciseId: number) {
     this.dashboardService.addFavoriteExercise(exerciseId).subscribe({
       next: (res: any) => {

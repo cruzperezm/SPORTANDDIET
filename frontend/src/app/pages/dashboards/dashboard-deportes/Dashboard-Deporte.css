@@ -109,27 +109,47 @@ h1 {
   margin-left: 5px;
 }
 
+.training-list {
+  width: 95%;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.training-level {
+  font-size: 18px;
+  color: grey;
+  margin-bottom: 5px;
+}
+
 .training-item {
   display: flex;
   min-height: 45px;
+  width: 100%;
   flex-direction: row;
   gap: 10px;
-  margin: 20px 10px;
-  padding-bottom: 10px;
+  margin: 5px 10px;
   justify-content: space-around;
   align-items: center;
   border-radius: 12px;
   border-bottom: 1px solid #76878236;
+  transition: 0.3s;
+}
+
+.training-item:hover {
+  background-color: #f0c1a87c;
+  cursor: pointer;
 }
 
 .training-title {
   width: 50%;
   text-wrap: pretty;
+  padding: 15px 0;
 }
 
 .training-img {
-  min-height: 20px;
-  width: 10%;
+  min-height: 50px;
+  width: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -138,9 +158,14 @@ h1 {
 
 .training-img img {
   object-fit: cover;
-  width: 30px;
-  height: 30px;
+  width: 50px;
+  height: 50px;
   cursor: pointer;
+  border-radius: 12px;
+}
+
+.training-value {
+  color: #ea580c;
 }
 
 .graph-title {
@@ -232,6 +257,8 @@ h1 {
   color: grey;
   flex-grow: 1;
   padding-top: 40px;
+  display: flex;
+  justify-content: center;
 }
 
 .view-full-plan {

@@ -5,7 +5,6 @@
         {{ dashboardTitle }}
       </h1>
       <div class="main-content-left">
-        <h4 class="graph-title">Resumen semanal</h4>
         <div class="top-graph">
           @for (item of this.deporteData.week; track item.dia) {
             <div class="bar-element">
@@ -40,21 +39,29 @@
         <div class="ellipse-toggle"></div>
       </div>
       <div class="main-content-right">
-        @for (item of this.deporteData.exercises; track item) {
-          <div class="training-item">
-            <div class="training-img">
-              <img [src]="item.image" alt="" />
-            </div>
-            <div class="training-title">
-              <span>{{ item.name }}</span>
-            </div>
-            <div class="training-value">
-              <span>{{ item.duration }}</span>
-            </div>
-          </div>
-        } @empty {
-          <div class="empty">No hay datos disponibles</div>
-        }
+        <div class="training-list">
+          @for (level of this.NIVELES; track level) {
+            @if (dailyPlanByLevel[level].length != 0) {
+              <h4 class="training-level">{{ level }}</h4>
+              @for (item of this.dailyPlanByLevel[level]; track item) {
+                <div class="training-item" [routerLink]="['/deportes/guia', item.id]">
+                  <div class="training-img">
+                    <img [src]="item.image" alt="" />
+                  </div>
+                  <div class="training-title">
+                    <span>{{ item.name }}</span>
+                  </div>
+                  <div class="training-value">
+                    <span>{{ item.duration }} min</span>
+                  </div>
+                </div>
+              } @empty {
+                <div class="empty">No hay datos disponibles</div>
+              }
+            }
+          }
+        </div>
+
         <button (click)="verPlanCompleto()" class="view-full-plan">Ver todos tus ejercicios</button>
       </div>
     </section>
