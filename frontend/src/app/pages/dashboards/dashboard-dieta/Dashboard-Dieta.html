@@ -47,9 +47,17 @@
     </section>
 
     <section class="right-container">
-      <div class="rectangle-toggle" (click)="toggleToDeporte()">
-        <div class="ellipse-toggle"></div>
+      <div class="toggles">
+        <div class="rectangle-toggle" (click)="toggleToDeporte()">
+          <div class="ellipse-toggle">
+            <fa-icon [icon]="faApple" style="color: rgb(16 185 129)"></fa-icon>
+          </div>
+        </div>
+        <div class="dieta-toggle" (click)="goToDietas()">
+          <p class="add">Añadir</p>
+        </div>
       </div>
+
       <div class="main-content-right">
         <div class="diet-list">
           @for (moment of this.MOMENTOS; track moment) {
@@ -66,6 +74,15 @@
                   <div class="diet-value">
                     <span>{{ item.calories }} kcal</span>
                   </div>
+                  @if (inList(item.id)) {
+                    <div class="save-exercise" (click)="eliminar(item.id)">
+                      <fa-icon [icon]="faBookmark" style="color: #10b981" />
+                    </div>
+                  } @else {
+                    <div class="save-exercise" (click)="guardar(item)">
+                      <fa-icon [icon]="faBookmark" style="color: #a8f0d8" />
+                    </div>
+                  }
                 </div>
               }
             } @empty {

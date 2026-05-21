@@ -35,8 +35,15 @@
       </div>
     </section>
     <section class="right-container">
-      <div class="rectangle-toggle" (click)="toggleToDieta()">
-        <div class="ellipse-toggle"></div>
+      <div class="toggles">
+        <div class="rectangle-toggle" (click)="toggleToDieta()">
+          <div class="ellipse-toggle">
+            <fa-icon [icon]="faRunning" style="color: rgb(249 115 22)"></fa-icon>
+          </div>
+        </div>
+        <div class="deporte-toggle" (click)="goToDeporte()">
+          <p class="add">Añadir</p>
+        </div>
       </div>
       <div class="main-content-right">
         <div class="training-list">
@@ -44,8 +51,8 @@
             @if (dailyPlanByLevel[level].length != 0) {
               <h4 class="training-level">{{ level }}</h4>
               @for (item of this.dailyPlanByLevel[level]; track item) {
-                <div class="training-item" [routerLink]="['/deportes/guia', item.id]">
-                  <div class="training-img">
+                <div class="training-item">
+                  <div class="training-img" [routerLink]="['/deportes/guia', item.id]">
                     <img [src]="item.image" alt="" />
                   </div>
                   <div class="training-title">
@@ -54,6 +61,15 @@
                   <div class="training-value">
                     <span>{{ item.duration }} min</span>
                   </div>
+                  @if (inList(item.id)) {
+                    <div class="save-exercise" (click)="eliminar(item.id)">
+                      <fa-icon [icon]="faBookmark" style="color: #f97316" />
+                    </div>
+                  } @else {
+                    <div class="save-exercise" (click)="guardar(item)">
+                      <fa-icon [icon]="faBookmark" style="color: #f0c1a8" />
+                    </div>
+                  }
                 </div>
               } @empty {
                 <div class="empty">No hay datos disponibles</div>

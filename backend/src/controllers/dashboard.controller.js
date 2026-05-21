@@ -42,7 +42,8 @@ exports.upsertDashboard = async (req, res) => {
 exports.addFavoriteRecipe = async (req, res) => {
   try {
     const userId = req.user.userId;
-    const recipeId = req.query.recipeId;
+    const recipeId = req.body.recipeId;
+    console.log("RecipeId", recipeId);
 
     if (!recipeId)
       return res.status(400).json({ error: "Falta el ID de la receta" });
@@ -57,7 +58,7 @@ exports.addFavoriteRecipe = async (req, res) => {
 exports.addFavoriteExercise = async (req, res) => {
   try {
     const userId = req.user.userId;
-    const exerciseId = req.query.exerciseId;
+    const exerciseId = req.body.exerciseId;
 
     if (!exerciseId)
       return res.status(400).json({ error: "Falta el ID del ejercicio" });

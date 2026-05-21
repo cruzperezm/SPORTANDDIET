@@ -2,6 +2,8 @@ import { Component, OnInit, inject, OnDestroy, ChangeDetectorRef } from '@angula
 import { HttpClient } from '@angular/common/http';
 import { Router, RouterModule } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faBookmark } from '@fortawesome/free-solid-svg-icons';
+import { faPersonRunning } from '@fortawesome/free-solid-svg-icons/faPersonRunning';
 import { DashboardService, SportData, Exercise } from '../../../services/dashboard.service';
 
 interface DailyPlan {
@@ -30,8 +32,12 @@ export class DashboardDeporteComponent implements OnInit {
     Avanzados: [],
   };
 
+  faBookmark = faBookmark;
+  faRunning = faPersonRunning;
+
   dashboardTitle = 'Dashboard de actividad';
 
+  exList: any[] = [];
   loading = true;
   error = '';
 
@@ -73,24 +79,44 @@ export class DashboardDeporteComponent implements OnInit {
     this.router.navigate(['/personalPlan/deporte']);
   }
 
-  /*private updateData(data: SportData) {
-    this.userName = data.usuario.nombre;
+  goToDeporte() {
+    this.router.navigate(['/deportes']);
+  }
 
-    this.moveText = data.actividades[0]?.nombre || '';
-    this.moveCalories = data.actividades[0]?.valor || '';
-    this.exerciseText = data.actividades[1]?.nombre || '';
-    this.exerciseCalories = data.actividades[1]?.valor || '';
-    this.standText = data.actividades[2]?.nombre || '';
-    this.standCalories = data.actividades[2]?.valor || '';
-
-    this.weekData = data.deporte.semana || [];
-
-    const exercises = data.deporte.ejercicios || [];
-    for (let i = 1; i <= 5; i++) {
-      const exercise = exercises[i - 1];
-      (this as any)[`trainText${i}`] = exercise?.nombre || '';
-      (this as any)[`trainAmount${i}`] = exercise?.valor || '';
+  guardar(exercise: Exercise) {
+    const x = localStorage.getItem('Deportes');
+    if (x != null) {
+      this.exList = JSON.parse(x);
     }
-    this.loading = false;
-  }*/
+    if (exercise.id != null) {
+      try {
+        this.dashboardService.addFavoriteExercise(exercise.id).subscribe();
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    this.exList.push(exercise);
+    localStorage.setItem('Deportes', JSON.stringify(this.exList));
+  }
+
+  eliminar(exerciseId: number) {
+    const x = localStorage.getItem('Deportes');
+    if (x != null) {
+      this.exList = JSON.parse(x);
+    }
+    const elem = this.exList.find((val) => val.id === exerciseId);
+    const i = this.exList.indexOf(elem);
+    this.exList.splice(i, 1);
+    localStorage.setItem('Deportes', JSON.stringify(this.exList));
+  }
+
+  inList(exerciseId: number) {
+    const x = localStorage.getItem('Deportes');
+    if (x != null) {
+      this.exList = JSON.parse(x);
+    }
+    const elem = this.exList.find((val) => val.id === exerciseId);
+    const i = this.exList.indexOf(elem);
+    return i != -1;
+  }
 }

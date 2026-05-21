@@ -72,14 +72,10 @@ export class DashboardService {
   }
 
   addFavoriteRecipe(recipeId: number): Observable<any> {
-    let params = new HttpParams();
-    params = params.set('recipeId', recipeId);
-    return this.http.post(`${this.apiUrl}/dashboard/dieta/favorito`, { params });
+    return this.http.post(`${this.apiUrl}/dashboard/dieta/favorito`, { recipeId });
   }
 
   addFavoriteExercise(exerciseId: number): Observable<any> {
-    let params = new HttpParams();
-    params = params.set('exerciseId', exerciseId);
-    return this.http.post(`${this.apiUrl}/dashboard/deporte/favorito`, { params });
+    return this.http.post(`${this.apiUrl}/dashboard/deporte/favorito`, { exerciseId });
   }
 }

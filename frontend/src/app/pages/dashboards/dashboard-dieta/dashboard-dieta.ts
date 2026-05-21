@@ -1,7 +1,10 @@
 import { Component, OnInit, inject, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { DashboardService } from '../../../services/dashboard.service';
+import { DashboardService, Recipe } from '../../../services/dashboard.service';
 import { DietData } from '../../../services/dashboard.service';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faBookmark } from '@fortawesome/free-solid-svg-icons';
+import { faAppleWhole } from '@fortawesome/free-solid-svg-icons/faAppleWhole';
 
 interface MacroItem {
   label: string;
@@ -13,7 +16,7 @@ interface MacroItem {
   selector: 'app-dashboard-dieta',
   templateUrl: './Dashboard-Dieta.html',
   styleUrls: ['./Dashboard-Dieta.css'],
-  imports: [RouterModule],
+  imports: [RouterModule, FontAwesomeModule],
 })
 export class DashboardDietaComponent implements OnInit {
   readonly MOMENTOS = ['Desayuno', 'Almuerzo', 'Cena'] as const;
@@ -24,19 +27,11 @@ export class DashboardDietaComponent implements OnInit {
   declare dietaData: DietData;
   declare macroList: Array<MacroItem>;
 
-  dashboardTitle = 'Dashboard nutricional';
+  faApple = faAppleWhole;
+  faBookmark = faBookmark;
+  reList: any[] = [];
 
-  /*
-  Tareas pendientes:
-  - Añadir el botón de "Añadir receta" en la parte de arriba de la lista de recetas
-  - Implementar lógica de recomendaciones de las recetas del día en la lista de la derecha
-  - Implementar botón que te lleve la página de tu plan personal, donde puedes ver tus recetas
-  y ejercicios siguiendo la estética de los planes de dieta y ejercicios pero que contenga
-  solo las recetas y ejercicios en tu plan, divididos por momento del dia o dificultad
-  - Arreglar el CSS de la cruz (que ahora es la imagen de la receta) 
-  - Añadir botones de + y - al valor del agua que actualice la BD cada vez que se pulse,
-  implementar función "updateWater()" o similar
-  */
+  dashboardTitle = 'Dashboard nutricional';
 
   loading = true;
   error = '';
@@ -66,11 +61,53 @@ export class DashboardDietaComponent implements OnInit {
     this.router.navigate(['/personalPlan/dieta']);
   }
 
-  private updateData(data: DietData) {
-    // 1. Guard clause: If data is missing, don't execute to avoid "cannot read property of undefined"
-    /*if (!data || !data.dieta) {
-      this.loading = false;
-      return;
-    }*/
+  goToDietas() {
+    this.router.navigate(['/dietas']);
+  }
+
+  addToDashboard(recipeId: number) {
+    this.dashboardService.addFavoriteRecipe(recipeId).subscribe({
+      next: (res: any) => {
+        console.log('Receta guardada en tus favoritos globales para futuros sorteos:', res);
+      },
+      error: (err: any) => console.error('Error al añadir la receta a favoritos:', err),
+    });
+  }
+
+  guardar(recipe: Recipe) {
+    const x = localStorage.getItem('Dietas');
+    if (x != null) {
+      this.reList = JSON.parse(x);
+    }
+    if (recipe.id != null) {
+      try {
+        this.dashboardService.addFavoriteRecipe(parseInt(recipe.id)).subscribe();
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    this.reList.push(recipe);
+    localStorage.setItem('Dietas', JSON.stringify(this.reList));
+  }
+
+  eliminar(recipeId: string) {
+    const x = localStorage.getItem('Dietas');
+    if (x != null) {
+      this.reList = JSON.parse(x);
+    }
+    const elem = this.reList.find((val) => val.id === recipeId);
+    const i = this.reList.indexOf(elem);
+    this.reList.splice(i, 1);
+    localStorage.setItem('Dietas', JSON.stringify(this.reList));
+  }
+
+  inList(recipeId: string) {
+    const x = localStorage.getItem('Dietas');
+    if (x != null) {
+      this.reList = JSON.parse(x);
+    }
+    const elem = this.reList.find((val) => val.id === parseInt(recipeId));
+    const i = this.reList.indexOf(elem);
+    return i != -1;
   }
 }

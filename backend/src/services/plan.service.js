@@ -1,7 +1,7 @@
 const prisma = require("../config/prisma");
 
 const getRecipesByMoment = async (userId) => {
-  let response = await prisma.dashboardDiet.findMany({
+  let response = await prisma.dashboardDiet.findUnique({
     where: {
       userId: userId,
     },
@@ -17,6 +17,8 @@ const getRecipesByMoment = async (userId) => {
     Almuerzo: [],
     Cena: [],
   };
+
+  console.log("Recipes", response);
 
   if (response.recipes) {
     for (let elem of response.recipes) {
@@ -34,7 +36,7 @@ const getRecipesByMoment = async (userId) => {
 };
 
 const getExercisesByLevel = async (userId) => {
-  let response = await prisma.dashboardSport.findMany({
+  let response = await prisma.dashboardSport.findUnique({
     where: {
       userId: userId,
     },

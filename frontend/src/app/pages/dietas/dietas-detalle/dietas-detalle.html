@@ -60,7 +60,15 @@
       <div class="text-24-largo" style="white-space: pre-wrap">{{ receta.instructions }}</div>
 
       <div class="text-center mt-5">
-        <button class="btn-primario shadow-lg">Añadir plato al Dashboard</button>
+        @if (!hasRecipe) {
+          <button class="btn-primario shadow-lg" (click)="guardar()">
+            Añadir plato al dashboard
+          </button>
+        } @else {
+          <button class="btn-primario shadow-lg" (click)="eliminar()">
+            Eliminar plato del dashboard
+          </button>
+        }
         <br /><br />
         <a href="#" (click)="volverAtras($event)" class="text-muted text-decoration-none"
           >← Volver al plan</a

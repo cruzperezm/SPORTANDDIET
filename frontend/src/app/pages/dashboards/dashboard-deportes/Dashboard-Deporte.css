@@ -100,13 +100,59 @@ h1 {
   cursor: pointer;
 }
 
+@keyframes toggle-animation {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(48px);
+  }
+}
+
+.ellipse-toggle:active {
+  animation: toggle-animation 0.1s linear forwards;
+}
+
 .ellipse-toggle {
+  background-color: #f0c1a8;
   border-radius: 90px;
   height: 40px;
   width: 40px;
-  background-color: #f0c1a8;
   z-index: 10;
-  margin-left: 5px;
+  margin: 5px;
+  align-items: center;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
+
+.toggles {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+  gap: 20px;
+}
+
+.deporte-toggle {
+  height: 50px;
+  width: 100px;
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 6px 24px 2px;
+  width: auto;
+  cursor: pointer;
+  background-color: #f97316;
+  color: #fff;
+}
+
+.add {
+  font-size: 15px;
+  margin: 1px 2px 2px;
 }
 
 .training-list {
@@ -279,4 +325,13 @@ h1 {
     0 0 20px 0 #ea5a0c46,
     0 0 20px 0 #ea5a0c46;
   translate: translateY(-5px);
+}
+
+.save-exercise {
+  z-index: 1;
+}
+
+.save-exercise:hover {
+  border-radius: 5px;
+  border: 1px solid #ea580c;
 }

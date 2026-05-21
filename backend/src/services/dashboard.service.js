@@ -359,42 +359,6 @@ class DashboardService {
     }
   }
 
-  /**
-   * Update or create dashboard data
-   */
-  static async upsertDashboard(userId, dashboardData) {
-    try {
-      const dashboard = await prisma.dashboard.upsert({
-        where: { userId },
-        update: dashboardData,
-        create: {
-          dashboardDietId: dashboardDiet.id,
-          date: new Date(),
-          Recipe: { connect: newPlan.map((r) => ({ id: r.id })) },
-        },
-        include: { Recipe: true },
-      });
-    } catch (error) {
-      throw new Error(`Error updating dashboard: ${error.message}`);
-    }
-
-    return {
-      usuario: {
-        id: userId,
-        nombre: dashboardDiet.User?.username || "Usuario",
-      },
-      dieta: {
-        calorias_objetivo: dashboardDiet.calories_goal,
-        calorias_totales: dashboardDiet.calories_total,
-        protein: dashboardDiet.protein,
-        fats: dashboardDiet.fats,
-        carbs: dashboardDiet.carbs,
-        water: dashboardDiet.water,
-        recetas: dailyPlan.Recipe,
-      },
-    };
-  }
-
   static async addFavoriteRecipe(userId, recipeId) {
     const diet = await prisma.dashboardDiet.findUnique({
       where: { userId: parseInt(userId) },
@@ -402,7 +366,7 @@ class DashboardService {
     if (!diet) throw new Error("Dashboard de dieta no encontrado");
     return await prisma.dashboardDiet.update({
       where: { id: diet.id },
-      data: { recetas: { connect: { id: parseInt(recipeId) } } },
+      data: { recipes: { connect: { id: parseInt(recipeId) } } },
     });
   }
 
@@ -413,7 +377,7 @@ class DashboardService {
     if (!sport) throw new Error("Dashboard de deporte no encontrado");
     return await prisma.dashboardSport.update({
       where: { id: sport.id },
-      data: { Exercise: { connect: { id: parseInt(exerciseId) } } },
+      data: { exercises: { connect: { id: parseInt(exerciseId) } } },
     });
   }
 }
