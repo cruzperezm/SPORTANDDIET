@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { SportService } from '../../../services/deportes.service';
-import {defaultEquals} from '@angular/core/primitives/signals';
+import { DashboardService } from '../../../services/dashboard.service';
 
 @Component({
   selector: 'app-deportes-detalle',
@@ -22,6 +22,7 @@ export class DeportesDetalleComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private deporteService: SportService,
+    private dashboardService: DashboardService,
     private location: Location,
     private cdr: ChangeDetectorRef,
   ) {}
@@ -54,6 +55,13 @@ export class DeportesDetalleComponent implements OnInit {
     const x = localStorage.getItem("Deportes");
     if ( x != null){
       this.exList = JSON.parse(x);
+    }
+    if (this.exerciseId != null) {
+      try {
+        this.dashboardService.addFavoriteExercise(parseInt(this.exerciseId)).subscribe();
+      } catch(err) {
+        console.log(err);
+      }
     }
     this.exList.push(this.exercise);
     localStorage.setItem("Deportes", JSON.stringify(this.exList));

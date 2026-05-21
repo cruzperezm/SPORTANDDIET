@@ -225,7 +225,7 @@ class DashboardService {
     if(!diet) throw new Error("Dashboard de dieta no encontrado");
     return await prisma.dashboardDiet.update({
       where: { id: diet.id },
-      data: { recetas: { connect: { id: parseInt(recipeId) } } }
+      data: { recetas: { connect: { id: recipeId } } }
     });
   }
 

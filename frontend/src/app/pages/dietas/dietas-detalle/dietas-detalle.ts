@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { DietService } from '../../../services/dietas.service';
+import { DashboardService } from '../../../services/dashboard.service';
 
 @Component({
   selector: 'app-dieta-detalle',
@@ -21,6 +22,7 @@ export class DietasDetalleComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private dietasService: DietService,
+    private dashboardService: DashboardService,
     private location: Location,
     private cdr: ChangeDetectorRef, // Importante para refrescar la vista
   ) {}
@@ -55,6 +57,13 @@ export class DietasDetalleComponent implements OnInit {
     const x = localStorage.getItem("Dietas");
     if ( x != null){
       this.reList = JSON.parse(x);
+    }
+    if (this.recetaId != null) {
+      try {
+        this.dashboardService.addFavoriteRecipe(parseInt(this.recetaId)).subscribe();
+      } catch(err) {
+        console.log(err);
+      }
     }
     this.reList.push(this.receta);
     localStorage.setItem("Dietas", JSON.stringify(this.reList));
