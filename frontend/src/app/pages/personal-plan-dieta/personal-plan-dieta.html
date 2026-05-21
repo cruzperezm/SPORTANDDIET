@@ -1,40 +1,16 @@
-@if (dieta) {
+@if (this.recipes) {
   <div class="plan-wrapper">
     <button class="btn-regresar" (click)="volver()">
-      <span class="material-symbols-outlined">arrow_back</span> Volver a Dietas
+      <span class="material-symbols-outlined">arrow_back</span> Volver al Dashboard
     </button>
 
     <header class="pill-header">
-      <h1 class="titulo-pill">{{ dieta.title }}</h1>
-      <p class="subtitulo-pill">{{ dieta.subtitle }}</p>
+      <h1 class="titulo-pill">Tu Plan Personal</h1>
+      <p class="subtitulo-pill">Todas tus recetas guardadas</p>
     </header>
 
-    <div class="filtros-container-scroll mb-4">
-      <div class="filtros-scroll-wrapper d-flex gap-2 py-2">
-        <!-- Botón fijo "Todos" -->
-        <button
-          (click)="toggleFiltro('todos')"
-          [class.active]="filtrosActivos.length === 0"
-          class="btn-filtro-chip"
-        >
-          Todos
-        </button>
-
-        <!-- Chips de filtros -->
-        @for (alergeno of LISTA_ALERGENOS; track alergeno.valor) {
-          <button
-            (click)="toggleFiltro(alergeno.valor)"
-            [class.active]="filtrosActivos.includes(alergeno.valor)"
-            class="btn-filtro-chip"
-          >
-            {{ alergeno.etiqueta }}
-          </button>
-        }
-      </div>
-    </div>
-
     @for (momento of MOMENTOS; track momento) {
-      @if (recipes$[momento] | async; as comidas) {
+      @if (recipes[momento]; as comidas) {
         <section class="fase-seccion mb-5">
           <h2 class="momento-label ms-4 mb-3">{{ momento }}</h2>
 
@@ -70,10 +46,5 @@
         </section>
       }
     }
-  </div>
-} @else {
-  <div class="loading-state">
-    <div class="spinner-border text-success mb-3" role="status"></div>
-    <p>Cargando tu plan nutricional...</p>
   </div>
 }

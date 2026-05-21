@@ -1,50 +1,62 @@
-<div class="dashboard-deporte">
-  <section class="left-container">
-    <h1 class="section-title">
-      {{ userName }}
-    </h1>
-    <div class="main-content-left">
-      <div class="top-graph">
-        @for (item of weekData; track item.dia) {
-          <div class="bar-element">
-            <div class="day-bar" [style.--current]="item.valor"></div>
-            <h3>{{ item.dia }}</h3>
-            <p>{{ item.valor }}%</p>
-          </div>
-        }
-      </div>
-      <div class="bottom-metrics">
-        @for (activity of dailyActivities; track activity) {
+@if (deporteData) {
+  <div class="dashboard-deporte">
+    <section class="left-container">
+      <h1 class="section-title">
+        {{ dashboardTitle }}
+      </h1>
+      <div class="main-content-left">
+        <h4 class="graph-title">Resumen semanal</h4>
+        <div class="top-graph">
+          @for (item of this.deporteData.week; track item.dia) {
+            <div class="bar-element">
+              <div class="day-bar" [style.--current]="item.valor"></div>
+              <h3>{{ item.dia }}</h3>
+              <p>{{ item.valor }}%</p>
+            </div>
+          }
+        </div>
+        <div class="bottom-metrics">
           <div class="activity-item">
             <div class="activity-title">
-              <span>{{ activity.text }} </span>
+              <span>Calorías</span>
             </div>
             <div class="activity-progress">
-              <span>{{ activity.progress }} </span>
+              <span>{{ this.deporteData.calories }} kcal </span>
             </div>
           </div>
-        }
-      </div>
-    </div>
-  </section>
-  <section class="right-container">
-    <div class="rectangle-toggle" (click)="toggleToDieta()">
-      <div class="ellipse-toggle"></div>
-    </div>
-    <div class="main-content-right">
-      @for (item of trainingSessions; track item) {
-        <div class="training-item">
-          <div class="training-title">
-            <span>{{ item.text }}</span>
-          </div>
-          <div class="training-value">
-            <span>{{ item.amount }}</span>
-          </div>
-          <div class="plus-sign" (click)="goToDeporte()">
-            <img src="shared/images/plus-deporte.png" alt="" />
+          <div class="activity-item">
+            <div class="activity-title">
+              <span>Tiempo</span>
+            </div>
+            <div class="activity-progress">
+              <span>{{ this.deporteData.time }} min </span>
+            </div>
           </div>
         </div>
-      }
-    </div>
-  </section>
-</div>
+      </div>
+    </section>
+    <section class="right-container">
+      <div class="rectangle-toggle" (click)="toggleToDieta()">
+        <div class="ellipse-toggle"></div>
+      </div>
+      <div class="main-content-right">
+        @for (item of this.deporteData.exercises; track item) {
+          <div class="training-item">
+            <div class="training-img" (click)="goToDeporte()">
+              <img [src]="item.image" alt="" />
+            </div>
+            <div class="training-title">
+              <span>{{ item.name }}</span>
+            </div>
+            <div class="training-value">
+              <span>{{ item.duration }}</span>
+            </div>
+          </div>
+        } @empty {
+          <div class="empty">No hay datos disponibles</div>
+        }
+        <button (click)="verPlanCompleto()" class="view-full-plan">Ver todos tus ejercicios</button>
+      </div>
+    </section>
+  </div>
+}

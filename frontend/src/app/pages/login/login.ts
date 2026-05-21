@@ -59,8 +59,8 @@ export class Login implements AfterViewInit {
         this.ngZone.run(() => {
           // LA MAGIA ESTÁ AQUÍ: Evaluamos qué necesita el usuario
           if (res.needsOnboarding) {
-            console.log('El usuario necesita completar sus datos biométricos');
             const userId = res.user.id;
+            console.log('El usuario necesita completar sus datos biométricos');
             this.router.navigate(['/bio'], {
               queryParams: { userId: userId },
             });

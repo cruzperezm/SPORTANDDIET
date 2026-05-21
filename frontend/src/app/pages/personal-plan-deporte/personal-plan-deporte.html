@@ -1,0 +1,54 @@
+@if (this.exercises) {
+  <div class="plan-wrapper">
+    <button class="btn-regresar" (click)="volver()">
+      <span class="material-symbols-outlined">arrow_back</span> Volver al Dashboard
+    </button>
+
+    <header class="pill-header">
+      <h1 class="titulo-pill">Tu Plan Personal</h1>
+      <p class="subtitulo-pill">Todos tu ejercicios guardados</p>
+    </header>
+
+    <!-- Secciones por Nivel (Principiante, Intermedio, Avanzado) -->
+    @for (nivel of NIVELES; track nivel) {
+      @if (exercises[nivel]; as ejercicios) {
+        <section class="fase-seccion mb-5">
+          <div class="header-fase ms-4 mb-3 d-flex align-items-center gap-3">
+            <h2 class="momento-label m-0">{{ nivel }}</h2>
+          </div>
+
+          <div class="position-relative carrusel-wrapper">
+            @if (ejercicios.length > 0) {
+              <button class="flecha-nav prev" (click)="mover(-1, nivel, carruselDeporte)">‹</button>
+
+              <div class="carrusel-scroll d-flex gap-3 px-4" #carruselDeporte>
+                @for (ejercicio of ejercicios; track ejercicio.id) {
+                  <div
+                    class="card-comida flex-shrink-0"
+                    [routerLink]="['/deportes/guia', ejercicio.id]"
+                  >
+                    <div
+                      class="card-img shadow-sm"
+                      [style.background-image]="'url(' + ejercicio.image + ')'"
+                    >
+                      <div class="card-info">
+                        <h3 class="m-0">{{ ejercicio.name }}</h3>
+                      </div>
+                    </div>
+                  </div>
+                }
+              </div>
+
+              <button class="flecha-nav next" (click)="mover(1, nivel, carruselDeporte)">›</button>
+            } @else {
+              <p class="text-center text-muted py-4">
+                No hay ejercicios disponibles para el nivel {{ nivel.toLowerCase() }} con estos
+                filtros.
+              </p>
+            }
+          </div>
+        </section>
+      }
+    }
+  </div>
+}

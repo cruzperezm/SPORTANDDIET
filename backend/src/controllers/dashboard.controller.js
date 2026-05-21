@@ -7,7 +7,6 @@ const DashboardService = require("../services/dashboard.service");
 exports.getDietaDashboard = async (req, res) => {
   try {
     const userId = req.user.userId;
-    console.log("Recibido el userID:", userId);
     const data = await DashboardService.getDietaDashboard(userId);
     res.json(data);
   } catch (error) {

@@ -11,6 +11,8 @@ import { DietasDetalleComponent } from './pages/dietas/dietas-detalle/dietas-det
 import { DeportesInicioComponent } from './pages/deportes/deportes-inicio/deportes-inicio';
 import { DeportesPlanComponent } from './pages/deportes/deportes-plan/deportes-plan';
 import { DeportesDetalleComponent } from './pages/deportes/deportes-detalle/deportes-detalle';
+import { PersonalPlanDeporte } from './pages/personal-plan-deporte/personal-plan-deporte';
+import { PersonalPlanDieta } from './pages/personal-plan-dieta/personal-plan-dieta';
 import {ProfileComponent} from './pages/profile/profile-view/profile-view';
 
 export const routes: Routes = [
@@ -39,9 +41,14 @@ export const routes: Routes = [
     component: DashboardDeporteComponent,
     title: 'SPORTS&DIET · Dashboard',
   },
-  { path: 'deportes/plan/:id', component: DeportesPlanComponent, title: 'SPORTS&DIET · Entrenamientos' },
-  { path: 'deportes/guia/:id', component: DeportesDetalleComponent, title: 'SPORTS&DIET · Ejercicio' },
-  { path: 'profile', component: ProfileComponent, title: 'SPORTS&DIET · Perfil' },
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: '**', redirectTo: 'home' },
+  {
+    path: 'personalPlan/deporte',
+    component: PersonalPlanDeporte,
+    title: 'SPORTS&DIET · Plan Personal - Ejercicios',
+  },
+  {
+    path: 'personalPlan/dieta',
+    component: PersonalPlanDieta,
+    title: 'SPORTS&DIET · Plan Personal - Recetas',
+  },
 ];

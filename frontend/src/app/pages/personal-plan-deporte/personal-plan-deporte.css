@@ -1,6 +1,8 @@
 :host {
-  --verde-corp: #10b981;
-  --verde-dark: #059669;
+  --naranja: #f97316;
+  --naranja-dark: #ea580c;
+  --naranja-soft: #fff7ed;
+  --sombra: 0 10px 25px -5px rgba(249, 115, 22, 0.2), 0 8px 10px -6px rgba(249, 115, 22, 0.1);
 }
 
 .plan-wrapper {
@@ -9,6 +11,7 @@
   padding: 30px 20px;
 }
 
+/* BOTÓN REGRESAR */
 .btn-regresar {
   border: none;
   background: transparent;
@@ -23,33 +26,36 @@
 }
 
 .btn-regresar:hover {
-  color: #10b981;
+  color: var(--naranja);
   transform: translateX(-5px);
 }
 
-/* LA PÍLDORA VERDE */
+/* LA PÍLDORA NARANJA (HERO) */
 .pill-header {
-  background: linear-gradient(135deg, var(--verde-corp), var(--verde-dark));
+  background: linear-gradient(135deg, var(--naranja), var(--naranja-dark));
   color: white;
-  padding: 50px 30px;
+  padding: 60px 40px;
   border-radius: 100px; /* Forma de píldora */
   text-align: center;
   margin-bottom: 50px;
-  box-shadow: 0 15px 30px rgba(16, 185, 129, 0.2);
+  box-shadow: var(--sombra);
 }
 
 .titulo-pill {
   font-size: clamp(32px, 5vw, 64px);
   margin: 0;
   font-weight: 800;
-}
-.subtitulo-pill {
-  font-size: 1.2rem;
-  opacity: 0.9;
-  margin-top: 10px;
+  letter-spacing: -2px;
 }
 
-/* FILTROS */
+.subtitulo-pill {
+  font-size: 1.25rem;
+  opacity: 0.95;
+  margin-top: 10px;
+  font-weight: 400;
+}
+
+/* NAVEGACIÓN DE FILTROS */
 .filtros-nav {
   display: flex;
   justify-content: center;
@@ -60,30 +66,41 @@
   top: 20px;
   z-index: 10;
 }
+
 .filtros-nav button {
-  padding: 10px 25px;
+  padding: 12px 28px;
   border-radius: 50px;
-  border: 2px solid var(--verde-corp);
+  border: 2px solid var(--naranja);
   background: white;
-  color: var(--verde-corp);
-  font-weight: bold;
+  color: var(--naranja);
+  font-weight: 700;
   cursor: pointer;
-  transition: 0.3s;
-}
-.filtros-nav button.active {
-  background: var(--verde-corp);
-  color: white;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* CARRUSEL Y GRID */
-.fase-seccion {
-  margin-bottom: 70px;
+.filtros-nav button:hover {
+  background: var(--naranja-soft);
+  transform: translateY(-2px);
 }
+
+.filtros-nav button.active {
+  background: var(--naranja);
+  color: white;
+  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+}
+
+/* SECCIONES Y CARRUSEL */
+.fase-seccion {
+  margin-bottom: 80px;
+}
+
 .momento-label {
-  border-left: 6px solid var(--verde-corp);
-  padding-left: 15px;
-  font-size: 2rem;
-  margin-bottom: 30px;
+  border-left: 6px solid var(--naranja);
+  padding-left: 20px;
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #1e293b;
+  margin-bottom: 35px;
 }
 
 .carrusel-container {
@@ -91,10 +108,12 @@
   align-items: center;
   gap: 20px;
 }
+
 .grid-comidas {
+  /* Mantenemos el nombre para reusar lógica */
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 25px;
+  gap: 30px;
   flex: 1;
 }
 
@@ -111,10 +130,13 @@
   display: none; /* Oculta scrollbar en Chrome/Safari */
 }
 
+/* CARDS DE EJERCICIOS */
 .card-comida {
+  cursor: pointer;
   width: 300px;
   scroll-snap-align: start;
   transition: transform 0.2s;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .card-comida:hover {
@@ -125,7 +147,7 @@
   aspect-ratio: 1;
   background-size: cover;
   background-position: center;
-  border-radius: 25px;
+  border-radius: 30px;
   position: relative;
   overflow: hidden;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
@@ -135,17 +157,24 @@
   position: absolute;
   bottom: 0;
   width: 100%;
-  padding: 25px;
-  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+  padding: 30px 20px 20px;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.9));
   color: white;
 }
 
+.card-info h3 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+/* BOTONES DE NAVEGACIÓN */
 .flecha-nav {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   z-index: 10;
-  background: var(--verde-corp);
+  background: var(--naranja);
   border: none;
   border-radius: 50%;
   width: 45px;
@@ -167,7 +196,7 @@
 }
 
 .flecha-nav:hover {
-  background: var(--verde-dark, #000);
+  background: var(--naranja-dark);
   color: white;
 }
 
@@ -215,8 +244,8 @@
 }
 
 .btn-filtro-chip.active {
-  background-color: var(--verde-dark, #000);
+  background-color: var(--naranja-dark, #000);
   color: white;
-  border-color: var(--verde-dark, #000);
+  border-color: var(--naranja-dark, #000);
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
