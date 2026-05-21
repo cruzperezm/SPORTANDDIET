@@ -18,7 +18,7 @@ export class HeaderComponent {
   isLoggedIn$ = this.authService.isLoggedIn$;
 
   goToDashboard() {
-    this.router.navigate(['/dashboards/dashboard-dieta/Dashboard-Dieta']);
+    this.router.navigate(['/dashboard/dieta']);
   }
 
   onLogout() {

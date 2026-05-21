@@ -5,7 +5,6 @@ var searchRoutes = require("./routes/search.routes");
 var dietRoutes = require("./routes/diet.routes");
 var exercisePlanRoutes = require("./routes/sport.routes");
 var dashboardRoutes = require("./routes/dashboard.routes");
-var planRoutes = require("./routes/plan.routes");
 
 var app = express();
 const PORT = 3000;
@@ -22,21 +21,14 @@ app.listen(PORT, (error) => {
 
 app.use(cors());
 app.use(express.json());
+app.use((req, res, next) => {
+  console.log(`[Frontend llama a]: ${req.method} ${req.url}`);
+  next();
+})
 app.use("/api/auth", authRoutes);
 app.use("/search", searchRoutes);
 app.use("/diets", dietRoutes);
 app.use("/exercisePlans", exercisePlanRoutes);
-app.use("/dashboard", dashboardRoutes);
-app.use("/userPlan", planRoutes);
-
-app.use(function (err, req, res, next) {
-  // Log the error to your terminal so you can see it
-  console.error("Backend Error:", err.message);
-
-  res.status(err.status || 500).json({
-    message: err.message,
-    error: req.app.get("env") === "development" ? err : {},
-  });
-});
+app.use("/api/dashboard", dashboardRoutes);
 
 module.exports = app;

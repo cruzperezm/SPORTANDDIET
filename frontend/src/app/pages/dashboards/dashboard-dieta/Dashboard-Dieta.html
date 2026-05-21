@@ -1,73 +1,72 @@
-@if (dietaData) {
-  <div class="dashboard-dieta">
-    <section class="left-container">
-      <h1 class="section-title">
-        {{ dashboardTitle }}
-      </h1>
-      <div class="main-content-left">
-        <div class="left-graph">
-          <div
-            class="progress-circle"
-            [style.--current]="dietaData.calories_total"
-            [style.--max]="dietaData.calories_goal"
-          >
-            <span class="progress-text-max">
-              {{ dietaData.calories_goal }}
-            </span>
-            <span class="progress-text-current">
-              {{ dietaData.calories_total }}
-            </span>
-            <span class="calories-icon">🔥</span>
+<div class="dashboard-dieta">
+  <section class="left-container">
+    <h1 class="section-title">
+      {{ userName }}
+    </h1>
+    <div class="main-content-left">
+      <div class="left-graph">
+        <div
+          class="progress-circle"
+          [style.--current]="caloriesAmount"
+          [style.--max]="caloriesGoal"
+        >
+          <span class="progress-text-max">
+            {{ caloriesGoal }}
+          </span>
+          <span class="progress-text-current">
+            {{ caloriesAmount }}
+          </span>
+          <span class="calories-icon">🔥</span>
+        </div>
+        <div class="water-fiber">
+          <div class="water">
+            <h3>Hidratación</h3>
+            <p>{{ waterAmount }}</p>
           </div>
-          <div class="water-fiber">
-            <div class="water">
-              <h3>Hidratación</h3>
-              <p>💧 {{ dietaData.water }}L</p>
-            </div>
+          <div class="fiber">
+            <h3>Fibra</h3>
+            <p>{{ fiberAmount }}</p>
           </div>
         </div>
-        <div class="right-macros">
-          @for (macro of macroList; track macro.label) {
-            <div class="macro-item">
-              <div class="macro-title">
-                <span>{{ macro.label }} </span>
-              </div>
-              <div
-                class="macro-progress"
-                [style.--current]="macro.value"
-                [style.--max]="macro.total"
-              >
-                <span>{{ macro.value }}g / {{ macro.total }}g </span>
-                <div class="macro-progress-bar"></div>
-              </div>
-            </div>
-          }
-        </div>
       </div>
-    </section>
-
-    <section class="right-container">
-      <div class="rectangle-toggle" (click)="toggleToDeporte()">
-        <div class="ellipse-toggle"></div>
-      </div>
-      <div class="main-content-right">
-        @for (item of dietaData.recipes; track item.name) {
-          <div class="diet-item">
-            <div class="plus-sign" (click)="goToDietas()">
-              <img src="shared/images/plus-dietas.png" alt="" />
+      <div class="right-macros">
+        @for (macro of macroList; track macro.id) {
+          <div class="macro-item">
+            <div class="macro-title">
+              <span>{{ macro.label }} </span>
             </div>
-            <div class="diet-title">
-              <span>{{ item.name }}</span>
-            </div>
-            <div class="diet-value">
-              <span>{{ item.calories }}</span>
+            <div
+              class="macro-progress"
+              [style.--current]="macro.amount"
+              [style.--max]="macro.total"
+            >
+              <span>{{ macro.amount }}g / {{ macro.total }}g </span>
+              <div class="macro-progress-bar"></div>
             </div>
           </div>
-        } @empty {
-          <div class="empty">No hay datos disponibles</div>
         }
-        <button (click)="verPlanCompleto()" class="view-full-plan">Ver todas tus recetas</button>
       </div>
-    </section>
-  </div>
-}
+    </div>
+  </section>
+
+  <section class="right-container">
+    <div class="rectangle-toggle" (click)="toggleToDeporte()">
+      <div class="ellipse-toggle"></div>
+    </div>
+    <div class="main-content-right">
+      @for (item of dietItems; track item.id) {
+        <div class="diet-item">
+          <div class="diet-title">
+            <span>{{ item.text }}</span>
+          </div>
+          <div class="diet-value">
+            <span>{{ item.amount }}</span>
+          </div>
+          <div class="plus-sign" (click)="toggleToDieta()">
+            <img src="shared/images/plus-dietas.png" alt="" />
+          </div>
+        </div>
+      }
+    </div>
+  </section>
+</div>
