@@ -25,6 +25,8 @@ export class Bio {
   protected bioData: number = 0;
   private queryId: number | null | undefined;
 
+  public genders: string[] = ['Hombre', 'Mujer', 'No binario', 'Prefiero no decir'];
+
   constructor(private route: ActivatedRoute) {}
 
   ngOnInit() {
