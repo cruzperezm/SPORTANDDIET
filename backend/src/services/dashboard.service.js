@@ -113,7 +113,6 @@ const generateDailyDiet = (target, favorites, allRecipes, userAllergies) => {
   return bestCombo;
 };
 
-// FUNCIÓN CORREGIDA: Ahora tiene la segunda mitad intacta
 const generateDailySport = (targetLevel, favorites, allExercises, userMuscleGroups) => {
   if (!allExercises || allExercises.length === 0) return [];
 
@@ -200,8 +199,30 @@ class DashboardService {
 
       if (!dashboardDiet) throw new Error("Dashboard de dieta no encontrado");
 
+      // CÁLCULO DINÁMICO DE MACROS Y CALORÍAS DE LAS 5 RECETAS
+      let computedCalories = 0;
+      let computedProtein = 0;
+      let computedFats = 0;
+      let computedCarbs = 0;
+
+      if (dashboardDiet.dailyRecipes && dashboardDiet.dailyRecipes.recipes) {
+        dashboardDiet.dailyRecipes.recipes.forEach((r) => {
+          computedCalories += r.calories || 0;
+          if (r.macros && r.macros.length >= 3) {
+            computedProtein += parseMacro(r.macros[0]);
+            computedFats += parseMacro(r.macros[1]);
+            computedCarbs += parseMacro(r.macros[2]);
+          }
+        });
+      }
+
+      // Devolvemos el objeto sobrescribiendo los totales de la BBDD con los calculados
       return {
         ...dashboardDiet,
+        calories_total: computedCalories,
+        protein: computedProtein,
+        fats: computedFats,
+        carbs: computedCarbs,
         dailyPlan: dashboardDiet.dailyRecipes || { recipes: [] }
       };
     } catch (error) {
@@ -249,8 +270,23 @@ class DashboardService {
         dashboardSport.week = week;
       }
 
+      // CÁLCULO DINÁMICO DE TIEMPO Y CALORÍAS QUEMADAS
+      let computedTime = 0;
+      let computedCalories = 0;
+
+      if (dashboardSport.dailyExercises && dashboardSport.dailyExercises.exercises) {
+        dashboardSport.dailyExercises.exercises.forEach((ex) => {
+          computedTime += ex.duration || 0;
+          // Si el ejercicio tiene el campo calories lo usa, sino, hace un estimado de 8 kcal/minuto.
+          computedCalories += ex.calories || (ex.duration ? ex.duration * 8 : 0);
+        });
+      }
+
+      // Devolvemos el objeto sobrescribiendo los totales
       return {
         ...dashboardSport,
+        time: computedTime,
+        calories: computedCalories,
         dailyPlan: dashboardSport.dailyExercises || { exercises: [] }
       };
     } catch (error) {
