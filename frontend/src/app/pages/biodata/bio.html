@@ -1,3 +1,36 @@
+@if (bioData==0) {
+  <div class="dots">
+    <span class="dotV" animate.enter="enter-animation"></span>
+    <span class="dot"></span>
+    <span class="dot"></span>
+    <span class="dot"></span>
+  </div>
+}
+@else if (bioData==1) {
+  <div class="dots">
+    <span class="dot"></span>
+    <span class="dotV" animate.enter="enter-animation"></span>
+    <span class="dot"></span>
+    <span class="dot"></span>
+  </div>
+}
+@else if (bioData==2) {
+  <div class="dots">
+    <span class="dot"></span>
+    <span class="dot"></span>
+    <span class="dotV" animate.enter="enter-animation"></span>
+    <span class="dot"></span>
+  </div>
+}
+@else{
+  <div class="dots">
+    <span class="dot"></span>
+    <span class="dot"></span>
+    <span class="dot"></span>
+    <span class="dotV" animate.enter="enter-animation"></span>
+  </div>
+}
+
 <div id="container">
   <h2>Datos biométricos</h2>
   <section id="form-section">
