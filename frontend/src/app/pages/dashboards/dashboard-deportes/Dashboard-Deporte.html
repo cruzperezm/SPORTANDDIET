@@ -1,4 +1,12 @@
-@if (deporteData) {
+@if (loading) {
+  <div class="loading-container" style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+    <h2>Calculando tu rutina de hoy...</h2>
+  </div>
+} @else if (error) {
+  <div class="error-container" style="display: flex; justify-content: center; align-items: center; height: 100vh; color: #ef4444;">
+    <h2>{{ error }}</h2>
+  </div>
+} @else if (deporteData) {
   <div class="dashboard-deporte">
     <section class="left-container">
       <h1 class="section-title">

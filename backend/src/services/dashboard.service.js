@@ -4,9 +4,9 @@ const isToday = (date) => {
   if (!date) return false;
   const today = new Date(Date.now());
   return (
-    date.getDate() === today.getDate() &&
-    date.getMonth() === today.getMonth() &&
-    date.getFullYear() === today.getFullYear()
+      date.getDate() === today.getDate() &&
+      date.getMonth() === today.getMonth() &&
+      date.getFullYear() === today.getFullYear()
   );
 };
 
@@ -15,9 +15,9 @@ const parseMacro = (str) => parseInt(str?.replace(/\D/g, "")) || 0;
 const hasAllergyConflict = (currentRecipes, userAllergies) => {
   if (!userAllergies || userAllergies.length === 0) return false;
   return currentRecipes.some(
-    (recipe) =>
-      recipe.allergies &&
-      recipe.allergies.some((allergy) => userAllergies.includes(allergy)),
+      (recipe) =>
+          recipe.allergies &&
+          recipe.allergies.some((allergy) => userAllergies.includes(allergy)),
   );
 };
 
@@ -25,7 +25,7 @@ const needsMusclePrioritization = (currentExercises, userMuscleGroups) => {
   if (!userMuscleGroups || userMuscleGroups.length === 0) return false;
 
   const hasAnyMatch = currentExercises.some(
-    (ex) => ex.muscles && ex.muscles.some((m) => userMuscleGroups.includes(m)),
+      (ex) => ex.muscles && ex.muscles.some((m) => userMuscleGroups.includes(m)),
   );
   return !hasAnyMatch;
 };
@@ -38,12 +38,12 @@ const generateDailyDiet = (target, favorites, allRecipes, userAllergies) => {
 
   if (userAllergies && userAllergies.length > 0) {
     safeRecipes = allRecipes.filter(
-      (r) =>
-        !r.allergies || !r.allergies.some((a) => userAllergies.includes(a)),
+        (r) =>
+            !r.allergies || !r.allergies.some((a) => userAllergies.includes(a)),
     );
     safeFavorites = favorites.filter(
-      (r) =>
-        !r.allergies || !r.allergies.some((a) => userAllergies.includes(a)),
+        (r) =>
+            !r.allergies || !r.allergies.some((a) => userAllergies.includes(a)),
     );
   }
 
@@ -52,15 +52,15 @@ const generateDailyDiet = (target, favorites, allRecipes, userAllergies) => {
   const getPool = (moment) => {
     const favs = safeFavorites.filter((r) => r.moment === moment);
     return favs.length > 0
-      ? favs
-      : safeRecipes.filter((r) => r.moment === moment);
+        ? favs
+        : safeRecipes.filter((r) => r.moment === moment);
   };
 
   const poolDesayuno = getPool("DESAYUNO");
   const poolAlmuerzo = getPool("ALMUERZO");
   const poolCena = getPool("CENA");
   const poolCualquiera =
-    safeFavorites.length >= 5 ? safeFavorites : safeRecipes;
+      safeFavorites.length >= 5 ? safeFavorites : safeRecipes;
 
   let bestCombo = [];
   let minDiff = Infinity;
@@ -78,7 +78,7 @@ const generateDailyDiet = (target, favorites, allRecipes, userAllergies) => {
     let attempts = 0;
     while (combo.size < targetSize && attempts < 30) {
       combo.add(
-        poolCualquiera[Math.floor(Math.random() * poolCualquiera.length)],
+          poolCualquiera[Math.floor(Math.random() * poolCualquiera.length)],
       );
       attempts++;
     }
@@ -87,9 +87,9 @@ const generateDailyDiet = (target, favorites, allRecipes, userAllergies) => {
     if (currentCombo.length < targetSize) continue;
 
     let kcal = 0,
-      p = 0,
-      f = 0,
-      c = 0;
+        p = 0,
+        f = 0,
+        c = 0;
     currentCombo.forEach((r) => {
       kcal += r.calories;
       p += parseMacro(r.macros[0]);
@@ -98,10 +98,10 @@ const generateDailyDiet = (target, favorites, allRecipes, userAllergies) => {
     });
 
     const diff =
-      Math.abs(kcal - target.calories_goal) +
-      Math.abs(p - target.protein) * 4 +
-      Math.abs(f - target.fats) * 9 +
-      Math.abs(c - target.carbs) * 4;
+        Math.abs(kcal - target.calories_goal) +
+        Math.abs(p - target.protein) * 4 +
+        Math.abs(f - target.fats) * 9 +
+        Math.abs(c - target.carbs) * 4;
 
     if (diff < minDiff) {
       minDiff = diff;
@@ -113,31 +113,24 @@ const generateDailyDiet = (target, favorites, allRecipes, userAllergies) => {
   return bestCombo;
 };
 
-const generateDailySport = (
-  targetLevel,
-  favorites,
-  allExercises,
-  userMuscleGroups,
-) => {
+// FUNCIÓN CORREGIDA: Ahora tiene la segunda mitad intacta
+const generateDailySport = (targetLevel, favorites, allExercises, userMuscleGroups) => {
   if (!allExercises || allExercises.length === 0) return [];
 
-  let poolGlobal = allExercises.filter((e) => e.level === targetLevel);
+  let poolGlobal = allExercises.filter((e) => e.level?.toUpperCase() === targetLevel);
 
   if (poolGlobal.length < 5) {
     if (targetLevel === "AVANZADOS") {
-      const intermedios = allExercises.filter((e) => e.level === "INTERMEDIO");
+      const intermedios = allExercises.filter((e) => e.level?.toUpperCase() === "INTERMEDIO");
       poolGlobal = [...poolGlobal, ...intermedios];
     } else if (targetLevel === "INTERMEDIO") {
-      const principiantes = allExercises.filter(
-        (e) => e.level === "PRINCIPIANTE",
-      );
+      const principiantes = allExercises.filter((e) => e.level?.toUpperCase() === "PRINCIPIANTE");
       poolGlobal = [...poolGlobal, ...principiantes];
     }
     if (poolGlobal.length < 5) poolGlobal = allExercises;
   }
 
-  const pool =
-    favorites.length >= 5 ? favorites : [...favorites, ...poolGlobal];
+  const pool = favorites.length >= 5 ? favorites : [...favorites, ...poolGlobal];
 
   let bestCombo = [];
   let bestScore = -1;
@@ -162,7 +155,6 @@ const generateDailySport = (
       if (ex.muscles && Array.isArray(ex.muscles)) {
         ex.muscles.forEach((m) => uniqueMuscles.add(m));
 
-        // Contamos cuántos ejercicios de este combo tocan los músculos favoritos del usuario
         if (userMuscleGroups && userMuscleGroups.length > 0) {
           if (ex.muscles.some((m) => userMuscleGroups.includes(m))) {
             matchCount++;
@@ -186,7 +178,7 @@ const generateDailySport = (
 class DashboardService {
   static async getDietaDashboard(userId) {
     try {
-      let dashboardDiet = await prisma.dashboardDiet.findFirst({
+      const dashboardDiet = await prisma.dashboardDiet.findFirst({
         where: { userId: userId },
         select: {
           id: true,
@@ -208,41 +200,15 @@ class DashboardService {
 
       if (!dashboardDiet) throw new Error("Dashboard de dieta no encontrado");
 
-      let dailyPlan = dashboardDiet.dailyRecipes;
-      console.log("This is the dailyPlan:", dailyPlan);
-      console.log("Is it today?", isToday(dailyPlan.date));
-      if (!dailyPlan || !isToday(dailyPlan.date)) {
-        const allRecipes = await prisma.recipe.findMany();
-        const favorites = dashboardDiet.dailyRecipes.recipes || [];
-        const newPlan = generateDailyDiet(dashboardDiet, favorites, allRecipes);
-
-        dailyPlan = await prisma.dailyRecipes.upsert({
-          where: { dashboardDietId: dashboardDiet.id },
-          update: {
-            date: new Date(),
-            recipes: { set: newPlan.map((r) => ({ id: r.id })) },
-          },
-          create: {
-            dashboardDietId: dashboardDiet.id,
-            date: new Date(),
-            recipes: { connect: newPlan.map((r) => ({ id: r.id })) },
-          },
-          include: { recipes: true },
-        });
-      }
-      let completeDashboard = {
+      return {
         ...dashboardDiet,
-        dailyPlan: dailyPlan,
+        dailyPlan: dashboardDiet.dailyRecipes || { recipes: [] }
       };
-      return completeDashboard;
     } catch (error) {
       throw new Error(`Error fetching diet dashboard: ${error.message}`);
     }
   }
 
-  /**
-   * Get sport dashboard data
-   */
   static async getDeporteDashboard(userId) {
     try {
       let dashboardSport = await prisma.dashboardSport.findFirst({
@@ -266,94 +232,27 @@ class DashboardService {
         },
       });
 
+      if (!dashboardSport) throw new Error("Dashboard de deporte no encontrado");
+
       let week = [
-        { dia: "L", valor: 0 },
-        { dia: "M", valor: 0 },
-        { dia: "X", valor: 0 },
-        { dia: "J", valor: 0 },
-        { dia: "V", valor: 0 },
-        { dia: "S", valor: 0 },
+        { dia: "L", valor: 0 }, { dia: "M", valor: 0 }, { dia: "X", valor: 0 },
+        { dia: "J", valor: 0 }, { dia: "V", valor: 0 }, { dia: "S", valor: 0 },
         { dia: "D", valor: 0 },
       ];
 
-      if (dashboardSport.week === []) {
+      if (!dashboardSport.week || dashboardSport.week.length === 0) {
         dashboardSport.week = week;
       } else {
         for (let i = 0; i < 7; i++) {
-          let day = dashboardSport.week[i];
-          week[i].valor = day;
+          week[i].valor = dashboardSport.week[i] || 0;
         }
         dashboardSport.week = week;
       }
 
-      if (!dashboardSport)
-        throw new Error("Dashboard de deporte no encontrado");
-
-      let dailyPlan = dashboardSport.dailyExercises;
-      const userMuscleGroups = dashboardSport.User?.muscleGroups || [];
-
-      if (
-        !dailyPlan ||
-        !isToday(dailyPlan.date) ||
-        needsMusclePrioritization(dailyPlan.Exercise, userMuscleGroups)
-      ) {
-        const allExercises = await prisma.exercise.findMany();
-
-        const activity =
-          dashboardSport.User?.biometrics?.activity?.toLowerCase() || "";
-        const goal = dashboardSport.User?.biometrics?.goal?.toLowerCase() || "";
-
-        let targetLevel = "PRINCIPIANTE";
-
-        if (activity.includes("moderado") || activity.includes("ligero"))
-          targetLevel = "INTERMEDIO";
-        if (
-          activity.includes("activo") ||
-          activity.includes("fuerte") ||
-          activity.includes("diari")
-        )
-          targetLevel = "AVANZADOS";
-
-        if (
-          goal.includes("volumen") ||
-          goal.includes("musculo") ||
-          goal.includes("peso") ||
-          goal.includes("fuerza") ||
-          goal.includes("subir")
-        ) {
-          if (targetLevel === "PRINCIPIANTE") targetLevel = "INTERMEDIO";
-          else if (targetLevel === "INTERMEDIO") targetLevel = "AVANZADOS";
-        }
-
-        const favorites = dashboardSport.dailyExercises.exercises || [];
-        const newPlan = generateDailySport(
-          targetLevel,
-          favorites,
-          allExercises,
-          userMuscleGroups,
-        );
-
-        dailyPlan = await prisma.dailyExercises.upsert({
-          where: { dashboardSportId: dashboardSport.id },
-          update: {
-            date: new Date(),
-            exercises: { set: newPlan.map((e) => ({ id: e.id })) },
-          },
-          create: {
-            dashboardSportId: dashboardSport.id,
-            date: new Date(),
-            exercises: { connect: newPlan.map((e) => ({ id: e.id })) },
-          },
-          include: { exercises: true },
-        });
-      }
-
-      let completeDashboard = {
+      return {
         ...dashboardSport,
-        dailyPlan: dailyPlan,
+        dailyPlan: dashboardSport.dailyExercises || { exercises: [] }
       };
-
-      return completeDashboard;
     } catch (error) {
       throw new Error(`Error fetching sport dashboard: ${error.message}`);
     }
@@ -379,6 +278,89 @@ class DashboardService {
       where: { id: sport.id },
       data: { exercises: { connect: { id: parseInt(exerciseId) } } },
     });
+  }
+
+  static async initializeDailyPlans(userId) {
+    try {
+      console.log(`Inicializando planes para el usuario ${userId}...`);
+
+      // 1. INICIALIZAR DIETA
+      const dashboardDiet = await prisma.dashboardDiet.findFirst({
+        where: { userId: userId },
+        include: { dailyRecipes: { include: { recipes: true } }, recipes: true }
+      });
+
+      if (dashboardDiet && (!dashboardDiet.dailyRecipes || !isToday(dashboardDiet.dailyRecipes?.date))) {
+        const allRecipes = await prisma.recipe.findMany();
+        const favorites = dashboardDiet.recipes || [];
+        const newDietPlan = generateDailyDiet(dashboardDiet, favorites, allRecipes);
+
+        await prisma.dailyRecipes.upsert({
+          where: { dashboardDietId: dashboardDiet.id },
+          update: {
+            date: new Date(),
+            recipes: { set: newDietPlan.map((r) => ({ id: r.id })) },
+          },
+          create: {
+            dashboardDietId: dashboardDiet.id,
+            date: new Date(),
+            recipes: { connect: newDietPlan.map((r) => ({ id: r.id })) },
+          }
+        });
+      }
+
+      // 2. INICIALIZAR DEPORTE
+      const dashboardSport = await prisma.dashboardSport.findFirst({
+        where: { userId: userId },
+        include: {
+          dailyExercises: { include: { exercises: true } },
+          exercises: true,
+          user: { include: { biometrics: true } }
+        }
+      });
+
+      const userMuscleGroups = dashboardSport?.user?.muscleGroups || [];
+      const currentExercises = dashboardSport?.dailyExercises?.exercises || [];
+
+      if (
+          dashboardSport &&
+          (!dashboardSport.dailyExercises ||
+              !isToday(dashboardSport.dailyExercises?.date) ||
+              needsMusclePrioritization(currentExercises, userMuscleGroups))
+      ) {
+        const allExercises = await prisma.exercise.findMany();
+        const activity = dashboardSport.user?.biometrics?.activity?.toLowerCase() || "";
+        const goal = dashboardSport.user?.biometrics?.goal?.toLowerCase() || "";
+
+        let targetLevel = "PRINCIPIANTE";
+        if (activity.includes("moderado") || activity.includes("ligero")) targetLevel = "INTERMEDIO";
+        if (activity.includes("activo") || activity.includes("fuerte") || activity.includes("diari")) targetLevel = "AVANZADOS";
+        if (goal.includes("volumen") || goal.includes("musculo") || goal.includes("peso") || goal.includes("fuerza") || goal.includes("subir")) {
+          if (targetLevel === "PRINCIPIANTE") targetLevel = "INTERMEDIO";
+          else if (targetLevel === "INTERMEDIO") targetLevel = "AVANZADOS";
+        }
+
+        const favorites = dashboardSport.exercises || [];
+        const newSportPlan = generateDailySport(targetLevel, favorites, allExercises, userMuscleGroups);
+
+        await prisma.dailyExercises.upsert({
+          where: { dashboardSportId: dashboardSport.id },
+          update: {
+            date: new Date(),
+            exercises: { set: newSportPlan.map((e) => ({ id: e.id })) },
+          },
+          create: {
+            dashboardSportId: dashboardSport.id,
+            date: new Date(),
+            exercises: { connect: newSportPlan.map((e) => ({ id: e.id })) },
+          }
+        });
+      }
+
+      return { message: "Planes inicializados correctamente en BBDD." };
+    } catch (error) {
+      console.error("Error inicializando planes:", error);
+    }
   }
 }
 

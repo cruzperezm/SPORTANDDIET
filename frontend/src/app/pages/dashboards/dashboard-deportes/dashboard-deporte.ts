@@ -42,22 +42,39 @@ export class DashboardDeporteComponent implements OnInit {
   error = '';
 
   ngOnInit() {
+    this.loading = true;
+
     this.dashboardService.getDeporteDashboard().subscribe({
       next: (data) => {
         this.deporteData = data;
-        console.log('Test', this.dailyPlanByLevel);
+
+        // Reiniciamos por si Angular recarga el componente
+        this.dailyPlanByLevel = { Principiante: [], Intermedio: [], Avanzados: [] };
+
         for (let level of this.NIVELES) {
           for (let exercise of this.deporteData.dailyPlan.exercises) {
-            if (exercise.level === level.toUpperCase()) {
+            // SOLUCIÓN: Normalizamos ambos textos
+            const exLevel = exercise.level ? exercise.level.toUpperCase().trim() : '';
+            const targetLevel = level.toUpperCase().trim();
+
+            // Comparamos, teniendo en cuenta la s plural de Avanzado(s)
+            if (
+              exLevel === targetLevel ||
+              (targetLevel === 'AVANZADOS' && exLevel === 'AVANZADO')
+            ) {
               this.dailyPlanByLevel[level].push(exercise);
             }
           }
         }
 
+        this.loading = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Ha ocurrido un error al obtener la información del dashboard:', err);
+        this.error = 'No se pudo cargar el dashboard deportivo.';
+        this.loading = false;
+        this.cdr.detectChanges();
       },
     });
   }

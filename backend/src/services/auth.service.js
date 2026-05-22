@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const prisma = require("../config/prisma");
+const DashboardService = require("./dashboard.service");
 const { calculateNutrition } = require("../utils/nutrition.js");
 
 const { OAuth2Client } = require("google-auth-library");
@@ -108,6 +109,12 @@ const addBio = async (
     });
   }
 
+  try {
+    await DashboardService.initializeDailyPlans(parsedOwner);
+  } catch (error) {
+    console.error("Error inicializando planes tras addBio:", error);
+  }
+
   return biometrics;
 };
 
@@ -127,6 +134,14 @@ const login = async (email, password) => {
   });
 
   const needsOnboarding = !user.biometrics;
+
+  if (!needsOnboarding) {
+    try {
+      await DashboardService.initializeDailyPlans(user.id);
+    } catch (error) {
+      console.error("Error inicializando planes en el login:", error);
+    }
+  }
 
   return { user, token, needsOnboarding };
 };
@@ -171,6 +186,14 @@ const googleAuth = async (idToken) => {
     );
 
     const needsOnboarding = !user.biometrics;
+
+    if (!needsOnboarding) {
+      try {
+        await DashboardService.initializeDailyPlans(user.id);
+      } catch (error) {
+        console.error("Error inicializando planes en Google Auth:", error);
+      }
+    }
 
     return { user, token, needsOnboarding };
   } catch (error) {

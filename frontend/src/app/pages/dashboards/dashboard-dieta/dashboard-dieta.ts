@@ -37,6 +37,8 @@ export class DashboardDietaComponent implements OnInit {
   error = '';
 
   ngOnInit() {
+    this.loading = true; // Aseguramos que empiece cargando
+
     this.dashboardService.getDietaDashboard().subscribe({
       next: (data) => {
         this.dietaData = data;
@@ -45,10 +47,14 @@ export class DashboardDietaComponent implements OnInit {
           { label: 'Grasas', value: this.dietaData.fats, total: 100 },
           { label: 'Carbs', value: this.dietaData.carbs, total: 300 },
         ];
+        this.loading = false; // Los datos han llegado
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Ha ocurrido un error al obtener la información del dashboard:', err);
+        this.error = 'No se pudo cargar el dashboard nutricional.';
+        this.loading = false; // Quitamos el estado de carga si hay error
+        this.cdr.detectChanges();
       },
     });
   }

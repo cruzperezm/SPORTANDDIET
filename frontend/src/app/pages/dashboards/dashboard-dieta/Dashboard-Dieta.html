@@ -1,5 +1,9 @@
-@if (dietaData) {
-  <div class="dashboard-dieta">
+@if (loading) {
+    <div class="loading-container" style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+      <h2>Calculando tu plan de hoy...</h2>
+    </div>
+  } @else if (dietaData) {
+    <div class="dashboard-dieta">
     <section class="left-container">
       <h1 class="section-title">
         {{ dashboardTitle }}
