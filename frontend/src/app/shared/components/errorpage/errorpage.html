@@ -1,10 +1,9 @@
 <div id="error-page">
     <h1>Ups!</h1>
     <p>Estamos trabajando para traerte más funciones en breve.</p>
-    <p>Por ahora la página no está disponible, perdona por la molestia. Mientras tanto, puedes explorar nuestras otras secciones:</p>
-    <ul>
-        <li><a class="nav-pill" routerLink="/dashboard-deporte">Acceso al dashboard</a></li>
-        <li><a class="nav-pill" routerLink="/dietas">Página de dietas</a></li>
-        <li><a class="nav-pill" routerLink="/deportes">Página de deportes</a></li>
-    </ul>
+    <p>Por ahora la página no está disponible, mientras tanto, puedes explorar nuestras otras secciones:</p>
+    <div class="nav-group">
+        <a class="nav-pill" routerLink="/dietas" (click)="onDietasClick()">Página de dietas</a>
+        <a class="nav-pill" routerLink="/deportes" (click)="onDeportesClick()">Página de deportes</a>
+</div>
 </div>

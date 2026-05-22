@@ -4,7 +4,7 @@
 }
 
 html, body {
-  margin: 0;
+  margin: 30rem;
   height: 100%;
   font-family: 'Inter', sans-serif;
   color: #1A1A1A;
@@ -18,13 +18,48 @@ p {
 }
 
 h1 {
+  margin: 2rem;
   color: #1A1A1A;
   font-weight: 600;
 }
 #error-page {
+  min-height: 75vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100%;
   text-align: center;
+}
+
+
+nav-group {
+  position: absolute;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  align-content: center;
+  transform: translateX(-50%);
+}
+
+.nav-pill {
+  text-decoration: none;
+  color: #333;
+  font-weight: 600;
+  padding: 6px 24px;
+  border-radius: 12px;
+  border: 2px solid #eee;
+  transition: all 0.2s ease;
+  height: 60%;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 20px;
+  width: auto;
+}
+
+.nav-pill:hover {
+  background-color: #e8f5ed;
+  color: #2ecc71;
+  cursor: pointer;
 }

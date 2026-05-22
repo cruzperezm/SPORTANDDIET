@@ -67,7 +67,7 @@ export class Bio {
       next: (response) => {
         console.log('Backend says:', response);
         this.isLoading = false;
-        this.router.navigate(['/dashboard/dieta']);
+        this.router.navigate(['/home']);
       },
       error: (err) => {
         alert('Form failed to upload');

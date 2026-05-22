@@ -9,10 +9,6 @@ import { Router } from "@angular/router";
 export class ErrorPageComponent {
     constructor(private router: Router) {}
 
-    onDashboardDeporteClick() {
-    this.router.navigate(['/dashboard/deporte']);
-    }
-
     onDietasClick() {
     this.router.navigate(['/dietas']);
     }

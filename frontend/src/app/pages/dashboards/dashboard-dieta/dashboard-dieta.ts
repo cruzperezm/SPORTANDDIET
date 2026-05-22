@@ -45,7 +45,7 @@ export class DashboardDietaComponent implements OnInit {
         this.macroList = [
           { label: 'Proteína', value: this.dietaData.protein, total: 150 },
           { label: 'Grasas', value: this.dietaData.fats, total: 100 },
-          { label: 'Carbs', value: this.dietaData.carbs, total: 300 },
+          { label: 'Hidratos', value: this.dietaData.carbs, total: 300 },
         ];
         this.loading = false; // Los datos han llegado
         this.cdr.detectChanges();
