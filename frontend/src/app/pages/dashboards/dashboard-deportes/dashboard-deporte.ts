@@ -121,10 +121,23 @@ export class DashboardDeporteComponent implements OnInit {
     if (x != null) {
       this.exList = JSON.parse(x);
     }
+
     const elem = this.exList.find((val) => val.id === exerciseId);
-    const i = this.exList.indexOf(elem);
-    this.exList.splice(i, 1);
-    localStorage.setItem('Deportes', JSON.stringify(this.exList));
+    if (elem) {
+      const i = this.exList.indexOf(elem);
+      this.exList.splice(i, 1);
+      localStorage.setItem('Deportes', JSON.stringify(this.exList));
+    }
+
+    // Petición al Backend
+    try {
+      this.dashboardService.removeFavoriteExercise(exerciseId).subscribe({
+        next: (res: any) => console.log('Desvinculado de Prisma exitosamente', res),
+        error: (err: any) => console.error('Error al desvincular:', err),
+      });
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   inList(exerciseId: number) {
@@ -132,8 +145,6 @@ export class DashboardDeporteComponent implements OnInit {
     if (x != null) {
       this.exList = JSON.parse(x);
     }
-    const elem = this.exList.find((val) => val.id === exerciseId);
-    const i = this.exList.indexOf(elem);
-    return i != -1;
+    return this.exList.some((val) => val.id === exerciseId);
   }
 }

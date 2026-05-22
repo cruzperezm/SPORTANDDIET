@@ -78,4 +78,12 @@ export class DashboardService {
   addFavoriteExercise(exerciseId: number): Observable<any> {
     return this.http.post(`${this.apiUrl}/dashboard/deporte/favorito`, { exerciseId });
   }
+
+  removeFavoriteRecipe(recipeId: number): Observable<any> {
+    return this.http.post(`${this.apiUrl}/favoritos/receta/remove`, { recipeId });
+  }
+
+  removeFavoriteExercise(exerciseId: number): Observable<any> {
+    return this.http.post(`${this.apiUrl}/favoritos/ejercicio/remove`, { exerciseId });
+  }
 }

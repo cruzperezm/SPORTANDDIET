@@ -68,16 +68,19 @@
             <h4 class="diet-moment">{{ moment }}</h4>
             @for (item of dietaData.dailyPlan.recipes; track item.name) {
               @if (item.moment === moment.toUpperCase()) {
-                <div class="diet-item" [routerLink]="['/dietas/receta', item.id]">
-                  <div class="diet-img">
+                <div class="diet-item">
+
+                  <div class="diet-img" [routerLink]="['/dietas/receta', item.id]">
                     <img [src]="item.image" alt="" />
                   </div>
+
                   <div class="diet-title">
                     <span>{{ item.name }}</span>
                   </div>
                   <div class="diet-value">
                     <span>{{ item.calories }} kcal</span>
                   </div>
+
                   @if (inList(item.id)) {
                     <div class="save-exercise" (click)="eliminar(item.id)">
                       <fa-icon [icon]="faBookmark" style="color: #10b981" />

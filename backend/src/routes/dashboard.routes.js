@@ -21,4 +21,7 @@ router.post(
   authenticateToken,
   dashboardController.addFavoriteExercise,
 );
+// Añade esto en tu archivo de rutas
+router.post('/favoritos/receta/remove', dashboardController.removeFavoriteRecipe);
+router.post('/favoritos/ejercicio/remove', dashboardController.removeFavoriteExercise);
 module.exports = router;

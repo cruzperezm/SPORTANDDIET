@@ -103,8 +103,8 @@ h1 {
   }
 }
 
-ellipse-toggle:active {
-  animation: toggle-animation 0.1s linear forwards;
+.ellipse-toggle:active {
+  animation: toggle-animation 0.1s linear forwards !important;
 }
 
 .ellipse-toggle {
@@ -138,7 +138,6 @@ ellipse-toggle:active {
   align-items: center;
   text-align: center;
   padding: 6px 24px 2px;
-  width: auto;
   cursor: pointer;
   background-color: #10b981;
   color: #fff;
@@ -354,4 +353,13 @@ ellipse-toggle:active {
     0 0 20px 0 #05966836,
     0 0 20px 0 #05966836;
   translate: translateY(-5px);
+}
+
+.save-exercise {
+  z-index: 1;
+}
+
+.save-exercise:hover {
+  border-radius: 5px;
+  border: 1px solid #059669; /* Borde verde oscuro al pasar el ratón */
 }

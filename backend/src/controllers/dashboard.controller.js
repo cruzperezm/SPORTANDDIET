@@ -69,3 +69,31 @@ exports.addFavoriteExercise = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+exports.removeFavoriteRecipe = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const recipeId = req.body.recipeId; // Ahora lo leemos seguro desde el body
+
+    if (!recipeId) return res.status(400).json({ error: "Falta el ID de la receta" });
+
+    await DashboardService.removeFavoriteRecipe(userId, recipeId);
+    res.status(200).json({ message: "Receta desenlazada del dashboard" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+exports.removeFavoriteExercise = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const exerciseId = req.body.exerciseId;
+
+    if (!exerciseId) return res.status(400).json({ error: "Falta el ID del ejercicio" });
+
+    await DashboardService.removeFavoriteExercise(userId, exerciseId);
+    res.status(200).json({ message: "Ejercicio desenlazado del dashboard" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};

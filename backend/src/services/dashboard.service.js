@@ -316,6 +316,31 @@ class DashboardService {
     });
   }
 
+  static async removeFavoriteRecipe(userId, recipeId) {
+    const diet = await prisma.dashboardDiet.findUnique({
+      where: { userId: parseInt(userId) },
+    });
+    if (!diet) throw new Error("Dashboard de dieta no encontrado");
+
+    // Usamos 'disconnect' para desenlazar sin borrar la receta global
+    return await prisma.dashboardDiet.update({
+      where: { id: diet.id },
+      data: { recipes: { disconnect: { id: parseInt(recipeId) } } },
+    });
+  }
+
+  static async removeFavoriteExercise(userId, exerciseId) {
+    const sport = await prisma.dashboardSport.findUnique({
+      where: { userId: parseInt(userId) },
+    });
+    if (!sport) throw new Error("Dashboard de deporte no encontrado");
+
+    return await prisma.dashboardSport.update({
+      where: { id: sport.id },
+      data: { exercises: { disconnect: { id: parseInt(exerciseId) } } },
+    });
+  }
+
   static async initializeDailyPlans(userId) {
     try {
       console.log(`Inicializando planes para el usuario ${userId}...`);

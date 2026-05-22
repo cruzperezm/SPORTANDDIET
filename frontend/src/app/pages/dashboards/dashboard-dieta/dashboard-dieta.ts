@@ -96,24 +96,41 @@ export class DashboardDietaComponent implements OnInit {
     localStorage.setItem('Dietas', JSON.stringify(this.reList));
   }
 
-  eliminar(recipeId: string) {
+  eliminar(recipeId: string | number) {
+    // 1. Convertimos a número de forma segura sin importar lo que llegue
+    const idNum = Number(recipeId);
+
     const x = localStorage.getItem('Dietas');
     if (x != null) {
       this.reList = JSON.parse(x);
     }
-    const elem = this.reList.find((val) => val.id === recipeId);
-    const i = this.reList.indexOf(elem);
-    this.reList.splice(i, 1);
-    localStorage.setItem('Dietas', JSON.stringify(this.reList));
+
+    // 2. Forzamos la comparación numérica para que coincida 100%
+    const elem = this.reList.find((val) => Number(val.id) === idNum);
+    if (elem) {
+      const i = this.reList.indexOf(elem);
+      this.reList.splice(i, 1);
+      localStorage.setItem('Dietas', JSON.stringify(this.reList));
+    }
+
+    // 3. Enviamos el idNum (que ya es un número real) a tu servicio
+    try {
+      this.dashboardService.removeFavoriteRecipe(idNum).subscribe({
+        next: (res: any) => console.log('Desvinculado de Prisma exitosamente', res),
+        error: (err: any) => console.error('Error al desvincular:', err)
+      });
+    } catch (err) {
+      console.log(err);
+    }
   }
 
-  inList(recipeId: string) {
+  inList(recipeId: string | number) {
+    const idNum = Number(recipeId);
     const x = localStorage.getItem('Dietas');
     if (x != null) {
       this.reList = JSON.parse(x);
     }
-    const elem = this.reList.find((val) => val.id === parseInt(recipeId));
-    const i = this.reList.indexOf(elem);
-    return i != -1;
+    // Simplificado y a prueba de errores de tipado
+    return this.reList.some((val) => Number(val.id) === idNum);
   }
 }

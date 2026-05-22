@@ -14,7 +14,7 @@
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
 
   border: 1px solid rgba(41, 121, 255, 0.2);
-  border-top: 4px solid #2979ff;
+  border-top: 4px solid #b1b1b5;
 
   width: 100%;
   max-width: 700px;
@@ -180,7 +180,7 @@
 }
 
 .btn-save {
-  background-color: #2979ff !important;
+  background-color: #10B981 !important;
   color: white !important;
   padding: 8px 24px !important;
   border-radius: 6px !important;
